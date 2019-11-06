@@ -27,16 +27,24 @@ init
 	vars.offListToData = 0x10;
 	vars.offListToIndexMap = 0x14;
 	vars.offInventorySlotToCardId = 0x04;
+	vars.offUIManagerToCurrentScreenPtr = 0x38;
+	vars.offUIManagerToDialogScreenPtr = 0x74; // I don't have a better name for it yet okay?!
+	vars.offDialogScreenToCauseType = 0xB5C;
+	vars.offPlayerToCurrentNPC = 0x294;
+	vars.offNPCToDatabaseRow = 0x13C;
+	vars.offDatabaseRowToUID = 0x14;
 
 	Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
-	vars.splittingItems = new HashSet<int>(new int[] {
+	vars.splittingItems = new HashSet<int>(new int[]
+	{
 		cardId(44, 0), // Nature card
 		cardId(53, 0), // Nature key
 		cardId(57, 0), // Earth key
 		cardId(55, 0) // Air key
 	});
 	vars.gotPsyFairy = false;
-	vars.psyFairies = new HashSet<int>(new int[] {
+	vars.psyFairies = new HashSet<int>(new int[]
+	{
 		cardId(27, 2), // Mencre
 		cardId(28, 2), // Mensec
 		cardId(46, 2), // Beltaur
@@ -44,8 +52,11 @@ init
 		cardId(48, 2), // Clum
 		cardId(49, 2), // Clumaur
 	});
-
-	vars.memShouldStart = new MemoryWatcher<byte>(IntPtr.Zero);
+	vars.splittingEnemies = new HashSet<uint>(new uint[]
+	{
+		0xED367294u
+	});
+	vars.lastDefeatedNPC = 0u;
 }
 
 exit
@@ -53,6 +64,7 @@ exit
 	vars.foundGamePointer = false;
 	vars.ptrGame = IntPtr.Zero;
 	vars.gotPsyFairy = false;
+	vars.lastDefeatedNPC = 0u;
 }
 
 update
@@ -85,7 +97,8 @@ update
 	 * What happens is that there is an animation playing when clicking on the button and this is
 	 * documented in the code with a boolean variable. Let's watch it!
 	 */
-	IntPtr ptrUIManager = new IntPtr(vars.ptrGame.ToInt64() + vars.offGameToPlayer + vars.offPlayerToUIManager);
+	IntPtr ptrPlayer = new IntPtr(vars.ptrGame.ToInt64() + vars.offGameToPlayer);
+	IntPtr ptrUIManager = new IntPtr(ptrPlayer.ToInt64() + vars.offPlayerToUIManager);
 	IntPtr ptrSavegameScreen = IntPtr.Zero;
 	ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToSavegameScreenPtr, out ptrSavegameScreen);
 	vars.memShouldStart = new MemoryWatcher<byte>(ptrSavegameScreen + vars.offSavegameScreenToInExitingAnimation);
@@ -100,8 +113,26 @@ update
 	 *   - get the element at that data index out of `data`
 	 *   - in this case this is a `InventorySlot` which has a common member with the card id
 	 */
-	 vars.ptrInventoryList = new IntPtr(vars.ptrGame.ToInt64() + vars.offGameToPlayer + vars.offPlayerToInventory);
+	 vars.ptrInventoryList = new IntPtr(ptrPlayer.ToInt64() + vars.offPlayerToInventory);
 	 vars.memItemCount = new MemoryWatcher<int>(vars.ptrInventoryList + vars.offListToNextFreeIndex);
+
+	/* NPC DEFEAT TRIGGER
+	 * ******************
+	 * You think the last one had a bit of pointer magic? Surprise, this will be worse!
+	 * Luckily we do not have to search for every NPC to examine its state. Instead we look for the current
+	 * UI screen and examine that. There is a biiiiiig screen class I called `DialogScreen` which handles
+	 * a lot of the in-game... well dialogs like buying, gambling and the after-fight information.
+	 * So we will look for that screen, check that the cause type (which sadly only applies to after-fight)
+	 * has the right value (4 = player defeated NPC), check that there was an actual NPC to be defated
+	 * go to his database row reference and then check the ID against the hardcoded list of splitting NPCs.
+	 * Oh and because in C# 64Bit IntPtr has a 8-byte size, we have to cast always to uint... What a fun!
+	 */
+	 IntPtr ptrDialogScreen;
+	 ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToDialogScreenPtr, out ptrDialogScreen);
+	 vars.ptrDialogScreen = ptrDialogScreen;
+	 vars.memCurrentScreen = new MemoryWatcher<uint>(ptrUIManager + vars.offUIManagerToCurrentScreenPtr);
+	 vars.memCauseType = new MemoryWatcher<int>(vars.ptrDialogScreen + vars.offDialogScreenToCauseType);
+	 vars.memCurrentNPC = new MemoryWatcher<uint>(ptrPlayer + vars.offPlayerToCurrentNPC);
 
 	/* MEMORY WATCHER LIST
 	 * *******************
@@ -109,7 +140,10 @@ update
 	vars.memWatchers.AddRange(new MemoryWatcher[]
 	{
 		vars.memShouldStart,
-		vars.memItemCount
+		vars.memItemCount,
+		vars.memCurrentScreen,
+		vars.memCauseType,
+		vars.memCurrentNPC
 	});
 	return true;
 }
@@ -146,6 +180,22 @@ split
 			vars.gotPsyFairy = true;
 			shouldSplit = true;
 		}
+	}
+
+	// Was a NPC defeated?
+	if (vars.memCurrentScreen.Current == (uint)vars.ptrDialogScreen.ToInt64() && // The after-fight dialog is active
+		vars.memCauseType.Current == 4 &&										 // The last fight ended with "Player defeated NPC"
+		vars.memCurrentNPC.Current != 0u &&										 // There is a NPC the player defeated
+		vars.lastDefeatedNPC != vars.memCurrentNPC.Current)						 // These conditions hold for quite a number of frames
+	{
+		IntPtr databaseRow;
+		ExtensionMethods.ReadPointer(game, new IntPtr((Int64)vars.memCurrentNPC.Current) + vars.offNPCToDatabaseRow, out databaseRow);
+		uint defeatedUID;
+		ExtensionMethods.ReadValue<uint>(game, databaseRow + vars.offDatabaseRowToUID, out defeatedUID);
+		vars.lastDefeatedNPC = vars.memCurrentNPC.Current;
+		print("You defeated " + defeatedUID);
+
+		shouldSplit = shouldSplit || vars.splittingEnemies.Contains(defeatedUID);
 	}
 
 	return shouldSplit;
