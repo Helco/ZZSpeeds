@@ -33,6 +33,11 @@ init
 	vars.offPlayerToCurrentNPC = 0x294;
 	vars.offNPCToDatabaseRow = 0x13C;
 	vars.offDatabaseRowToUID = 0x14;
+	vars.offGameToResMgr = 0x38;
+	vars.offResMgrToScene = 0x8;
+	vars.offSceneToDataset = 0x4C0;
+	vars.offDatasetToDatasetStruct = 0x24;
+	vars.offDatasetStructToSceneId = 0x0;
 
 	Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
 	vars.splittingItems = new HashSet<int>(new int[]
@@ -57,6 +62,10 @@ init
 		0xED367294u
 	});
 	vars.lastDefeatedNPC = 0u;
+	vars.splittingScenes = new HashSet<int>(new int[]
+	{
+		2421
+	});
 }
 
 exit
@@ -113,8 +122,8 @@ update
 	 *   - get the element at that data index out of `data`
 	 *   - in this case this is a `InventorySlot` which has a common member with the card id
 	 */
-	 vars.ptrInventoryList = new IntPtr(ptrPlayer.ToInt64() + vars.offPlayerToInventory);
-	 vars.memItemCount = new MemoryWatcher<int>(vars.ptrInventoryList + vars.offListToNextFreeIndex);
+	vars.ptrInventoryList = new IntPtr(ptrPlayer.ToInt64() + vars.offPlayerToInventory);
+	vars.memItemCount = new MemoryWatcher<int>(vars.ptrInventoryList + vars.offListToNextFreeIndex);
 
 	/* NPC DEFEAT TRIGGER
 	 * ******************
@@ -127,12 +136,24 @@ update
 	 * go to his database row reference and then check the ID against the hardcoded list of splitting NPCs.
 	 * Oh and because in C# 64Bit IntPtr has a 8-byte size, we have to cast always to uint... What a fun!
 	 */
-	 IntPtr ptrDialogScreen;
-	 ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToDialogScreenPtr, out ptrDialogScreen);
-	 vars.ptrDialogScreen = ptrDialogScreen;
-	 vars.memCurrentScreen = new MemoryWatcher<uint>(ptrUIManager + vars.offUIManagerToCurrentScreenPtr);
-	 vars.memCauseType = new MemoryWatcher<int>(vars.ptrDialogScreen + vars.offDialogScreenToCauseType);
-	 vars.memCurrentNPC = new MemoryWatcher<uint>(ptrPlayer + vars.offPlayerToCurrentNPC);
+	IntPtr ptrDialogScreen;
+	ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToDialogScreenPtr, out ptrDialogScreen);
+	vars.ptrDialogScreen = ptrDialogScreen;
+	vars.memCurrentScreen = new MemoryWatcher<uint>(ptrUIManager + vars.offUIManagerToCurrentScreenPtr);
+	vars.memCauseType = new MemoryWatcher<int>(vars.ptrDialogScreen + vars.offDialogScreenToCauseType);
+	vars.memCurrentNPC = new MemoryWatcher<uint>(ptrPlayer + vars.offPlayerToCurrentNPC);
+	
+	/* SCENE CHANGE TRIGGER
+	 * ********************
+	 * And now the absolute hell! No just kidding, getting the scene changes is actually very ease
+	 * we just have to jump a few static references to a variable that holds the scene id
+	 */
+	vars.memSceneId = new MemoryWatcher<int>(vars.ptrGame +
+		vars.offGameToResMgr +
+		vars.offResMgrToScene +
+		vars.offSceneToDataset +
+		vars.offDatasetToDatasetStruct +
+		vars.offDatasetStructToSceneId);
 
 	/* MEMORY WATCHER LIST
 	 * *******************
@@ -143,7 +164,8 @@ update
 		vars.memItemCount,
 		vars.memCurrentScreen,
 		vars.memCauseType,
-		vars.memCurrentNPC
+		vars.memCurrentNPC,
+		vars.memSceneId
 	});
 	return true;
 }
@@ -196,6 +218,17 @@ split
 		print("You defeated " + defeatedUID);
 
 		shouldSplit = shouldSplit || vars.splittingEnemies.Contains(defeatedUID);
+	}
+
+	// Did we change the scene
+	if (vars.memSceneId.Current != vars.memSceneId.Old)
+	{
+		print("You changed scenes to " + vars.memSceneId.Current);
+		if (vars.splittingScenes.Contains(vars.memSceneId.Current))
+		{
+			shouldSplit = true;
+			vars.splittingScenes.Remove(vars.memSceneId.Current);
+		}
 	}
 
 	return shouldSplit;
