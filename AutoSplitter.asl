@@ -72,6 +72,7 @@ init
 		vars.splittingEnemies = new HashSet<uint>();
 		vars.splittingScenes = new HashSet<int>();
 		vars.splittingVideos = new HashSet<string>();
+		vars.emptyInventoryWasCreated = false;
 
 		if (settings["get_nature_card"])	vars.splittingItems.Add(cardId(47, 0));
 		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(56, 0));
@@ -269,6 +270,22 @@ start
 
 split
 {
+	/* Image the following event chain:
+	 *   1. User starts run, gets psy fairy
+	 *   2. Run dies, User goes to main menu, restarts run 
+	 *   3. The new run starts with the `start` event, but the inventory is not cleared yet
+	 *   4. User immediately gets the psy fairy split
+	 *   (applies to every item split)
+	 * So what we do is we wait until the inventory was empty before allowing any split
+	 */
+	if (!vars.emptyInventoryWasCreated)
+	{
+		if (vars.memItemCount.Current == 0)
+			vars.emptyInventoryWasCreated = true;
+		else
+			return false; // no splits for you mister!
+	}
+
 	/* so another caveat... A fairy trade does not change the count in the inventory
 	 * makes sense right? but it actually replaces the slot so the last slot after 
 	 * the trade may not even be the new fairy.
