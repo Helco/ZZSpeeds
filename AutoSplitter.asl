@@ -1,6 +1,17 @@
 /*
- * AutoSplitter for Zanzarah Any% (but for the !wrong! version Steam 1.010) by Helco
- * TODO: Add explaining overview
+ * AutoSplitter for Zanzarah Any% by Helco
+ *
+ * Adds an autostart for zanzarah (triggered by the loading button)
+ * and autosplit for:
+ *   - getting important items / fairies
+ *   - getting any psy fairy
+ *   - defeating certain enemies
+ *   - reaching certain scenes
+ *   - playing the end-game video
+ *
+ * Will most likely *only* work with:
+ *   - 1.002 (Original release used for Any% speedruns)
+ *   - 1.010 (Steam Version)
  */
 
 state("zanthp")
