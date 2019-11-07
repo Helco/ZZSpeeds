@@ -25,6 +25,7 @@ state("main")
 startup
 {
 	settings.Add("reset_in_main_menu", true, "Reset run in main menu");
+	settings.Add("auto_start_on_new_game", true, "Starts run when creating a new game");
 	settings.Add("split_after", true, "Splits after");
 	{
 		settings.Add("getting", true, "getting:", "split_after");
@@ -43,7 +44,7 @@ startup
 			settings.Add("defeat_bob1", false, "Shadow Boss - in the mountains (Bob 1)", "defeating");
 			settings.Add("defeat_bob2", false, "Shadow General - in the shadow realm (Bob 2)", "defeating");
 			settings.Add("defeat_druid1", true, "White Druid 1 - on base level in dark cathedral", "defeating");
-			settings.Add("defeat_druid2", true, "White Druid 2 - on the upper level in dark cathedral", "defeating");
+			settings.Add("defeat_druid2", false, "White Druid 2 - on the upper level in dark cathedral", "defeating");
 		}
 		settings.Add("reaching", true, "reaching:", "split_after");
 		{
@@ -273,6 +274,7 @@ update
 start
 {
 	return
+		settings["auto_start_on_new_game"] &&
 		vars.memCurrentScreen.Current == (uint)vars.ptrSavegameScreen.ToInt64() &&	// are we even in the savegames screen?
 		vars.memShouldStart.Current != 0;											// is it transitioning?
 }
