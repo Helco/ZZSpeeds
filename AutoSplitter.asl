@@ -74,7 +74,6 @@ init
 		vars.splittingEnemies = new HashSet<uint>();
 		vars.splittingScenes = new HashSet<int>();
 		vars.splittingVideos = new HashSet<string>();
-		vars.emptyInventoryWasCreated = false;
 
 		if (settings["get_nature_card"])	vars.splittingItems.Add(cardId(47, 0));
 		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(56, 0));
@@ -294,14 +293,11 @@ split
 	 *   3. The new run starts with the `start` event, but the inventory is not cleared yet
 	 *   4. User immediately gets the psy fairy split
 	 *   (applies to every item split)
-	 * So what we do is we wait until the inventory was empty before allowing any split
+	 * So what we do is we wait until we are not in the savegame screen anymore before allowing any splits
 	 */
-	if (!vars.emptyInventoryWasCreated)
+	if (vars.memCurrentScreen.Current == (uint)vars.ptrSavegameScreen.ToInt64())
 	{
-		if (vars.memItemCount.Current == 0)
-			vars.emptyInventoryWasCreated = true;
-		else
-			return false; // no splits for you mister!
+		return false; // no splits for you mister!
 	}
 
 	/* so another caveat... A fairy trade does not change the count in the inventory
