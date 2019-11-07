@@ -73,8 +73,8 @@ init
 		vars.splittingScenes = new HashSet<int>();
 		vars.splittingVideos = new HashSet<string>();
 
-		if (settings["get_nature_card"])	vars.splittingItems.Add(cardId(44, 0));
-		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(53, 0));
+		if (settings["get_nature_card"])	vars.splittingItems.Add(cardId(47, 0));
+		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(56, 0));
 		if (settings["get_earth_key"])		vars.splittingItems.Add(cardId(57, 0));
 		if (settings["get_air_key"])		vars.splittingItems.Add(cardId(55, 0));
 		if (settings["get_segbuzz"])		vars.splittingItems.Add(cardId(68, 2));
@@ -90,8 +90,8 @@ init
 
 		if (settings["defeat_scarecrow"])	vars.splittingEnemies.Add(0x86DB0D84u);
 		if (settings["defeat_joe"])			vars.splittingEnemies.Add(0xF78C1A24u);
-		if (settings["defeat_bob1"])		vars.splittingEnemies.Add(0xFFFFFFFFu); // TODO
-		if (settings["defeat_bob2"])		vars.splittingEnemies.Add(0xFFFFFFFFu); // TODO
+		if (settings["defeat_bob1"])		vars.splittingEnemies.Add(0x63D94324u);
+		if (settings["defeat_bob2"])		vars.splittingEnemies.Add(0x11428094u);
 		if (settings["defeat_druid1"])		vars.splittingEnemies.Add(0x1F795CB4u);
 		if (settings["defeat_druid2"])		vars.splittingEnemies.Add(0xE277B534u);
 
