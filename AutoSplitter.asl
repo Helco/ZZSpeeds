@@ -24,45 +24,36 @@ state("main")
 
 startup
 {
-	// hook this to the timer as the process can be restarted and the gamesave even reloaded
-	timer.OnStart += (s, e) =>
+	settings.Add("split_after", true, "Splits after");
 	{
-		Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
-		vars.splittingItems = new HashSet<int>(new int[]
+		settings.Add("getting", true, "getting:", "split_after");
 		{
-			cardId(44, 0), // Nature card
-			cardId(53, 0), // Nature key
-			cardId(57, 0), // Earth key
-			cardId(55, 0), // Air key
-			cardId(68, 2)  // Segbuzz
-		});
-		vars.psyFairies = new HashSet<int>(new int[]
+			settings.Add("get_nature_card", true, "Nature card", "getting");
+			settings.Add("get_nature_key", true, "Nature key", "getting");
+			settings.Add("get_earth_key", true, "Earth key", "getting");
+			settings.Add("get_air_key", true, "Air key", "getting");
+			settings.Add("get_segbuzz", true, "Segbuzz", "getting");
+			settings.Add("get_any_psy", true, "Any Psy fairy", "getting");
+		}
+		settings.Add("defeating", true, "defeating:", "split_after");
 		{
-			cardId(27, 2), // Mencre
-			cardId(28, 2), // Mensec
-			cardId(46, 2), // Beltaur
-			cardId(47, 2), // Mentaur
-			cardId(48, 2), // Clum
-			cardId(49, 2), // Clumaur
-		});
-		vars.splittingEnemies = new HashSet<uint>(new uint[]
+			settings.Add("defeat_scarecrow", true, "Scarecrow", "defeating");
+			settings.Add("defeat_joe", true, "Shadowelf - in the mountains (Joe)", "defeating");
+			settings.Add("defeat_bob1", false, "Shadow Boss - in the mountains (Bob 1)", "defeating");
+			settings.Add("defeat_bob2", false, "Shadow General - in the shadow realm (Bob 2)", "defeating");
+			settings.Add("defeat_druid1", true, "White Druid 1 - on base level in dark cathedral", "defeating");
+			settings.Add("defeat_druid2", true, "White Druid 2 - on the upper level in dark cathedral", "defeating");
+		}
+		settings.Add("reaching", true, "reaching:", "split_after");
 		{
-			0x86DB0D84u, // Scarecrow
-			0xF78C1A24u, // Shadow elf in the mountains (Joe)
-			0x1F795CB4u, // First white druid
-			0xE277B534u  // Second white druid
-		});
-		vars.splittingScenes = new HashSet<int>(new int[]
+			settings.Add("reach_dunmore", true, "Dunmore", "reaching");
+			settings.Add("reach_bonekeyskip", true, "Shadow realm after the bone key skip", "reaching");
+		}
+		settings.Add("playing", true, "starting to play:", "split_after");
 		{
-			1243, // Dunmore
-			621,  // Shadow realm after Bone Keys Skip
-		});
-		vars.splittingVideos = new HashSet<string>(new string[]
-		{
-			"_v000",
-			"_v006" // the end-game cutscene
-		});
-	};
+			settings.Add("play_endgame", true, "Endgame cutscene", "playing");
+		}
+	}
 }
 
 init
@@ -71,6 +62,46 @@ init
 	vars.foundGamePointer = false;
 	vars.memWatchers = new MemoryWatcherList();
 
+	// hook this to the timer as the process can be restarted and the gamesave even reloaded
+	// yes this would make more sense in startup but we need access to the right `settings` object -_-
+	timer.OnStart += (s, e) =>
+	{
+		Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
+		vars.splittingItems = new HashSet<int>();
+		vars.psyFairies = new HashSet<int>();
+		vars.splittingEnemies = new HashSet<uint>();
+		vars.splittingScenes = new HashSet<int>();
+		vars.splittingVideos = new HashSet<string>();
+
+		if (settings["get_nature_card"])	vars.splittingItems.Add(cardId(44, 0));
+		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(53, 0));
+		if (settings["get_earth_key"])		vars.splittingItems.Add(cardId(57, 0));
+		if (settings["get_air_key"])		vars.splittingItems.Add(cardId(55, 0));
+		if (settings["get_segbuzz"])		vars.splittingItems.Add(cardId(68, 2));
+		if (settings["get_any_psy"])
+		{
+			vars.psyFairies.Add(cardId(27, 2)); // Mencre
+			vars.psyFairies.Add(cardId(28, 2)); // Mensec
+			vars.psyFairies.Add(cardId(46, 2)); // Beltaur
+			vars.psyFairies.Add(cardId(47, 2)); // Mentaur
+			vars.psyFairies.Add(cardId(48, 2)); // Clum
+			vars.psyFairies.Add(cardId(49, 2)); // Clumaur
+		}
+
+		if (settings["defeat_scarecrow"])	vars.splittingEnemies.Add(0x86DB0D84u);
+		if (settings["defeat_joe"])			vars.splittingEnemies.Add(0xF78C1A24u);
+		if (settings["defeat_bob1"])		vars.splittingEnemies.Add(0xFFFFFFFFu); // TODO
+		if (settings["defeat_bob2"])		vars.splittingEnemies.Add(0xFFFFFFFFu); // TODO
+		if (settings["defeat_druid1"])		vars.splittingEnemies.Add(0x1F795CB4u);
+		if (settings["defeat_druid2"])		vars.splittingEnemies.Add(0xE277B534u);
+
+		if (settings["reach_dunmore"])		vars.splittingScenes.Add(1243);
+		if (settings["reach_bonekeyskip"])	vars.splittingScenes.Add(621);
+
+		if (settings["play_endgame"]) vars.splittingVideos.Add("_v006");
+	};
+
+	// Version *dependent* offsets
 	if (game.ProcessName == "zanthp")
 	{
 		vars.sigGame = new SigScanTarget(0,
@@ -92,6 +123,7 @@ init
 		vars.offResMgrToVideoMgr = 0x7110;
 	}
 
+	// Version *independent* offsets
 	vars.offPlayerToUIManager = 0x188;
 	vars.offUIManagerToSavegameScreenPtr = 0x84;
 	vars.offSavegameScreenToInExitingAnimation = 0xF8;
@@ -237,30 +269,35 @@ start
 
 split
 {
-	// was there a new item added?
-	if (vars.memItemCount.Old+1 == vars.memItemCount.Current) // are there actually new items
+	/* so another caveat... A fairy trade does not change the count in the inventory
+	 * makes sense right? but it actually replaces the slot so the last slot after 
+	 * the trade may not even be the new fairy.
+	 * But we have performance? So just traverse the whole inventory all the time and
+	 * check every item :(
+	 */
+	IntPtr ptrInventoryData;
+	ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToData, out ptrInventoryData);
+	IntPtr ptrInventoryIndexMap;
+	ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToIndexMap, out ptrInventoryIndexMap);
+	for (int i = 0; i < vars.memItemCount.Current; i++)
 	{
 		// checking the last one should be fine
-		IntPtr ptrInventoryData;
-		ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToData, out ptrInventoryData);
-		IntPtr ptrInventoryIndexMap;
-		ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToIndexMap, out ptrInventoryIndexMap);
-		int lastItemIndex;
-		ExtensionMethods.ReadValue<int>(game, ptrInventoryIndexMap + 4 * (vars.memItemCount.Current - 1), out lastItemIndex);
-		IntPtr ptrLastItem;
-		ExtensionMethods.ReadPointer(game, ptrInventoryData + 4 * lastItemIndex, out ptrLastItem);
-		int lastItemCardId;
-		ExtensionMethods.ReadValue<int>(game, ptrLastItem + vars.offInventorySlotToCardId, out lastItemCardId);
+		int dataIndex;
+		ExtensionMethods.ReadValue<int>(game, ptrInventoryIndexMap + 4 * i, out dataIndex);
+		IntPtr ptrItem;
+		ExtensionMethods.ReadPointer(game, ptrInventoryData + 4 * dataIndex, out ptrItem);
+		int itemCardId;
+		ExtensionMethods.ReadValue<int>(game, ptrItem + vars.offInventorySlotToCardId, out itemCardId);
 
-		print("You got mail eh card: " + lastItemCardId);
-
-		if (vars.splittingItems.Contains(lastItemCardId))
+		if (vars.splittingItems.Contains(itemCardId))
 		{
-			vars.splittingItems.Remove(lastItemCardId);
+			print("Found a splitting item " + itemCardId);
+			vars.splittingItems.Remove(itemCardId);
 			return true;
 		}
-		if (vars.psyFairies.Contains(lastItemCardId))
+		if (vars.psyFairies.Contains(itemCardId))
 		{
+			print("Found a psy fairy");
 			vars.psyFairies.Clear();
 			return true;
 		}
