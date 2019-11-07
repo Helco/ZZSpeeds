@@ -7,17 +7,68 @@ state("zanthp")
 {
 }
 
+state("main")
+{
+}
+
+startup
+{
+	// hook this to the timer as the process can be restarted and the gamesave even reloaded
+	timer.OnStart += (s, e) =>
+	{
+		Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
+		vars.splittingItems = new HashSet<int>(new int[]
+		{
+			cardId(44, 0), // Nature card
+			cardId(53, 0), // Nature key
+			cardId(57, 0), // Earth key
+			cardId(55, 0) // Air key
+		});
+		vars.psyFairies = new HashSet<int>(new int[]
+		{
+			cardId(27, 2), // Mencre
+			cardId(28, 2), // Mensec
+			cardId(46, 2), // Beltaur
+			cardId(47, 2), // Mentaur
+			cardId(48, 2), // Clum
+			cardId(49, 2), // Clumaur
+		});
+		vars.splittingEnemies = new HashSet<uint>(new uint[]
+		{
+			0xED367294u
+		});
+		vars.splittingScenes = new HashSet<int>(new int[]
+		{
+			2421
+		});
+	};
+}
+
 init
 {
 	print("Found some Zanzarah game process");
 	vars.foundGamePointer = false;
 	vars.memWatchers = new MemoryWatcherList();
 
-	vars.sigGame = new SigScanTarget(0,
-		"3C", "78", "5A", "00", // Virtual-table pointer
-		"00", "00", "??", "00" // some buffer size either 0x00010000 or 0x00020000 (related to audio settings? frequency?)
-	);
-	vars.offGameToPlayer = 0x7320;
+	if (game.ProcessName == "zanthp")
+	{
+		vars.sigGame = new SigScanTarget(0,
+			"3C", "78", "5A", "00", // Virtual-table pointer
+			"00", "00", "??", "00" // some buffer size either 0x00010000 or 0x00020000 (related to audio settings? frequency?)
+		);
+		vars.offGameToPlayer = 0x7320;
+		vars.offSceneToDataset = 0x4C0;
+	}
+	else if (game.ProcessName == "main")
+	{
+		vars.sigGame = new SigScanTarget(0,
+			"0C", "68", "5A", "00",
+			"00", "00", "??", "00"
+		);
+		vars.offGameToPlayer = 0x7250;
+		vars.offSceneToDataset = 0x4B0;
+	}
+
 	vars.offPlayerToUIManager = 0x188;
 	vars.offUIManagerToSavegameScreenPtr = 0x84;
 	vars.offSavegameScreenToInExitingAnimation = 0xF8;
@@ -35,45 +86,14 @@ init
 	vars.offDatabaseRowToUID = 0x14;
 	vars.offGameToResMgr = 0x38;
 	vars.offResMgrToScene = 0x8;
-	vars.offSceneToDataset = 0x4C0;
 	vars.offDatasetToDatasetStruct = 0x24;
 	vars.offDatasetStructToSceneId = 0x0;
-
-	Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
-	vars.splittingItems = new HashSet<int>(new int[]
-	{
-		cardId(44, 0), // Nature card
-		cardId(53, 0), // Nature key
-		cardId(57, 0), // Earth key
-		cardId(55, 0) // Air key
-	});
-	vars.gotPsyFairy = false;
-	vars.psyFairies = new HashSet<int>(new int[]
-	{
-		cardId(27, 2), // Mencre
-		cardId(28, 2), // Mensec
-		cardId(46, 2), // Beltaur
-		cardId(47, 2), // Mentaur
-		cardId(48, 2), // Clum
-		cardId(49, 2), // Clumaur
-	});
-	vars.splittingEnemies = new HashSet<uint>(new uint[]
-	{
-		0xED367294u
-	});
-	vars.lastDefeatedNPC = 0u;
-	vars.splittingScenes = new HashSet<int>(new int[]
-	{
-		2421
-	});
 }
 
 exit
 {
 	vars.foundGamePointer = false;
 	vars.ptrGame = IntPtr.Zero;
-	vars.gotPsyFairy = false;
-	vars.lastDefeatedNPC = 0u;
 }
 
 update
@@ -177,8 +197,6 @@ start
 
 split
 {
-	bool shouldSplit = false;
-
 	// was there a new item added?
 	if (vars.memItemCount.Old+1 == vars.memItemCount.Current) // are there actually new items
 	{
@@ -196,19 +214,23 @@ split
 
 		print("You got mail eh card: " + lastItemCardId);
 
-		shouldSplit = shouldSplit || vars.splittingItems.Contains(lastItemCardId);
-		if (vars.psyFairies.Contains(lastItemCardId) && !vars.gotPsyFairy)
+		if (vars.splittingItems.Contains(lastItemCardId))
 		{
-			vars.gotPsyFairy = true;
-			shouldSplit = true;
+			vars.splittingItems.Remove(lastItemCardId);
+			return true;
+		}
+		if (vars.psyFairies.Contains(lastItemCardId))
+		{
+			vars.psyFairies.Clear();
+			return true;
 		}
 	}
 
 	// Was a NPC defeated?
-	if (vars.memCurrentScreen.Current == (uint)vars.ptrDialogScreen.ToInt64() && // The after-fight dialog is active
+	if (vars.memCurrentScreen.Old != vars.memCurrentScreen.Current &&			 // Has something happened?
+		vars.memCurrentScreen.Current == (uint)vars.ptrDialogScreen.ToInt64() && // The after-fight dialog is active
 		vars.memCauseType.Current == 4 &&										 // The last fight ended with "Player defeated NPC"
-		vars.memCurrentNPC.Current != 0u &&										 // There is a NPC the player defeated
-		vars.lastDefeatedNPC != vars.memCurrentNPC.Current)						 // These conditions hold for quite a number of frames
+		vars.memCurrentNPC.Current != 0u)										 // There is a NPC the player defeated
 	{
 		IntPtr databaseRow;
 		ExtensionMethods.ReadPointer(game, new IntPtr((Int64)vars.memCurrentNPC.Current) + vars.offNPCToDatabaseRow, out databaseRow);
@@ -217,7 +239,11 @@ split
 		vars.lastDefeatedNPC = vars.memCurrentNPC.Current;
 		print("You defeated " + defeatedUID);
 
-		shouldSplit = shouldSplit || vars.splittingEnemies.Contains(defeatedUID);
+		if (vars.splittingEnemies.Contains(defeatedUID))
+		{
+			vars.splittingEnemies.Remove(defeatedUID);
+			return true;
+		}
 	}
 
 	// Did we change the scene
@@ -226,10 +252,10 @@ split
 		print("You changed scenes to " + vars.memSceneId.Current);
 		if (vars.splittingScenes.Contains(vars.memSceneId.Current))
 		{
-			shouldSplit = true;
 			vars.splittingScenes.Remove(vars.memSceneId.Current);
+			return true;
 		}
 	}
 
-	return shouldSplit;
+	return false;
 }
