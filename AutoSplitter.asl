@@ -24,6 +24,7 @@ state("main")
 
 startup
 {
+	settings.Add("reset_in_main_menu", true, "Reset run in main menu");
 	settings.Add("split_after", true, "Splits after");
 	{
 		settings.Add("getting", true, "getting:", "split_after");
@@ -136,6 +137,7 @@ init
 	vars.offInventorySlotToCardId = 0x04;
 	vars.offUIManagerToCurrentScreenPtr = 0x38;
 	vars.offUIManagerToDialogScreenPtr = 0x74; // I don't have a better name for it yet okay?!
+	vars.offUIManagerToMainmenuScreenPtr = 0x80;
 	vars.offDialogScreenToCauseType = 0xB5C;
 	vars.offPlayerToCurrentNPC = 0x294;
 	vars.offNPCToDatabaseRow = 0x13C;
@@ -178,18 +180,23 @@ update
 	print("Found the game pointer at " + vars.ptrGame.ToString("X"));
 	vars.foundGamePointer = true;
 
-	/* START TRIGGER
-	 * *************
+	/* START & RESET TRIGGER
+	 * *********************
 	 * According to the rules the timer starts when clicking on the confirm button in the savegame screen.
 	 * Internally there are two different and I hope the first one is always the correct for this usage.
 	 * What happens is that there is an animation playing when clicking on the button and this is
 	 * documented in the code with a boolean variable. Let's watch it!
+	 * Also look that the screen is actually correct, also if you are in the main menu, reset (maybe)
 	 */
 	IntPtr ptrPlayer = new IntPtr(vars.ptrGame.ToInt64() + vars.offGameToPlayer);
 	IntPtr ptrUIManager = new IntPtr(ptrPlayer.ToInt64() + vars.offPlayerToUIManager);
 	IntPtr ptrSavegameScreen = IntPtr.Zero;
 	ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToSavegameScreenPtr, out ptrSavegameScreen);
+	IntPtr ptrMainmenuScreen = IntPtr.Zero;
+	ExtensionMethods.ReadPointer(game, ptrUIManager + vars.offUIManagerToMainmenuScreenPtr, out ptrMainmenuScreen);
 	vars.memShouldStart = new MemoryWatcher<byte>(ptrSavegameScreen + vars.offSavegameScreenToInExitingAnimation);
+	vars.ptrSavegameScreen = ptrSavegameScreen;
+	vars.ptrMainmenuScreen = ptrMainmenuScreen;
 
 	/* INVENTORY TRIGGER
 	 * *****************
@@ -265,7 +272,16 @@ update
 
 start
 {
-	return vars.memShouldStart.Current != 0;
+	return
+		vars.memCurrentScreen.Current == (uint)vars.ptrSavegameScreen.ToInt64() &&	// are we even in the savegames screen?
+		vars.memShouldStart.Current != 0;											// is it transitioning?
+}
+
+reset
+{
+	return
+		settings["reset_in_main_menu"] &&
+		vars.memCurrentScreen.Current == (uint)vars.ptrMainmenuScreen.ToInt64();
 }
 
 split
