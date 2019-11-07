@@ -35,11 +35,19 @@ startup
 		});
 		vars.splittingEnemies = new HashSet<uint>(new uint[]
 		{
-			0xED367294u
+			// 0xED367294u // The training elf in Endeva for dev test purposes
+
+			0x86DB0D84u, // Scarecrow
+			0xF78C1A24u, // Shadow elf in the mountains (Joe)
+			0x1F795CB4u, // First white druid
+			0xE277B534u  // Second white druid
 		});
 		vars.splittingScenes = new HashSet<int>(new int[]
 		{
-			2421
+			// 2421 // The fairy garden for dev test purposes
+
+			1243, // Dunmore
+			621,  // Shadow realm after Bone Keys Skip
 		});
 	};
 }
