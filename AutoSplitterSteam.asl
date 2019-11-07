@@ -22,7 +22,8 @@ startup
 			cardId(44, 0), // Nature card
 			cardId(53, 0), // Nature key
 			cardId(57, 0), // Earth key
-			cardId(55, 0) // Air key
+			cardId(55, 0), // Air key
+			cardId(68, 2)  // Segbuzz
 		});
 		vars.psyFairies = new HashSet<int>(new int[]
 		{
@@ -35,8 +36,6 @@ startup
 		});
 		vars.splittingEnemies = new HashSet<uint>(new uint[]
 		{
-			// 0xED367294u // The training elf in Endeva for dev test purposes
-
 			0x86DB0D84u, // Scarecrow
 			0xF78C1A24u, // Shadow elf in the mountains (Joe)
 			0x1F795CB4u, // First white druid
@@ -44,10 +43,13 @@ startup
 		});
 		vars.splittingScenes = new HashSet<int>(new int[]
 		{
-			// 2421 // The fairy garden for dev test purposes
-
 			1243, // Dunmore
 			621,  // Shadow realm after Bone Keys Skip
+		});
+		vars.splittingVideos = new HashSet<string>(new string[]
+		{
+			"_v000",
+			"_v006" // the end-game cutscene
 		});
 	};
 }
@@ -66,6 +68,7 @@ init
 		);
 		vars.offGameToPlayer = 0x7320;
 		vars.offSceneToDataset = 0x4C0;
+		vars.offResMgrToVideoMgr = 0x71E0;
 	}
 	else if (game.ProcessName == "main")
 	{
@@ -75,6 +78,7 @@ init
 		);
 		vars.offGameToPlayer = 0x7250;
 		vars.offSceneToDataset = 0x4B0;
+		vars.offResMgrToVideoMgr = 0x7110;
 	}
 
 	vars.offPlayerToUIManager = 0x188;
@@ -96,6 +100,9 @@ init
 	vars.offResMgrToScene = 0x8;
 	vars.offDatasetToDatasetStruct = 0x24;
 	vars.offDatasetStructToSceneId = 0x0;
+	vars.offVideoMgrToFilename = 0x14;
+
+	vars.lenVideoMgrFilename = 64;
 }
 
 exit
@@ -173,7 +180,7 @@ update
 	
 	/* SCENE CHANGE TRIGGER
 	 * ********************
-	 * And now the absolute hell! No just kidding, getting the scene changes is actually very ease
+	 * And now the absolute hell! No just kidding, getting the scene changes is actually very easy:
 	 * we just have to jump a few static references to a variable that holds the scene id
 	 */
 	vars.memSceneId = new MemoryWatcher<int>(vars.ptrGame +
@@ -182,6 +189,19 @@ update
 		vars.offSceneToDataset +
 		vars.offDatasetToDatasetStruct +
 		vars.offDatasetStructToSceneId);
+
+	/* VIDEO CHANGE TRIGGER
+	 * ********************
+	 * Yes official rules state that the video triggers the timer end, so it does here as well.
+	 * Jump another static reference chain to the filename and watch for the end game cutscene
+	 */
+	vars.memVideoFilename = new StringWatcher(
+		vars.ptrGame +
+		vars.offGameToResMgr +
+		vars.offResMgrToVideoMgr +
+		vars.offVideoMgrToFilename,
+		ReadStringType.UTF8,
+		vars.lenVideoMgrFilename);
 
 	/* MEMORY WATCHER LIST
 	 * *******************
@@ -193,7 +213,8 @@ update
 		vars.memCurrentScreen,
 		vars.memCauseType,
 		vars.memCurrentNPC,
-		vars.memSceneId
+		vars.memSceneId,
+		vars.memVideoFilename
 	});
 	return true;
 }
@@ -261,6 +282,17 @@ split
 		if (vars.splittingScenes.Contains(vars.memSceneId.Current))
 		{
 			vars.splittingScenes.Remove(vars.memSceneId.Current);
+			return true;
+		}
+	}
+
+	// Is a video playing?
+	if (vars.memVideoFilename.Old != vars.memVideoFilename.Current)
+	{
+		print("You now play the video " + vars.memVideoFilename.Current);
+		if (vars.splittingVideos.Contains(vars.memVideoFilename.Current))
+		{
+			vars.splittingVideos.Remove(vars.memVideoFilename.Current);
 			return true;
 		}
 	}
