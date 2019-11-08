@@ -8,7 +8,7 @@
 
 static_assert(sizeof(void*) == 4, "Zanzarah runs in x86, so does WindowedZanzarah!");
 
-static const DWORD NO_CRACK_NECESSARY = ((DWORD)-1);
+static const DWORD NO_HOOK_NECESSARY = ((DWORD)-1);
 
 struct GameVersionInfo
 {
@@ -38,8 +38,16 @@ static const GameVersionInfo GameVersionInfos[] = {
 		0x42126E	// addrCallSetCursorPos
 	},
 
-	// Disable Steam version for now (priorities and such)
-	//{ "1.010", 2162784, 0x403428, NO_CRACK_NECESSARY }, // Steam release (Russian)
+	{
+		"1.010 Russian Steam Release",
+		2166784,			// exeSize
+		0x403428,			// addrWndProc
+		NO_HOOK_NECESSARY,	// addrFindGameCD
+		NO_HOOK_NECESSARY,	// addrCheckSerialNumber
+		0x4223A9,			// addrUICursor_update
+		0x422453			// addrCallSetCursorPos
+	},
+
 	{ nullptr, 0, 0 }
 };
 

@@ -130,9 +130,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		originalWndProc = reinterpret_cast<FnWndProc>(version.info.addrWndProc);
 		originalUICursor_update = reinterpret_cast<FnUICursor_update>(version.info.addrUICursor_update);
 		originalCallSetCursorPos = reinterpret_cast<FnCallSetCursorPos>(version.info.addrCallSetCursorPos);
-		if (version.info.addrFindGameCD != NO_CRACK_NECESSARY)
+		if (version.info.addrFindGameCD != NO_HOOK_NECESSARY)
 			originalFindGameCD = reinterpret_cast<FnFindGameCD>(version.info.addrFindGameCD);
-		if (version.info.addrCheckSerialNumber != NO_CRACK_NECESSARY)
+		if (version.info.addrCheckSerialNumber != NO_HOOK_NECESSARY)
 			originalCheckSerialNumber = reinterpret_cast<FnCheckSerialNumber>(version.info.addrCheckSerialNumber);
 
 		SafeDetourCall(DetourTransactionBegin(), "beginning attach transaction");
