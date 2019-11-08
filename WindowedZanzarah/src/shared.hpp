@@ -6,6 +6,8 @@
 #include <optional>
 #include <sstream>
 
+static_assert(sizeof(void*) == 4, "Zanzarah runs in x86, so does WindowedZanzarah!");
+
 static const DWORD NO_CRACK_NECESSARY = ((DWORD)-1);
 
 struct GameVersionInfo
@@ -14,6 +16,9 @@ struct GameVersionInfo
 	DWORD exeSize; // to distinguish between versions
 	DWORD addrWndProc;
 	DWORD addrFindGameCD;
+	DWORD addrCheckSerialNumber;
+	DWORD addrUICursor_update;
+	DWORD addrCallSetCursorPos; // this is a function that calls the imported SetCursorPos, lucky for us!
 };
 
 struct GameVersion
@@ -23,8 +28,18 @@ struct GameVersion
 };
 
 static const GameVersionInfo GameVersionInfos[] = {
-	{ "1.002", 2162688, 0x403431, 0x417B99 }, // German CD release
-	{ "1.010", 2162784, 0x403428, NO_CRACK_NECESSARY }, // Steam release (Russian)
+	{
+		"1.002 German CD Release",
+		2162688,	// exeSize
+		0x403431,	// addrWndProc
+		0x417B99,	// addrFindGameCD
+		0x4B2DB0,	// addrCheckSerialNumber
+		0x4211C4,	// addrUICursor_update
+		0x42126E	// addrCallSetCursorPos
+	},
+
+	// Disable Steam version for now (priorities and such)
+	//{ "1.010", 2162784, 0x403428, NO_CRACK_NECESSARY }, // Steam release (Russian)
 	{ nullptr, 0, 0 }
 };
 

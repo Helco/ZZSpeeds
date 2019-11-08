@@ -1,10 +1,22 @@
 #include "shared.hpp"
 
 using FnWndProc = int(__stdcall*)(HWND, UINT, WPARAM, LPARAM);
-static FnWndProc originalWndProc = nullptr;
+using FnGetCursorPos = BOOL(__stdcall*)(LPPOINT);
+using FnUICursor_update = int(__fastcall*)(void*, void*, void*);
+using FnCallSetCursorPos = BOOL(__stdcall*)(int, int);
 using FnFindGameCD = bool(__cdecl*)(const char*, const char*);
+using FnCheckSerialNumber = bool(__cdecl*)(const char*);
+
+static FnWndProc originalWndProc = nullptr;
+static FnGetCursorPos originalGetCursorPos = GetCursorPos;
+static FnUICursor_update originalUICursor_update = nullptr;
+static FnCallSetCursorPos originalCallSetCursorPos = nullptr;
 static FnFindGameCD originalFindGameCD = nullptr;
+static FnCheckSerialNumber originalCheckSerialNumber = nullptr;
+
 static bool isWindowActivated = false;
+static bool shouldTransformGetCursorPos = false;
+static HWND hWnd = nullptr;
 
 RECT GetWindowContentRect(HWND hWnd)
 {
@@ -16,10 +28,7 @@ RECT GetWindowContentRect(HWND hWnd)
 
 int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	// ClipCursor is reverted each time a window is created
-	// which in modern windows systems is about anytime anything happens
-	// so we just call ClipCursor a lot, which is not pretty but works
-
+	::hWnd = hWnd; // we need the correct HWND, this might not be the one returned by GetTopWindow(0)
 	bool shouldRepositionWindow = false;
 
 	if (msg == WM_ACTIVATE) {
@@ -47,6 +56,9 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 
 	if (isWindowActivated) {
+		// ClipCursor is reverted each time a window is created
+		// which in modern windows systems is about anytime anything happens
+		// so we just call ClipCursor a lot, which is not pretty but works
 		RECT rect = GetWindowContentRect(hWnd);
 		ClipCursor(&rect);
 	}
@@ -54,7 +66,48 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return originalWndProc(hWnd, msg, wParam, lParam);
 }
 
+// mind the second argument, its place is caller-owned in thiscall but not in fastcall, keep its value!
+int __fastcall MyUICursor_update(void* thiz, void* dummy, void* time)
+{
+	shouldTransformGetCursorPos = true;
+	auto result = originalUICursor_update(thiz, dummy, time);
+	shouldTransformGetCursorPos = false;
+	return result;
+}
+
+BOOL __stdcall MyGetCursorPos(LPPOINT point)
+{
+	BOOL result = originalGetCursorPos(point);
+	if (!result)
+		return FALSE;
+
+	if (shouldTransformGetCursorPos) {
+		// Zanzarah uses GetClientRect to transform from screen to client rect
+		// this is of course wrong, GetClientRect is already client coordinates
+		// but we have to be careful to not interfer with DirectInput which also uses GetCursorPos :(
+		RECT rect = GetWindowContentRect(hWnd);
+		point->x -= rect.left;
+		point->y -= rect.top;
+	}
+	return TRUE;
+}
+
+BOOL __stdcall MyCallSetCursorPos(int x, int y)
+{
+	// no guard necessary, this is a zanzarah function only called by itself
+	RECT rect = GetWindowContentRect(hWnd);
+	return originalCallSetCursorPos(
+		x + rect.left,
+		y + rect.top
+	);
+}
+
 bool __cdecl MyFindGameCD(const char* volumeName, const char* checkFilename)
+{
+	return true;
+}
+
+bool __cdecl MyCheckSerialNumber(const char* serialNumber)
 {
 	return true;
 }
@@ -75,14 +128,23 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			ErrorExit("Unknown game version (how did you get here?!)");
 		auto version = versionOpt.value();
 		originalWndProc = reinterpret_cast<FnWndProc>(version.info.addrWndProc);
+		originalUICursor_update = reinterpret_cast<FnUICursor_update>(version.info.addrUICursor_update);
+		originalCallSetCursorPos = reinterpret_cast<FnCallSetCursorPos>(version.info.addrCallSetCursorPos);
 		if (version.info.addrFindGameCD != NO_CRACK_NECESSARY)
 			originalFindGameCD = reinterpret_cast<FnFindGameCD>(version.info.addrFindGameCD);
+		if (version.info.addrCheckSerialNumber != NO_CRACK_NECESSARY)
+			originalCheckSerialNumber = reinterpret_cast<FnCheckSerialNumber>(version.info.addrCheckSerialNumber);
 
 		SafeDetourCall(DetourTransactionBegin(), "beginning attach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalWndProc, MyWndProc), "attaching to wndproc");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_update, MyUICursor_update), "attaching to UICursor_update");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "attaching to GetCursorPos");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "attaching to CallSetCursorPos");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourAttach(&(PVOID&)originalFindGameCD, MyFindGameCD), "attaching to FindGameCD");
+		if (originalCheckSerialNumber != nullptr)
+			SafeDetourCall(DetourAttach(&(PVOID&)originalCheckSerialNumber, MyCheckSerialNumber), "attaching to CheckSerialNumber");
 		SafeDetourCall(DetourTransactionCommit(), "committing attach transaction");
 	}break;
 
@@ -92,8 +154,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		SafeDetourCall(DetourTransactionBegin(), "beginning detach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalWndProc, MyWndProc), "detaching from wndproc");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalUICursor_update, MyUICursor_update), "detaching from UICursor_update");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "detaching from GetCursorPos");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "detaching from CallSetCursorPos");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourDetach(&(PVOID&)originalFindGameCD, MyFindGameCD), "detaching from FindGameCD");
+		if (originalCheckSerialNumber != nullptr)
+			SafeDetourCall(DetourAttach(&(PVOID&)originalCheckSerialNumber, MyCheckSerialNumber), "attaching to CheckSerialNumber");
 		SafeDetourCall(DetourTransactionCommit(), "committing detach transaction");
 	}break;
 	}
