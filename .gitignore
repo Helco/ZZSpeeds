@@ -1,1 +1,5 @@
 .vs
+*.user
+Releases
+**/Debug/
+**/Release/
