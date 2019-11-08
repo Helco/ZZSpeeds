@@ -1,8 +1,18 @@
 #include "shared.hpp"
 
 using FnWndProc = int(__stdcall*)(HWND, UINT, WPARAM, LPARAM);
-static FnWndProc originalWndProc;
+static FnWndProc originalWndProc = nullptr;
+using FnFindGameCD = bool(__cdecl*)(const char*, const char*);
+static FnFindGameCD originalFindGameCD = nullptr;
 static bool isWindowActivated = false;
+
+RECT GetWindowContentRect(HWND hWnd)
+{
+	RECT rect;
+	GetClientRect(hWnd, &rect);
+	MapWindowPoints(hWnd, HWND_DESKTOP, reinterpret_cast<POINT*>(&rect), 2);
+	return rect;
+}
 
 int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -20,21 +30,14 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	if (msg == WM_WINDOWPOSCHANGED)
 		shouldRepositionWindow = true;
 
-	if (isWindowActivated) {
-		RECT rect;
-		GetClientRect(hWnd, &rect);
-		MapWindowPoints(hWnd, HWND_DESKTOP, reinterpret_cast<POINT*>(&rect), 2);
-		ClipCursor(&rect);
-	}
-
 	if (shouldRepositionWindow) {
 		// the centering should not be too annoying, do it only if things change
-		auto monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 		MONITORINFO monitorInfo;
+		RECT windowSize;
+		auto monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 		ZeroMemory(&monitorInfo, sizeof(MONITORINFO));
 		monitorInfo.cbSize = sizeof(MONITORINFO);
 		GetMonitorInfo(monitor, &monitorInfo);
-		RECT windowSize;
 		GetWindowRect(hWnd, &windowSize);
 		SetWindowPos(hWnd, HWND_TOP,
 			(monitorInfo.rcMonitor.left + monitorInfo.rcMonitor.right) / 2 - (windowSize.right - windowSize.left) / 2,
@@ -43,7 +46,17 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			SWP_NOSIZE);
 	}
 
+	if (isWindowActivated) {
+		RECT rect = GetWindowContentRect(hWnd);
+		ClipCursor(&rect);
+	}
+
 	return originalWndProc(hWnd, msg, wParam, lParam);
+}
+
+bool __cdecl MyFindGameCD(const char* volumeName, const char* checkFilename)
+{
+	return true;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -62,10 +75,14 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			ErrorExit("Unknown game version (how did you get here?!)");
 		auto version = versionOpt.value();
 		originalWndProc = reinterpret_cast<FnWndProc>(version.info.addrWndProc);
+		if (version.info.addrFindGameCD != NO_CRACK_NECESSARY)
+			originalFindGameCD = reinterpret_cast<FnFindGameCD>(version.info.addrFindGameCD);
 
 		SafeDetourCall(DetourTransactionBegin(), "beginning attach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalWndProc, MyWndProc), "attaching to wndproc");
+		if (originalFindGameCD != nullptr)
+			SafeDetourCall(DetourAttach(&(PVOID&)originalFindGameCD, MyFindGameCD), "attaching to FindGameCD");
 		SafeDetourCall(DetourTransactionCommit(), "committing attach transaction");
 	}break;
 
@@ -75,6 +92,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		SafeDetourCall(DetourTransactionBegin(), "beginning detach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalWndProc, MyWndProc), "detaching from wndproc");
+		if (originalFindGameCD != nullptr)
+			SafeDetourCall(DetourDetach(&(PVOID&)originalFindGameCD, MyFindGameCD), "detaching from FindGameCD");
 		SafeDetourCall(DetourTransactionCommit(), "committing detach transaction");
 	}break;
 	}

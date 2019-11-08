@@ -6,11 +6,14 @@
 #include <optional>
 #include <sstream>
 
+static const DWORD NO_CRACK_NECESSARY = ((DWORD)-1);
+
 struct GameVersionInfo
 {
 	const char* descriptiveName;
 	DWORD exeSize; // to distinguish between versions
 	DWORD addrWndProc;
+	DWORD addrFindGameCD;
 };
 
 struct GameVersion
@@ -20,8 +23,8 @@ struct GameVersion
 };
 
 static const GameVersionInfo GameVersionInfos[] = {
-	{ "1.002", 2162688, 0x403431 }, // German CD release
-	{ "1.010", 2162784, 0x403428 }, // Steam release (Russian)
+	{ "1.002", 2162688, 0x403431, 0x417B99 }, // German CD release
+	{ "1.010", 2162784, 0x403428, NO_CRACK_NECESSARY }, // Steam release (Russian)
 	{ nullptr, 0, 0 }
 };
 
