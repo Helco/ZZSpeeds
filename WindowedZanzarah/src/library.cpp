@@ -10,6 +10,7 @@ using FramerateTimepoint = std::chrono::time_point<FramerateClock>;
 using FnWndProc = int(__stdcall*)(HWND, UINT, WPARAM, LPARAM);
 using FnGetCursorPos = BOOL(__stdcall*)(LPPOINT);
 using FnUICursor_update = int(__fastcall*)(void*, void*, void*);
+using FnUICursor_setVisible = void(__fastcall*)(void*, void*, bool);
 using FnCallSetCursorPos = BOOL(__stdcall*)(int, int);
 using FnFindGameCD = bool(__cdecl*)(const char*, const char*);
 using FnCheckSerialNumber = bool(__cdecl*)(const char*);
@@ -18,6 +19,7 @@ using FnGame_tick = double(__fastcall*)(DWORD, void*);
 static FnWndProc originalWndProc = nullptr;
 static FnGetCursorPos originalGetCursorPos = GetCursorPos;
 static FnUICursor_update originalUICursor_update = nullptr;
+static FnUICursor_setVisible originalUICursor_setVisible = nullptr;
 static FnCallSetCursorPos originalCallSetCursorPos = nullptr;
 static FnFindGameCD originalFindGameCD = nullptr;
 static FnCheckSerialNumber originalCheckSerialNumber = nullptr;
@@ -89,6 +91,13 @@ int __fastcall MyUICursor_update(void* thiz, void* dummy, void* time)
 	auto result = originalUICursor_update(thiz, dummy, time);
 	shouldTransformGetCursorPos = false;
 	return result;
+}
+
+void __fastcall MyUICursor_setVisible(void* thiz, void* dummy, bool visible)
+{
+	shouldTransformGetCursorPos = true;
+	originalUICursor_setVisible(thiz, dummy, visible);
+	shouldTransformGetCursorPos = false;
 }
 
 BOOL __stdcall MyGetCursorPos(LPPOINT point)
@@ -185,6 +194,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		gameVersion = versionOpt.value();
 		originalWndProc = reinterpret_cast<FnWndProc>(gameVersion.info.addrWndProc);
 		originalUICursor_update = reinterpret_cast<FnUICursor_update>(gameVersion.info.addrUICursor_update);
+		originalUICursor_setVisible = reinterpret_cast<FnUICursor_setVisible>(gameVersion.info.addrUICursor_setVisible);
 		originalCallSetCursorPos = reinterpret_cast<FnCallSetCursorPos>(gameVersion.info.addrCallSetCursorPos);
 		originalGame_tick = reinterpret_cast<FnGame_tick>(gameVersion.info.addrGame_tick);
 		if (gameVersion.info.addrFindGameCD != NO_HOOK_NECESSARY)
@@ -196,6 +206,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalWndProc, MyWndProc), "attaching to wndproc");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_update, MyUICursor_update), "attaching to UICursor_update");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "attaching to GetCursorPos");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "attaching to CallSetCursorPos");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalGame_tick, MyGame_tick), "attaching to Game_tick");
@@ -213,6 +224,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalWndProc, MyWndProc), "detaching from wndproc");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalUICursor_update, MyUICursor_update), "detaching from UICursor_update");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "detaching from GetCursorPos");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "detaching from CallSetCursorPos");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalGame_tick, MyGame_tick), "detaching from Game_tick");
