@@ -19,6 +19,7 @@ struct GameVersionInfo
 	DWORD addrCheckSerialNumber;
 	DWORD addrUICursor_update;
 	DWORD addrCallSetCursorPos; // this is a function that calls the imported SetCursorPos, lucky for us!
+	DWORD addrGame_tick;
 };
 
 struct GameVersion
@@ -35,7 +36,8 @@ static const GameVersionInfo GameVersionInfos[] = {
 		0x417B99,	// addrFindGameCD
 		0x4B2DB0,	// addrCheckSerialNumber
 		0x4211C4,	// addrUICursor_update
-		0x42126E	// addrCallSetCursorPos
+		0x42126E,	// addrCallSetCursorPos
+		0x4A2840	// addrGame_tick
 	},
 
 	{
@@ -44,8 +46,9 @@ static const GameVersionInfo GameVersionInfos[] = {
 		0x403428,			// addrWndProc
 		NO_HOOK_NECESSARY,	// addrFindGameCD
 		NO_HOOK_NECESSARY,	// addrCheckSerialNumber
+		0x422453,			// addrCallSetCursorPos
 		0x4223A9,			// addrUICursor_update
-		0x422453			// addrCallSetCursorPos
+		0x4A3E5F			// addrGame_tick
 	},
 
 	{ nullptr, 0, 0 }
