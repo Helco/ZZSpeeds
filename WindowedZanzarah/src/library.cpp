@@ -60,11 +60,15 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		monitorInfo.cbSize = sizeof(MONITORINFO);
 		GetMonitorInfo(monitor, &monitorInfo);
 		GetWindowRect(hWnd, &windowSize);
+		windowSize.right = windowSize.left + 1024;
+		windowSize.bottom = windowSize.top + 768;
+		AdjustWindowRect(&windowSize, 0, true);
 		SetWindowPos(hWnd, HWND_TOP,
 			(monitorInfo.rcMonitor.left + monitorInfo.rcMonitor.right) / 2 - (windowSize.right - windowSize.left) / 2,
 			(monitorInfo.rcMonitor.top + monitorInfo.rcMonitor.bottom) / 2 - (windowSize.bottom - windowSize.top) / 2,
-			0, 0,
-			SWP_NOSIZE);
+			windowSize.right - windowSize.left,
+			windowSize.bottom - windowSize.top,
+			0);
 	}
 
 	if (isWindowActivated) {
