@@ -24,7 +24,7 @@ state("main")
 
 startup
 {
-	settings.Add("reset_in_main_menu", true, "Reset run in main menu");
+	settings.Add("reset_in_main_menu", false, "Reset run in main menu");
 	settings.Add("auto_start_on_new_game", true, "Starts run when creating a new game");
 	settings.Add("split_after", true, "Splits after");
 	{
@@ -32,24 +32,27 @@ startup
 		{
 			settings.Add("get_nature_card", true, "Nature card", "getting");
 			settings.Add("get_nature_key", true, "Nature key", "getting");
-			settings.Add("get_earth_key", true, "Earth key", "getting");
+			settings.Add("get_earth_key", false, "Earth key", "getting");
 			settings.Add("get_air_key", true, "Air key", "getting");
-			settings.Add("get_segbuzz", true, "Segbuzz", "getting");
+			settings.Add("get_suane", true, "Suane", "getting");
+			settings.Add("get_segbuzz", false, "Segbuzz", "getting");
 			settings.Add("get_any_psy", true, "Any Psy fairy", "getting");
 		}
 		settings.Add("defeating", true, "defeating:", "split_after");
 		{
 			settings.Add("defeat_scarecrow", true, "Scarecrow", "defeating");
 			settings.Add("defeat_joe", true, "Shadowelf - in the mountains (Joe)", "defeating");
-			settings.Add("defeat_bob1", false, "Shadow Boss - in the mountains (Bob 1)", "defeating");
-			settings.Add("defeat_bob2", false, "Shadow General - in the shadow realm (Bob 2)", "defeating");
-			settings.Add("defeat_druid1", true, "White Druid 1 - on base level in dark cathedral", "defeating");
+			settings.Add("defeat_bob1", true, "Shadow Boss - in the mountains (Bob)", "defeating");
+			settings.Add("defeat_bob2", true, "Shadow Boss - in the shadow realm (Bob)", "defeating");
+			settings.Add("defeat_bbm", false, "Shadow General - in the shadow realm (Boyband Manager)", "defeating");
+			settings.Add("defeat_druid1", false, "White Druid 1 - on base level in dark cathedral", "defeating");
 			settings.Add("defeat_druid2", false, "White Druid 2 - on the upper level in dark cathedral", "defeating");
 		}
 		settings.Add("reaching", true, "reaching:", "split_after");
 		{
 			settings.Add("reach_dunmore", true, "Dunmore", "reaching");
-			settings.Add("reach_bonekeyskip", true, "Shadow realm after the bone key skip", "reaching");
+			settings.Add("reach_bonekeyskip", false, "Shadow realm after the bone key skip", "reaching");
+			settings.Add("reach_dark_cathedral", true, "Dark Cathedral", "reaching");
 		}
 		settings.Add("playing", true, "starting to play:", "split_after");
 		{
@@ -79,6 +82,7 @@ init
 		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(56, 0));
 		if (settings["get_earth_key"])		vars.splittingItems.Add(cardId(57, 0));
 		if (settings["get_air_key"])		vars.splittingItems.Add(cardId(55, 0));
+		if (settings["get_suane"])			vars.splittingItems.Add(cardId(74, 2));
 		if (settings["get_segbuzz"])		vars.splittingItems.Add(cardId(68, 2));
 		if (settings["get_any_psy"])
 		{
@@ -93,12 +97,14 @@ init
 		if (settings["defeat_scarecrow"])	vars.splittingEnemies.Add(0x86DB0D84u);
 		if (settings["defeat_joe"])			vars.splittingEnemies.Add(0xF78C1A24u);
 		if (settings["defeat_bob1"])		vars.splittingEnemies.Add(0x63D94324u);
-		if (settings["defeat_bob2"])		vars.splittingEnemies.Add(0x11428094u);
+		if (settings["defeat_bob2"])		vars.splittingEnemies.Add(0xB8F89614u);
+		if (settings["defeat_bbm"])			vars.splittingEnemies.Add(0x11428094u);
 		if (settings["defeat_druid1"])		vars.splittingEnemies.Add(0x1F795CB4u);
 		if (settings["defeat_druid2"])		vars.splittingEnemies.Add(0xE277B534u);
 
-		if (settings["reach_dunmore"])		vars.splittingScenes.Add(1243);
-		if (settings["reach_bonekeyskip"])	vars.splittingScenes.Add(621);
+		if (settings["reach_dunmore"])			vars.splittingScenes.Add(1243);
+		if (settings["reach_bonekeyskip"])		vars.splittingScenes.Add(621);
+		if (settings["reach_dark_cathedral"])	vars.splittingScenes.Add(400);
 
 		if (settings["play_endgame"]) vars.splittingVideos.Add("_v006");
 	};
