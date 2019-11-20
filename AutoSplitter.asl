@@ -64,6 +64,7 @@ startup
 init
 {
 	print("Found some Zanzarah game process");
+	refreshRate = 30;
 	vars.foundGamePointer = false;
 	vars.memWatchers = new MemoryWatcherList();
 
@@ -343,7 +344,8 @@ split
 	// Was a NPC defeated?
 	if (vars.memCurrentScreen.Old != vars.memCurrentScreen.Current &&			 // Has something happened?
 		vars.memCurrentScreen.Current == (uint)vars.ptrDialogScreen.ToInt64() && // The after-fight dialog is active
-		vars.memCauseType.Current == 4 &&										 // The last fight ended with "Player defeated NPC"
+		vars.memCauseType.Old != vars.memCauseType.Current &&
+		vars.memCauseType.Current == 4 &&										 // There just ended a fight with "Player defeated NPC"
 		vars.memCurrentNPC.Current != 0u)										 // There is a NPC the player defeated
 	{
 		IntPtr databaseRow;
@@ -352,6 +354,13 @@ split
 		ExtensionMethods.ReadValue<uint>(game, databaseRow + vars.offDatabaseRowToUID, out defeatedUID);
 		vars.lastDefeatedNPC = vars.memCurrentNPC.Current;
 		print("You defeated " + defeatedUID);
+		print("memCurOld" + vars.memCurrentScreen.Old.ToString());
+		print("memCurCur" + vars.memCurrentScreen.Current.ToString());
+		print("memCauseTypeOld" + vars.memCauseType.Old.ToString());
+		print("memCauseTypeCur" + vars.memCauseType.Current.ToString());
+		print("memCurrentNPC.Cur" + vars.memCurrentNPC.Current.ToString());
+		print("databaseRow" + databaseRow);
+		print("defeatedUID" + defeatedUID);
 
 		if (vars.splittingEnemies.Contains(defeatedUID))
 		{
