@@ -1,7 +1,7 @@
 #include "shared.hpp"
+#include "resource.h"
 #include <timeapi.h>
 #include <chrono>
-#include <algorithm>
 
 static int maxFramerate = 120;
 using FramerateClock = std::chrono::steady_clock; // why not, just hope it doesn't run backwards
@@ -15,6 +15,7 @@ using FnCallSetCursorPos = BOOL(__stdcall*)(int, int);
 using FnFindGameCD = bool(__cdecl*)(const char*, const char*);
 using FnCheckSerialNumber = bool(__cdecl*)(const char*);
 using FnGame_tick = double(__fastcall*)(DWORD, void*);
+using FnCreateDialogParamA = HWND(__stdcall*)(HINSTANCE, LPCSTR, HWND, DLGPROC, LPARAM);
 
 static FnWndProc originalWndProc = nullptr;
 static FnGetCursorPos originalGetCursorPos = GetCursorPos;
@@ -24,11 +25,20 @@ static FnCallSetCursorPos originalCallSetCursorPos = nullptr;
 static FnFindGameCD originalFindGameCD = nullptr;
 static FnCheckSerialNumber originalCheckSerialNumber = nullptr;
 static FnGame_tick originalGame_tick = nullptr;
+static FnCreateDialogParamA originalCreateDialogParamA = CreateDialogParamA;
+
+static const int* resolutionModeIndex = nullptr;
+static const ResolutionMode* resolutionModes = nullptr;
 
 static GameVersion gameVersion;
+static WZConfig curWZConfig = LoadWZConfig();
 static bool isWindowActivated = false;
+static bool wasWindowedMode = false;
+static bool shouldSkipLauncher = false;
 static bool shouldTransformGetCursorPos = false;
 static HWND hWnd = nullptr;
+static HMODULE ownHModule = nullptr;
+static DLGPROC originalVideoSettingsDialogProc = nullptr;
 static FramerateClock framerateClock;
 static FramerateTimepoint frameStart = framerateClock.now();
 
@@ -55,6 +65,7 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	if (shouldRepositionWindow) {
 		// the centering should not be too annoying, do it only if things change
+		const ResolutionMode& mode = resolutionModes[std::clamp(*resolutionModeIndex, 0, 5)];
 		MONITORINFO monitorInfo;
 		RECT windowSize;
 		auto monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
@@ -62,8 +73,8 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		monitorInfo.cbSize = sizeof(MONITORINFO);
 		GetMonitorInfo(monitor, &monitorInfo);
 		GetWindowRect(hWnd, &windowSize);
-		windowSize.right = windowSize.left + 1024;
-		windowSize.bottom = windowSize.top + 768;
+		windowSize.right = windowSize.left + mode.width;
+		windowSize.bottom = windowSize.top + mode.height;
 		AdjustWindowRect(&windowSize, 0, true);
 		SetWindowPos(hWnd, HWND_TOP,
 			(monitorInfo.rcMonitor.left + monitorInfo.rcMonitor.right) / 2 - (windowSize.right - windowSize.left) / 2,
@@ -152,6 +163,45 @@ double __fastcall MyGame_tick(DWORD thizAddr, void* dummy)
 	return originalGame_tick(thizAddr, dummy);
 }
 
+int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if (msg == WM_INITDIALOG)
+		CheckDlgButton(hWnd, IDC_CHECK_WINDOWED, curWZConfig.windowedMode);
+	else if (msg == WM_DESTROY) {
+		auto newWZConfig = curWZConfig;
+		auto hChkWindowed = GetDlgItem(hWnd, IDC_CHECK_WINDOWED);
+		newWZConfig.windowedMode = SendMessage(hChkWindowed, BM_GETCHECK, 0, 0) == 1;
+		
+		bool shouldRestart = newWZConfig.windowedMode != curWZConfig.windowedMode;
+		SaveWZConfig(newWZConfig);
+		curWZConfig = newWZConfig;
+
+		if (shouldRestart)
+			ExitProcess(ExitCodeNoLauncher);
+	}
+
+	return originalVideoSettingsDialogProc(hWnd, msg, wParam, lParam);
+}
+
+HWND __stdcall MyCreateDialogParamA(HINSTANCE hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam)
+{
+	auto dialogId = reinterpret_cast<DWORD>(lpTemplateName);
+	if (dialogId != gameVersion.info.resID_videoSettingsTab)
+		return originalCreateDialogParamA(hInstance, lpTemplateName, hWndParent, lpDialogFunc, dwInitParam);
+
+	if (shouldSkipLauncher)
+		EndDialog(GetParent(hWndParent), 1); // hWndParent is tab container, grand parent is the dialog
+
+	originalVideoSettingsDialogProc = lpDialogFunc;
+	return originalCreateDialogParamA(
+		reinterpret_cast<HINSTANCE>(ownHModule), // In 32Bit-Window HMODULE and HINSTANCE are exactly the same -_-
+		reinterpret_cast<LPCSTR>(IDD_VIDEOSETTINGSTAB),
+		hWndParent,
+		MyVideoSettingsDialogProc,
+		dwInitParam
+	);
+}
+
 std::optional<int> findParameterArg(const std::string& haystack, const char* needleStart, const char* needleEnd)
 {
 	size_t startI = haystack.find(needleStart, 0);
@@ -172,6 +222,8 @@ void parseCommandLine()
 
 	auto argMaxFramerate = findParameterArg(commandLine, "-fps(", ")");
 	maxFramerate = argMaxFramerate.value_or(maxFramerate);
+
+	shouldSkipLauncher = commandLine.find(NoLauncherArgument) != std::string::npos;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -187,6 +239,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		parseCommandLine();
 		timeBeginPeriod(1);
+		ownHModule = hModule;
 
 		auto versionOpt = GetGameVersion();
 		if (!versionOpt.has_value())
@@ -197,6 +250,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		originalUICursor_setVisible = reinterpret_cast<FnUICursor_setVisible>(gameVersion.info.addrUICursor_setVisible);
 		originalCallSetCursorPos = reinterpret_cast<FnCallSetCursorPos>(gameVersion.info.addrCallSetCursorPos);
 		originalGame_tick = reinterpret_cast<FnGame_tick>(gameVersion.info.addrGame_tick);
+		resolutionModeIndex = reinterpret_cast<const int*>(gameVersion.info.addrResolutionModeIndex);
+		resolutionModes = reinterpret_cast<const ResolutionMode*>(gameVersion.info.addrResolutionModes);
 		if (gameVersion.info.addrFindGameCD != NO_HOOK_NECESSARY)
 			originalFindGameCD = reinterpret_cast<FnFindGameCD>(gameVersion.info.addrFindGameCD);
 		if (gameVersion.info.addrCheckSerialNumber != NO_HOOK_NECESSARY)
@@ -204,12 +259,16 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		SafeDetourCall(DetourTransactionBegin(), "beginning attach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalWndProc, MyWndProc), "attaching to wndproc");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_update, MyUICursor_update), "attaching to UICursor_update");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "attaching to GetCursorPos");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "attaching to CallSetCursorPos");
+		if (curWZConfig.windowedMode) {
+			wasWindowedMode = true;
+			SafeDetourCall(DetourAttach(&(PVOID&)originalWndProc, MyWndProc), "attaching to wndproc");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_update, MyUICursor_update), "attaching to UICursor_update");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "attaching to GetCursorPos");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "attaching to CallSetCursorPos");
+		}
 		SafeDetourCall(DetourAttach(&(PVOID&)originalGame_tick, MyGame_tick), "attaching to Game_tick");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "attaching to CreateDialogParamA");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourAttach(&(PVOID&)originalFindGameCD, MyFindGameCD), "attaching to FindGameCD");
 		if (originalCheckSerialNumber != nullptr)
@@ -222,12 +281,15 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 		SafeDetourCall(DetourTransactionBegin(), "beginning detach transaction");
 		SafeDetourCall(DetourUpdateThread(GetCurrentThread()), "updating thread");
-		SafeDetourCall(DetourDetach(&(PVOID&)originalWndProc, MyWndProc), "detaching from wndproc");
-		SafeDetourCall(DetourDetach(&(PVOID&)originalUICursor_update, MyUICursor_update), "detaching from UICursor_update");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
-		SafeDetourCall(DetourDetach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "detaching from GetCursorPos");
-		SafeDetourCall(DetourDetach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "detaching from CallSetCursorPos");
+		if (wasWindowedMode) {
+			SafeDetourCall(DetourDetach(&(PVOID&)originalWndProc, MyWndProc), "detaching from wndproc");
+			SafeDetourCall(DetourDetach(&(PVOID&)originalUICursor_update, MyUICursor_update), "detaching from UICursor_update");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
+			SafeDetourCall(DetourDetach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "detaching from GetCursorPos");
+			SafeDetourCall(DetourDetach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "detaching from CallSetCursorPos");
+		}
 		SafeDetourCall(DetourDetach(&(PVOID&)originalGame_tick, MyGame_tick), "detaching from Game_tick");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "detaching from CreateDialogParamA");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourDetach(&(PVOID&)originalFindGameCD, MyFindGameCD), "detaching from FindGameCD");
 		if (originalCheckSerialNumber != nullptr)

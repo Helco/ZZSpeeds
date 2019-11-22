@@ -5,15 +5,25 @@
 
 #include <optional>
 #include <sstream>
+#include <fstream>
+#include <algorithm>
+
+// grr... C macros messing with C++ STL
+#undef min
+#undef max 
 
 static_assert(sizeof(void*) == 4, "Zanzarah runs in x86, so does WindowedZanzarah!");
 
 static const DWORD NO_HOOK_NECESSARY = ((DWORD)-1);
+static constexpr const char* WZConfigFile = "..\\Configs\\WindowedZanzarah.cfg";
+static constexpr int ExitCodeNoLauncher = 42;
+static constexpr const char* NoLauncherArgument = "-nolauncher";
 
 struct GameVersionInfo
 {
 	const char* descriptiveName;
 	DWORD exeSize; // to distinguish between versions
+	DWORD resID_videoSettingsTab;
 	DWORD addrWndProc;
 	DWORD addrFindGameCD;
 	DWORD addrCheckSerialNumber;
@@ -21,6 +31,8 @@ struct GameVersionInfo
 	DWORD addrUICursor_setVisible;
 	DWORD addrCallSetCursorPos; // this is a function that calls the imported SetCursorPos, lucky for us!
 	DWORD addrGame_tick;
+	DWORD addrResolutionModeIndex;
+	DWORD addrResolutionModes;
 };
 
 struct GameVersion
@@ -29,32 +41,56 @@ struct GameVersion
 	GameVersionInfo info;
 };
 
+#pragma pack(push, 1)
+struct WZConfig
+{
+	bool windowedMode;
+};
+#pragma pack(pop)
+
+struct ResolutionMode
+{
+	int width;
+	int height;
+	int depth;
+};
+
 static const GameVersionInfo GameVersionInfos[] = {
 	{
 		"1.002 German CD Release",
 		2162688,	// exeSize
+		108,		// resID_videoSettingsTab
 		0x403431,	// addrWndProc
 		0x417B99,	// addrFindGameCD
 		0x4B2DB0,	// addrCheckSerialNumber
 		0x4211C4,	// addrUICursor_update
 		0x42111A,	// addrUICursor_setVisible // this hook is needed because the cursor pos is guaranteed to be correct after this function
 		0x42126E,	// addrCallSetCursorPos
-		0x4A2840	// addrGame_tick
+		0x4A2840,	// addrGame_tick
+		0x5C5D98,	// addrResolutionIndex
+		0x5A4C90,	// addrResolutionModes
 	},
 
 	{
 		"1.010 Russian Steam Release",
 		2166784,			// exeSize
+		108,				// resID_videoSettingsTab
 		0x403428,			// addrWndProc
 		NO_HOOK_NECESSARY,	// addrFindGameCD
 		NO_HOOK_NECESSARY,	// addrCheckSerialNumber
 		0x4223A9,			// addrUICursor_update
 		0x4222FF,			// addrUICursor_setVisible
 		0x422453,			// addrCallSetCursorPos
-		0x4A3E5F			// addrGame_tick
+		0x4A3E5F,			// addrGame_tick
+		0x5C6D98,			// addrResolutionModeIndex
+		0x5A5CA0			// addrResolutionModes
 	},
 
 	{ nullptr, 0, 0 }
+};
+
+static const WZConfig DefaultWZConfig = {
+	false,	// windowedMode
 };
 
 std::optional<GameVersion> GetGameVersionOf(const char* filename)
@@ -83,6 +119,44 @@ std::optional<GameVersion> GetGameVersion()
 	if (!version)
 		version = GetGameVersionOf("main.exe");
 	return version;
+}
+
+WZConfig LoadWZConfig()
+{
+	std::ifstream stream;
+	stream.exceptions(std::ifstream::failbit);
+	try {
+		stream.open(WZConfigFile, std::ifstream::in | std::ifstream::binary);
+		size_t structureSize;
+		stream.read(reinterpret_cast<char*>(&structureSize), sizeof(size_t));
+		if (structureSize > sizeof(WZConfig))
+			OutputDebugString("WARNING: WZConfig is being sliced! Some options will be lost");
+
+		WZConfig config = DefaultWZConfig;
+		stream.read(reinterpret_cast<char*>(&config), std::min(structureSize, sizeof(WZConfig)));
+		return config;
+	}
+	catch (const std::ifstream::failure& e) {
+		OutputDebugString("Could not load WindowedZanzarah config, reset to default values, exception was:");
+		OutputDebugString(e.what());
+		return DefaultWZConfig;
+	}
+}
+
+void SaveWZConfig(const WZConfig& config)
+{
+	std::ofstream stream;
+	stream.exceptions(std::ofstream::failbit);
+	try {
+		stream.open(WZConfigFile, std::ofstream::out | std::ofstream::binary);
+		const size_t structureSize = sizeof(WZConfig);
+		stream.write(reinterpret_cast<const char*>(&structureSize), sizeof(size_t));
+		stream.write(reinterpret_cast<const char*>(&config), sizeof(WZConfig));
+	}
+	catch (const std::ofstream::failure& e) {
+		OutputDebugString("Could not save WindowedZanzarah config, just ignore... exception was:");
+		OutputDebugString(e.what());
+	}
 }
 
 // https://stackoverflow.com/questions/1387064/how-to-get-the-error-message-from-the-error-code-returned-by-getlasterror
