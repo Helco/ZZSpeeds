@@ -51,6 +51,7 @@ startup
 		settings.Add("reaching", true, "reaching:", "split_after");
 		{
 			settings.Add("reach_dunmore", true, "Dunmore", "reaching");
+			settings.Add("reach_catacombs", false, "Catacombs", "reaching");
 			settings.Add("reach_bonekeyskip", false, "Shadow realm after the bone key skip", "reaching");
 			settings.Add("reach_dark_cathedral", true, "Dark Cathedral", "reaching");
 		}
@@ -104,6 +105,7 @@ init
 		if (settings["defeat_druid2"])		vars.splittingEnemies.Add(0xE277B534u);
 
 		if (settings["reach_dunmore"])			vars.splittingScenes.Add(1243);
+		if (settings["reach_catacombs"])		vars.splittingScenes.Add(3010);
 		if (settings["reach_bonekeyskip"])		vars.splittingScenes.Add(621);
 		if (settings["reach_dark_cathedral"])	vars.splittingScenes.Add(400);
 
