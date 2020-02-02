@@ -11,7 +11,7 @@
  *
  * Will most likely *only* work with:
  *   - 1.002 (Original release used for Any% speedruns)
- *   - 1.010 (Steam Version)
+ *   - 1.010 (Steam Version used for Card%)
  */
 
 state("zanthp")
@@ -34,9 +34,17 @@ startup
 			settings.Add("get_nature_key", true, "Nature key", "getting");
 			settings.Add("get_earth_key", false, "Earth key", "getting");
 			settings.Add("get_air_key", true, "Air key", "getting");
+			settings.Add("get_clover", false, "Clover", "getting");
 			settings.Add("get_suane", true, "Suane", "getting");
 			settings.Add("get_segbuzz", false, "Segbuzz", "getting");
 			settings.Add("get_any_psy", true, "Any Psy fairy", "getting");
+		}
+		settings.Add("getting_nf", true, "getting at least:", "split_after");
+		{
+			settings.Add("get_8_fairies", false, "8 Fairies", "getting_nf");
+			settings.Add("get_10_fairies", false, "10 Fairies", "getting_nf");
+			settings.Add("get_28_fairies", false, "28 Fairies", "getting_nf");
+			settings.Add("get_30_fairies", false, "30 Fairies", "getting_nf");
 		}
 		settings.Add("defeating", true, "defeating:", "split_after");
 		{
@@ -50,8 +58,10 @@ startup
 		}
 		settings.Add("reaching", true, "reaching:", "split_after");
 		{
+			settings.Add("reach_tiralin", false, "Tiralin", "reaching");
 			settings.Add("reach_dunmore", true, "Dunmore", "reaching");
 			settings.Add("reach_catacombs", false, "Catacombs", "reaching");
+			settings.Add("reach_shadow_realm", false, "Shadow Realm", "reaching");
 			settings.Add("reach_bonekeyskip", false, "Shadow realm after the bone key skip", "reaching");
 			settings.Add("reach_dark_cathedral", true, "Dark Cathedral", "reaching");
 		}
@@ -75,6 +85,7 @@ init
 	{
 		Func<int, int, int> cardId = (id,type) => (id << 16) | (type << 8);
 		vars.splittingItems = new HashSet<int>();
+		vars.splittingNFairies = new HashSet<int>();
 		vars.psyFairies = new HashSet<int>();
 		vars.splittingEnemies = new HashSet<uint>();
 		vars.splittingScenes = new HashSet<int>();
@@ -84,6 +95,7 @@ init
 		if (settings["get_nature_key"])		vars.splittingItems.Add(cardId(56, 0));
 		if (settings["get_earth_key"])		vars.splittingItems.Add(cardId(57, 0));
 		if (settings["get_air_key"])		vars.splittingItems.Add(cardId(55, 0));
+		if (settings["get_clover"])			vars.splittingItems.Add(cardId(10, 0));
 		if (settings["get_suane"])			vars.splittingItems.Add(cardId(74, 2));
 		if (settings["get_segbuzz"])		vars.splittingItems.Add(cardId(68, 2));
 		if (settings["get_any_psy"])
@@ -96,6 +108,11 @@ init
 			vars.psyFairies.Add(cardId(49, 2)); // Clumaur
 		}
 
+		if (settings["get_8_fairies"])		vars.splittingNFairies.Add(8);
+		if (settings["get_10_fairies"])		vars.splittingNFairies.Add(10);
+		if (settings["get_28_fairies"])		vars.splittingNFairies.Add(28);
+		if (settings["get_30_fairies"])		vars.splittingNFairies.Add(30);
+
 		if (settings["defeat_scarecrow"])	vars.splittingEnemies.Add(0x86DB0D84u);
 		if (settings["defeat_joe"])			vars.splittingEnemies.Add(0xF78C1A24u);
 		if (settings["defeat_bob1"])		vars.splittingEnemies.Add(0x63D94324u);
@@ -104,8 +121,10 @@ init
 		if (settings["defeat_druid1"])		vars.splittingEnemies.Add(0x1F795CB4u);
 		if (settings["defeat_druid2"])		vars.splittingEnemies.Add(0xE277B534u);
 
+		if (settings["reach_tiralin"])			vars.splittingScenes.Add(231);
 		if (settings["reach_dunmore"])			vars.splittingScenes.Add(1243);
 		if (settings["reach_catacombs"])		vars.splittingScenes.Add(3010);
+		if (settings["reach_shadow_realm"])		vars.splittingScenes.Add(840);
 		if (settings["reach_bonekeyskip"])		vars.splittingScenes.Add(621);
 		if (settings["reach_dark_cathedral"])	vars.splittingScenes.Add(400);
 
@@ -319,6 +338,7 @@ split
 	ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToData, out ptrInventoryData);
 	IntPtr ptrInventoryIndexMap;
 	ExtensionMethods.ReadPointer(game, vars.ptrInventoryList + vars.offListToIndexMap, out ptrInventoryIndexMap);
+	int fairyCount = 0;
 	for (int i = 0; i < vars.memItemCount.Current; i++)
 	{
 		// checking the last one should be fine
@@ -341,7 +361,22 @@ split
 			vars.psyFairies.Clear();
 			return true;
 		}
+		if (((itemCardId >> 8) & 3) == 2)
+		{
+			fairyCount++;
+		}
 	}
+
+	/* Did we get n fairies?
+	 * Note: we can check for equality here as there is no point in the game
+	 * where the player gets more than one fairy
+	 */
+	 if (vars.splittingNFairies.Contains(fairyCount))
+	 {
+		 print("We got " + fairyCount + " fairies");
+		 vars.splittingNFairies.Remove(fairyCount);
+		 return true;
+	 }
 
 	// Was a NPC defeated?
 	if (vars.memCurrentScreen.Old != vars.memCurrentScreen.Current &&			 // Has something happened?
