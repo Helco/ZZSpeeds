@@ -33,6 +33,8 @@ struct GameVersionInfo
 	DWORD addrGame_tick;
 	DWORD addrResolutionModeIndex;
 	DWORD addrResolutionModes;
+	DWORD addrCreateSingleInstanceMutex;
+	DWORD addrInputMgr_update;
 };
 
 struct GameVersion
@@ -45,6 +47,7 @@ struct GameVersion
 struct WZConfig
 {
 	bool windowedMode;
+	bool ignoreFocusLoss;
 };
 #pragma pack(pop)
 
@@ -69,6 +72,8 @@ static const GameVersionInfo GameVersionInfos[] = {
 		0x4A2840,	// addrGame_tick
 		0x5C5D98,	// addrResolutionIndex
 		0x5A4C90,	// addrResolutionModes
+		0x4011A8,	// addrCreateSingleInstanceMutex
+		0x417DCC	// addrInputMgr_update
 	},
 
 	{
@@ -83,7 +88,9 @@ static const GameVersionInfo GameVersionInfos[] = {
 		0x422453,			// addrCallSetCursorPos
 		0x4A3E5F,			// addrGame_tick
 		0x5C6D98,			// addrResolutionModeIndex
-		0x5A5CA0			// addrResolutionModes
+		0x5A5CA0,			// addrResolutionModes,
+		0x4011A8,			// addrCreateSingleInstanceMutex
+		0x417A19			// addrInputMgr_update
 	},
 
 	{ nullptr, 0, 0 }

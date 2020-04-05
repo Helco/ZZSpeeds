@@ -5,6 +5,7 @@
 #define IDC_CHECK1                      1001
 #define IDD_VIDEOSETTINGSTAB            1108
 #define IDC_CHECK_WINDOWED              10001
+#define IDC_CHECK_IGNOREFOCUSLOSS       10002
 
 // Next default values for new objects
 // 

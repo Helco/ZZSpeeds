@@ -16,6 +16,8 @@ using FnFindGameCD = bool(__cdecl*)(const char*, const char*);
 using FnCheckSerialNumber = bool(__cdecl*)(const char*);
 using FnGame_tick = double(__fastcall*)(DWORD, void*);
 using FnCreateDialogParamA = HWND(__stdcall*)(HINSTANCE, LPCSTR, HWND, DLGPROC, LPARAM);
+using FnCreateSingleInstanceMutex = bool(__fastcall*)(DWORD, HANDLE*);
+using FnInputMgr_update = void(__fastcall*)(void*, void*);
 
 static FnWndProc originalWndProc = nullptr;
 static FnGetCursorPos originalGetCursorPos = GetCursorPos;
@@ -26,6 +28,8 @@ static FnFindGameCD originalFindGameCD = nullptr;
 static FnCheckSerialNumber originalCheckSerialNumber = nullptr;
 static FnGame_tick originalGame_tick = nullptr;
 static FnCreateDialogParamA originalCreateDialogParamA = CreateDialogParamA;
+static FnCreateSingleInstanceMutex originalCreateSingleInstanceMutex = nullptr;
+static FnInputMgr_update originalInputMgr_update = nullptr;
 
 static const int* resolutionModeIndex = nullptr;
 static const ResolutionMode* resolutionModes = nullptr;
@@ -41,6 +45,7 @@ static HMODULE ownHModule = nullptr;
 static DLGPROC originalVideoSettingsDialogProc = nullptr;
 static FramerateClock framerateClock;
 static FramerateTimepoint frameStart = framerateClock.now();
+static int overrideWindowX = -1;
 
 RECT GetWindowContentRect(HWND hWnd)
 {
@@ -58,6 +63,8 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	if (msg == WM_ACTIVATE) {
 		isWindowActivated = wParam > 0;
 		shouldRepositionWindow = isWindowActivated;
+		if (wParam == 0 && curWZConfig.ignoreFocusLoss)
+			msg = WM_NULL;
 	}
 
 	if (msg == WM_WINDOWPOSCHANGED)
@@ -77,7 +84,9 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		windowSize.bottom = windowSize.top + mode.height;
 		AdjustWindowRect(&windowSize, 0, true);
 		SetWindowPos(hWnd, HWND_TOP,
-			(monitorInfo.rcMonitor.left + monitorInfo.rcMonitor.right) / 2 - (windowSize.right - windowSize.left) / 2,
+			overrideWindowX >= 0
+				? overrideWindowX
+				:(monitorInfo.rcMonitor.left + monitorInfo.rcMonitor.right) / 2 - (windowSize.right - windowSize.left) / 2,
 			(monitorInfo.rcMonitor.top + monitorInfo.rcMonitor.bottom) / 2 - (windowSize.bottom - windowSize.top) / 2,
 			windowSize.right - windowSize.left,
 			windowSize.bottom - windowSize.top,
@@ -166,11 +175,16 @@ double __fastcall MyGame_tick(DWORD thizAddr, void* dummy)
 int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_INITDIALOG)
+	{
 		CheckDlgButton(hWnd, IDC_CHECK_WINDOWED, curWZConfig.windowedMode);
+		CheckDlgButton(hWnd, IDC_CHECK_IGNOREFOCUSLOSS, curWZConfig.ignoreFocusLoss);
+	}
 	else if (msg == WM_DESTROY) {
 		auto newWZConfig = curWZConfig;
 		auto hChkWindowed = GetDlgItem(hWnd, IDC_CHECK_WINDOWED);
 		newWZConfig.windowedMode = SendMessage(hChkWindowed, BM_GETCHECK, 0, 0) == 1;
+		auto hChkIgnoreFocusLoss = GetDlgItem(hWnd, IDC_CHECK_IGNOREFOCUSLOSS);
+		newWZConfig.ignoreFocusLoss = SendMessage(hChkIgnoreFocusLoss, BM_GETCHECK, 0, 0) == 1;
 		
 		bool shouldRestart = newWZConfig.windowedMode != curWZConfig.windowedMode;
 		SaveWZConfig(newWZConfig);
@@ -202,6 +216,17 @@ HWND __stdcall MyCreateDialogParamA(HINSTANCE hInstance, LPCSTR lpTemplateName, 
 	);
 }
 
+bool __fastcall MyCreateSingleInstanceMutex(DWORD _, HANDLE*)
+{
+	return true;
+}
+
+void __fastcall MyInputMgr_update(void* thiz, void* dummy)
+{
+	if (isWindowActivated)
+		originalInputMgr_update(thiz, dummy);
+}
+
 std::optional<int> findParameterArg(const std::string& haystack, const char* needleStart, const char* needleEnd)
 {
 	size_t startI = haystack.find(needleStart, 0);
@@ -222,6 +247,9 @@ void parseCommandLine()
 
 	auto argMaxFramerate = findParameterArg(commandLine, "-fps(", ")");
 	maxFramerate = argMaxFramerate.value_or(maxFramerate);
+
+	auto argWindowX = findParameterArg(commandLine, "-windowX(", ")");
+	overrideWindowX = argWindowX.value_or(overrideWindowX);
 
 	shouldSkipLauncher = commandLine.find(NoLauncherArgument) != std::string::npos;
 }
@@ -250,6 +278,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		originalUICursor_setVisible = reinterpret_cast<FnUICursor_setVisible>(gameVersion.info.addrUICursor_setVisible);
 		originalCallSetCursorPos = reinterpret_cast<FnCallSetCursorPos>(gameVersion.info.addrCallSetCursorPos);
 		originalGame_tick = reinterpret_cast<FnGame_tick>(gameVersion.info.addrGame_tick);
+		originalCreateSingleInstanceMutex = reinterpret_cast<FnCreateSingleInstanceMutex>(gameVersion.info.addrCreateSingleInstanceMutex);
+		originalInputMgr_update = reinterpret_cast<FnInputMgr_update>(gameVersion.info.addrInputMgr_update);
 		resolutionModeIndex = reinterpret_cast<const int*>(gameVersion.info.addrResolutionModeIndex);
 		resolutionModes = reinterpret_cast<const ResolutionMode*>(gameVersion.info.addrResolutionModes);
 		if (gameVersion.info.addrFindGameCD != NO_HOOK_NECESSARY)
@@ -269,6 +299,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		}
 		SafeDetourCall(DetourAttach(&(PVOID&)originalGame_tick, MyGame_tick), "attaching to Game_tick");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "attaching to CreateDialogParamA");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalCreateSingleInstanceMutex, MyCreateSingleInstanceMutex), "attaching to createSingleInstanceMutex");
+		SafeDetourCall(DetourAttach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "attaching to InputMgr_update");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourAttach(&(PVOID&)originalFindGameCD, MyFindGameCD), "attaching to FindGameCD");
 		if (originalCheckSerialNumber != nullptr)
@@ -290,6 +322,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		}
 		SafeDetourCall(DetourDetach(&(PVOID&)originalGame_tick, MyGame_tick), "detaching from Game_tick");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "detaching from CreateDialogParamA");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalCreateSingleInstanceMutex, MyCreateSingleInstanceMutex), "detaching from createSingleInstanceMutex");
+		SafeDetourCall(DetourDetach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "detaching from InputMgr_update");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourDetach(&(PVOID&)originalFindGameCD, MyFindGameCD), "detaching from FindGameCD");
 		if (originalCheckSerialNumber != nullptr)
