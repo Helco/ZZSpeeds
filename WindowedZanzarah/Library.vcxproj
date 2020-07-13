@@ -87,7 +87,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>$(OutputPath)detours.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutputPath)detours.lib;winmm.lib;Shcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>src\exports.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)Lib.pdb</ProgramDatabaseFile>
     </Link>
