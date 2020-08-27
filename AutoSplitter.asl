@@ -35,6 +35,7 @@ startup
 			settings.Add("get_earth_key", false, "Earth key", "getting");
 			settings.Add("get_air_key", true, "Air key", "getting");
 			settings.Add("get_clover", false, "Clover", "getting");
+			settings.Add("get_viteria", false, "Viteria", "getting");
 			settings.Add("get_suane", true, "Suane", "getting");
 			settings.Add("get_segbuzz", false, "Segbuzz", "getting");
 			settings.Add("get_any_psy", true, "Any Psy fairy", "getting");
@@ -43,7 +44,10 @@ startup
 		{
 			settings.Add("get_8_fairies", false, "8 Fairies", "getting_nf");
 			settings.Add("get_10_fairies", false, "10 Fairies", "getting_nf");
+			settings.Add("get_16_fairies", false, "16 Fairies", "getting_nf");
+			settings.Add("get_19_fairies", false, "19 Fairies", "getting_nf");
 			settings.Add("get_28_fairies", false, "28 Fairies", "getting_nf");
+			settings.Add("get_29_fairies", false, "29 Fairies", "getting_nf");
 			settings.Add("get_30_fairies", false, "30 Fairies", "getting_nf");
 		}
 		settings.Add("defeating", true, "defeating:", "split_after");
@@ -61,6 +65,7 @@ startup
 			settings.Add("reach_tiralin", false, "Tiralin", "reaching");
 			settings.Add("reach_dunmore", true, "Dunmore", "reaching");
 			settings.Add("reach_catacombs", false, "Catacombs", "reaching");
+			settings.Add("reach_mountain_catchpoint", false, "Mountain Fairy-catchpoint", "reaching");
 			settings.Add("reach_shadow_realm", false, "Shadow Realm", "reaching");
 			settings.Add("reach_bonekeyskip", false, "Shadow realm after the bone key skip", "reaching");
 			settings.Add("reach_dark_cathedral", true, "Dark Cathedral", "reaching");
@@ -96,6 +101,7 @@ init
 		if (settings["get_earth_key"])		vars.splittingItems.Add(cardId(57, 0));
 		if (settings["get_air_key"])		vars.splittingItems.Add(cardId(55, 0));
 		if (settings["get_clover"])			vars.splittingItems.Add(cardId(10, 0));
+		if (settings["get_viteria"])		vars.splittingItems.Add(cardId(1, 2));
 		if (settings["get_suane"])			vars.splittingItems.Add(cardId(74, 2));
 		if (settings["get_segbuzz"])		vars.splittingItems.Add(cardId(68, 2));
 		if (settings["get_any_psy"])
@@ -110,7 +116,10 @@ init
 
 		if (settings["get_8_fairies"])		vars.splittingNFairies.Add(8);
 		if (settings["get_10_fairies"])		vars.splittingNFairies.Add(10);
+		if (settings["get_16_fairies"])		vars.splittingNFairies.Add(16);
+		if (settings["get_19_fairies"])		vars.splittingNFairies.Add(19);
 		if (settings["get_28_fairies"])		vars.splittingNFairies.Add(28);
+		if (settings["get_29_fairies"])		vars.splittingNFairies.Add(29);
 		if (settings["get_30_fairies"])		vars.splittingNFairies.Add(30);
 
 		if (settings["defeat_scarecrow"])	vars.splittingEnemies.Add(0x86DB0D84u);
@@ -124,6 +133,7 @@ init
 		if (settings["reach_tiralin"])			vars.splittingScenes.Add(231);
 		if (settings["reach_dunmore"])			vars.splittingScenes.Add(1243);
 		if (settings["reach_catacombs"])		vars.splittingScenes.Add(3010);
+		if (settings["reach_mountain_catchpoint"]) vars.splittingScenes.Add(1402);
 		if (settings["reach_shadow_realm"])		vars.splittingScenes.Add(840);
 		if (settings["reach_bonekeyskip"])		vars.splittingScenes.Add(621);
 		if (settings["reach_dark_cathedral"])	vars.splittingScenes.Add(400);
