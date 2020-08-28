@@ -4,10 +4,12 @@
  * Adds an autostart for zanzarah (triggered by the loading button)
  * and autosplit for:
  *   - getting important items / fairies
- *   - getting any psy fairy
+ *	 - getting certain number of fairies
+ *   - getting any psy fairy (previously used in Any%)
  *   - defeating certain enemies
  *   - reaching certain scenes
  *   - playing the end-game video
+ * also game time vs real time by eliminating load time
  *
  * Will most likely *only* work with:
  *   - 1.002 (Original release used for Any% speedruns)
@@ -151,6 +153,10 @@ init
 		vars.offGameToPlayer = 0x7320;
 		vars.offSceneToDataset = 0x4C0;
 		vars.offResMgrToVideoMgr = 0x71E0;
+		vars.offLoadScene_enter = 0x4473E0;
+		vars.lenLoadScene_enter = 0x4473E8 - vars.offLoadScene_enter;
+		vars.offLoadScene_exit = 0x447563;
+		vars.lenLoadScene_exit = 0x447568 - vars.offLoadScene_exit;
 	}
 	else if (game.ProcessName == "main")
 	{
@@ -161,6 +167,10 @@ init
 		vars.offGameToPlayer = 0x7250;
 		vars.offSceneToDataset = 0x4B0;
 		vars.offResMgrToVideoMgr = 0x7110;
+		vars.offLoadScene_enter = 0x446136;
+		vars.lenLoadScene_enter = 0x44613E - vars.offLoadScene_enter;
+		vars.offLoadScene_exit = 0x4462B9;
+		vars.lenLoadScene_exit = 0x4462BE - vars.offLoadScene_exit;
 	}
 
 	// Version *independent* offsets
@@ -187,6 +197,36 @@ init
 	vars.offVideoMgrToFilename = 0x14;
 
 	vars.lenVideoMgrFilename = 64;
+
+	// Setup LoadScene injection
+	var asmToggleIsPlaying = new byte[]
+	{
+		0x66, 0x83, 0x35,		// xor
+		0xEF, 0xBE, 0xAD, 0xDE, // toggle variable ptr
+		0x01,					// xor 1 is equivalent to flipping the first bit
+		0xE9,					// jmp
+		0xC5, 0xCD, 0xCD, 0xCD	// back to gate (mind the -4 offset, original first byte was C9)
+	};
+	vars.offIsLoadingScene = game.AllocateMemory(4);
+	ExtensionMethods.WriteBytes(game, vars.offIsLoadingScene, new byte[4] { 0, 0, 0, 0 });
+	var bytesOffIsLoadingScene = BitConverter.GetBytes((int)vars.offIsLoadingScene.ToInt64());
+	var injectedProcs = game.AllocateMemory(asmToggleIsPlaying.Length * 2);
+	var offInjectedLoadSceneEnter = injectedProcs;
+	var offInjectedLoadSceneExit = injectedProcs + asmToggleIsPlaying.Length;
+
+	for (int i = 0; i < 4; i++)
+		asmToggleIsPlaying[3 + i] = bytesOffIsLoadingScene[i];
+	Action<int, int, IntPtr> InjectToggleLoadScene = (srcStart, srcLen, dst) => 
+	{
+		var gate = game.WriteDetour(new IntPtr(srcStart), srcLen, dst);
+		var bytesGate = BitConverter.GetBytes((int)(gate.ToInt64() - dst.ToInt64() - asmToggleIsPlaying.Length));
+		for (int i = 0; i < 4; i++)
+			asmToggleIsPlaying[9 + i] = bytesGate[i];
+		game.WriteBytes(dst, asmToggleIsPlaying);
+	};
+	InjectToggleLoadScene(vars.offLoadScene_enter, vars.lenLoadScene_enter, offInjectedLoadSceneEnter);
+	InjectToggleLoadScene(vars.offLoadScene_exit, vars.lenLoadScene_exit, offInjectedLoadSceneExit);
+	vars.isLoadingScene = false;
 }
 
 exit
@@ -292,6 +332,14 @@ update
 		ReadStringType.UTF8,
 		vars.lenVideoMgrFilename);
 
+	/* IS LOADING SCENE
+	 * ****************
+	 * It gets scary: we already injected to ResourceMgr_loadScene function to toggle a bit in
+	 * an allocated memory region both on enter and on exit, therefore we can look at it to 
+	 * determine if the game is *currently* loading anything
+	 */
+	vars.memIsLoadingScene = new MemoryWatcher<bool>(vars.offIsLoadingScene);
+
 	/* MEMORY WATCHER LIST
 	 * *******************
 	 */
@@ -303,7 +351,8 @@ update
 		vars.memCauseType,
 		vars.memCurrentNPC,
 		vars.memSceneId,
-		vars.memVideoFilename
+		vars.memVideoFilename,
+		vars.memIsLoadingScene
 	});
 	return true;
 }
@@ -321,6 +370,11 @@ reset
 	return
 		settings["reset_in_main_menu"] &&
 		vars.memCurrentScreen.Current == (uint)vars.ptrMainmenuScreen.ToInt64();
+}
+
+isLoading
+{
+	return !vars.foundGamePointer || vars.memIsLoadingScene.Current;
 }
 
 split
