@@ -47,17 +47,17 @@ static DLGPROC originalVideoSettingsDialogProc = nullptr;
 static FramerateClock framerateClock;
 static FramerateTimepoint frameStart = framerateClock.now();
 static int overrideWindowX = -1;
-static int deviceScalePercent = 100; // only used for get/set cursor position
 
-int GetDeviceScalePercent(HMONITOR monitor)
+ResolutionMode GetResolutionMode()
 {
-	DEVICE_SCALE_FACTOR scale;
-	if (FAILED(GetScaleFactorForMonitor(monitor, &scale)) || scale == DEVICE_SCALE_FACTOR_INVALID)
-		return 100;
-	else if (scale >= SCALE_100_PERCENT && scale <= SCALE_500_PERCENT)
-		return static_cast<int>(scale); // This might break at some point if Microsoft is evil to us
-	else
-		return 100;
+	auto mode = resolutionModes[std::clamp(*resolutionModeIndex, 0, 5)];
+	if (WidescreenPatchDetection.IsInstalled())
+	{
+		mode.width = static_cast<int>(WidescreenPatchDetection.ResolutionWidth());
+		mode.height = static_cast<int>(WidescreenPatchDetection.ResolutionHeight());
+		mode.depth = 32;
+	}
+	return mode;
 }
 
 RECT GetWindowContentRect(HWND hWnd)
@@ -85,11 +85,10 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	if (shouldRepositionWindow) {
 		// the centering should not be too annoying, do it only if things change
-		const ResolutionMode& mode = resolutionModes[std::clamp(*resolutionModeIndex, 0, 5)];
+		const ResolutionMode mode = GetResolutionMode();
 		MONITORINFO monitorInfo;
 		RECT windowSize;
 		auto monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-		deviceScalePercent = GetDeviceScalePercent(monitor);
 		ZeroMemory(&monitorInfo, sizeof(MONITORINFO));
 		monitorInfo.cbSize = sizeof(MONITORINFO);
 		GetMonitorInfo(monitor, &monitorInfo);
@@ -321,7 +320,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			SafeDetourCall(DetourAttach(&(PVOID&)originalCheckSerialNumber, MyCheckSerialNumber), "attaching to CheckSerialNumber");
 		SafeDetourCall(DetourTransactionCommit(), "committing attach transaction");
 
-		SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+		//SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
 	}break;
 
 	case DLL_PROCESS_DETACH: {

@@ -7,6 +7,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
 // grr... C macros messing with C++ STL
 #undef min
@@ -98,6 +99,30 @@ static const GameVersionInfo GameVersionInfos[] = {
 
 static const WZConfig DefaultWZConfig = {
 	false,	// windowedMode
+};
+
+struct
+{
+public:
+	DWORD offset;
+	std::vector<uint8_t> pattern1; // from offset to uint32 of resolution width
+	std::vector<uint8_t> pattern2; // from end of resolution width to start of resolution height
+
+	const uint8_t* BasePointer() const { return reinterpret_cast<const uint8_t*>(offset); }
+	auto OffsetToPattern2() const { return pattern1.size() + sizeof(uint32_t); }
+	uint32_t ResolutionWidth() const { return *reinterpret_cast<const uint32_t*>(offset + pattern1.size()); }
+	uint32_t ResolutionHeight() const { return *reinterpret_cast<const uint32_t*>(offset + OffsetToPattern2() + pattern2.size()); }
+
+	bool IsInstalled() const
+	{
+		return
+			memcmp(BasePointer(), pattern1.data(), pattern1.size()) == 0 &&
+			memcmp(BasePointer() + OffsetToPattern2(), pattern2.data(), pattern2.size()) == 0;
+	}
+} static const WidescreenPatchDetection = {
+	0x5A3EBC,
+	{ 0xC7, 0x41, 0x08 },
+	{ 0xC7, 0x41, 0x0C }
 };
 
 std::optional<GameVersion> GetGameVersionOf(const char* filename)
