@@ -309,11 +309,11 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
 			SafeDetourCall(DetourAttach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "attaching to GetCursorPos");
 			SafeDetourCall(DetourAttach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "attaching to CallSetCursorPos");
+			SafeDetourCall(DetourAttach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "attaching to InputMgr_update");
 		}
 		SafeDetourCall(DetourAttach(&(PVOID&)originalGame_tick, MyGame_tick), "attaching to Game_tick");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "attaching to CreateDialogParamA");
 		SafeDetourCall(DetourAttach(&(PVOID&)originalCreateSingleInstanceMutex, MyCreateSingleInstanceMutex), "attaching to createSingleInstanceMutex");
-		SafeDetourCall(DetourAttach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "attaching to InputMgr_update");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourAttach(&(PVOID&)originalFindGameCD, MyFindGameCD), "attaching to FindGameCD");
 		if (originalCheckSerialNumber != nullptr)
@@ -334,11 +334,11 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			SafeDetourCall(DetourAttach(&(PVOID&)originalUICursor_setVisible, MyUICursor_setVisible), "attaching to UICursor_setVisible");
 			SafeDetourCall(DetourDetach(&(PVOID&)originalGetCursorPos, MyGetCursorPos), "detaching from GetCursorPos");
 			SafeDetourCall(DetourDetach(&(PVOID&)originalCallSetCursorPos, MyCallSetCursorPos), "detaching from CallSetCursorPos");
+			SafeDetourCall(DetourDetach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "detaching from InputMgr_update");
 		}
 		SafeDetourCall(DetourDetach(&(PVOID&)originalGame_tick, MyGame_tick), "detaching from Game_tick");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalCreateDialogParamA, MyCreateDialogParamA), "detaching from CreateDialogParamA");
 		SafeDetourCall(DetourDetach(&(PVOID&)originalCreateSingleInstanceMutex, MyCreateSingleInstanceMutex), "detaching from createSingleInstanceMutex");
-		SafeDetourCall(DetourDetach(&(PVOID&)originalInputMgr_update, MyInputMgr_update), "detaching from InputMgr_update");
 		if (originalFindGameCD != nullptr)
 			SafeDetourCall(DetourDetach(&(PVOID&)originalFindGameCD, MyFindGameCD), "detaching from FindGameCD");
 		if (originalCheckSerialNumber != nullptr)
