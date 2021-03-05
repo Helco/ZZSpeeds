@@ -372,10 +372,10 @@ reset
 		vars.memCurrentScreen.Current == (uint)vars.ptrMainmenuScreen.ToInt64();
 }
 
-isLoading
+/*isLoading
 {
 	return !vars.foundGamePointer || vars.memIsLoadingScene.Current;
-}
+}*/
 
 split
 {

@@ -182,6 +182,9 @@ double __fastcall MyGame_tick(DWORD thizAddr, void* dummy)
 		Sleep(newDelay);
 	frameStart = framerateClock.now();
 
+	int32_t* const waypointRender = reinterpret_cast<int32_t*>(thizAddr + 0x38 + 8 + 0x9C4);
+	*waypointRender = 3;
+
 	return originalGame_tick(thizAddr, dummy);
 }
 

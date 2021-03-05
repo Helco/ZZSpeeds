@@ -1,0 +1,8 @@
+{
+  "name": "zzpluginloader",
+  "version": "1.0",
+  "dependencies": [
+    "nlohmann-json",
+    "detours"
+  ]
+}

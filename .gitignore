@@ -3,3 +3,6 @@
 Releases
 **/Debug/
 **/Release/
+**/out/
+**/*_nope/
+**/vcpkg_installed/
