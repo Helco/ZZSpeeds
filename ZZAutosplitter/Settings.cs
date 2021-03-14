@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -47,7 +48,11 @@ namespace ZZAutosplitter
     [XmlInclude(typeof(SplitRuleWatching))]
     public abstract class SplitRule
     {
+        [DefaultValue(true)]
+        public bool Enabled { get; set; } = true;
+
         public abstract string GetDescription(Database db);
+        public abstract Image GetIcon(Database db);
     }
 
     public class SplitRuleGettingCards : SplitRule
@@ -58,6 +63,8 @@ namespace ZZAutosplitter
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} x {db.GetNameFor(Card)}"
             : $"Getting a {db.GetNameFor(Card)}";
+
+        public override Image GetIcon(Database db) => db.GetIconFor(Card);
     }
 
     public class SplitRuleGettingFairiesOfClass : SplitRule
@@ -68,6 +75,8 @@ namespace ZZAutosplitter
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} fairies of type {db.GetNameFor(Type)}"
             : $"Getting some fairy of type {db.GetNameFor(Type)}";
+
+        public override Image GetIcon(Database db) => db.GetIconFor(Type);
     }
 
     public class SplitRuleGettingTotalFairies : SplitRule
@@ -77,6 +86,9 @@ namespace ZZAutosplitter
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} fairies"
             : $"Getting some fairy";
+
+        public override Image GetIcon(Database db) =>
+            db.GetIconFor(new CardId(CardType.Item, 59)); // Fairy bag
     }
 
     public class SplitRuleReaching : SplitRule
@@ -86,6 +98,10 @@ namespace ZZAutosplitter
 
         public override string GetDescription(Database db) =>
             $"Reaching \"{db.GetNameFor(Scene)}\" ({Scene.index})";
+
+        public override Image GetIcon(Database db) => OverrideIcon.HasValue
+            ? db.GetIconFor(OverrideIcon.Value)
+            : db.GetIconFor(Scene);
     }
 
     public class SplitRuleDefeating : SplitRule
@@ -96,6 +112,8 @@ namespace ZZAutosplitter
 
         public override string GetDescription(Database db) =>
             $"Defeating {Name} ({UID.ToString("X8")})";
+
+        public override Image GetIcon(Database db) => db.GetIconFor(Icon);
     }
 
     public class SplitRuleWatching : SplitRule
@@ -104,6 +122,9 @@ namespace ZZAutosplitter
 
         public override string GetDescription(Database db) =>
             $"Watching {db.GetNameFor(Video)}";
+
+        public override Image GetIcon(Database db) =>
+            db.GetIconFor(new CardId(CardType.Item, 59)); // Fairy book
     }
 
 }

@@ -8,17 +8,20 @@ namespace ZZAutosplitter
 {
     partial class Database
     {
-        private static Dictionary<SceneId, string> LoadScenes()
+        private static Dictionary<SceneId, string> LoadScenes(out IReadOnlyDictionary<SceneId, IconId> iconResultsOut)
         {
             var xmlSerializer = new XmlSerializer(typeof(scenes));
             using var stringReader = new StringReader(Properties.Resources.scenes);
             var scenes = (scenes)xmlSerializer.Deserialize(stringReader);
 
             var results = new Dictionary<SceneId, string>();
+            var iconResults = new Dictionary<SceneId, IconId>();
             foreach (var scene in scenes.scene)
             {
                 results.Add(new SceneId(scene.id), scene.name);
+                iconResults.Add(new SceneId(scene.id), scene.icon);
             }
+            iconResultsOut = iconResults;
             return results;
         }
     }
@@ -64,6 +67,8 @@ namespace ZZAutosplitter.DatabaseScenes
 
         private string nameField;
 
+        private IconId iconField;
+
         /// <remarks/>
         public ushort id
         {
@@ -88,6 +93,13 @@ namespace ZZAutosplitter.DatabaseScenes
             {
                 this.nameField = value;
             }
+        }
+
+        /// <remarks/>
+        public IconId icon
+        {
+            get => iconField;
+            set => iconField = value;
         }
     }
 }

@@ -34,6 +34,8 @@ namespace ZZAutosplitter
             this.toolStripSplits = new System.Windows.Forms.ToolStrip();
             this.splitBtnAddSplit = new System.Windows.Forms.ToolStripSplitButton();
             this.menuAddGettingCards = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAddGettingFairiesOfClass = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAddGettingTotalFairies = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddReaching = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddDefeating = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddWatching = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,8 +48,6 @@ namespace ZZAutosplitter
             this.checkBoxLoadTime = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoSplits = new System.Windows.Forms.CheckBox();
-            this.menuAddGettingFairiesOfClass = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAddGettingTotalFairies = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.toolStripSplits.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -78,7 +78,7 @@ namespace ZZAutosplitter
             this.groupBox1.Size = new System.Drawing.Size(671, 621);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Splits";
+            this.groupBox1.Text = "Split Rules";
             // 
             // toolStripSplits
             // 
@@ -92,9 +92,9 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown,
             this.btnDeleteSplit,
             this.btnClearSplits});
-            this.toolStripSplits.Location = new System.Drawing.Point(620, 22);
+            this.toolStripSplits.Location = new System.Drawing.Point(621, 22);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(48, 596);
+            this.toolStripSplits.Size = new System.Drawing.Size(47, 596);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
@@ -111,7 +111,7 @@ namespace ZZAutosplitter
             this.splitBtnAddSplit.Image = global::ZZAutosplitter.Properties.Resources.add;
             this.splitBtnAddSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.splitBtnAddSplit.Name = "splitBtnAddSplit";
-            this.splitBtnAddSplit.Size = new System.Drawing.Size(43, 28);
+            this.splitBtnAddSplit.Size = new System.Drawing.Size(42, 28);
             this.splitBtnAddSplit.Text = "Add split";
             // 
             // menuAddGettingCards
@@ -119,6 +119,18 @@ namespace ZZAutosplitter
             this.menuAddGettingCards.Name = "menuAddGettingCards";
             this.menuAddGettingCards.Size = new System.Drawing.Size(287, 34);
             this.menuAddGettingCards.Text = "Getting card(s)";
+            // 
+            // menuAddGettingFairiesOfClass
+            // 
+            this.menuAddGettingFairiesOfClass.Name = "menuAddGettingFairiesOfClass";
+            this.menuAddGettingFairiesOfClass.Size = new System.Drawing.Size(287, 34);
+            this.menuAddGettingFairiesOfClass.Text = "Getting fairies of class";
+            // 
+            // menuAddGettingTotalFairies
+            // 
+            this.menuAddGettingTotalFairies.Name = "menuAddGettingTotalFairies";
+            this.menuAddGettingTotalFairies.Size = new System.Drawing.Size(287, 34);
+            this.menuAddGettingTotalFairies.Text = "Getting total fairies";
             // 
             // menuAddReaching
             // 
@@ -144,7 +156,7 @@ namespace ZZAutosplitter
             this.btnEditSplit.Image = global::ZZAutosplitter.Properties.Resources.pencil;
             this.btnEditSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditSplit.Name = "btnEditSplit";
-            this.btnEditSplit.Size = new System.Drawing.Size(43, 28);
+            this.btnEditSplit.Size = new System.Drawing.Size(42, 28);
             this.btnEditSplit.Text = "Edit split";
             // 
             // btnMoveSplitUp
@@ -153,7 +165,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitUp.Image = global::ZZAutosplitter.Properties.Resources.arrow_up;
             this.btnMoveSplitUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
-            this.btnMoveSplitUp.Size = new System.Drawing.Size(43, 28);
+            this.btnMoveSplitUp.Size = new System.Drawing.Size(42, 28);
             this.btnMoveSplitUp.Text = "Move up";
             // 
             // btnMoveSplitDown
@@ -162,7 +174,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown.Image = global::ZZAutosplitter.Properties.Resources.arrow_down;
             this.btnMoveSplitDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
-            this.btnMoveSplitDown.Size = new System.Drawing.Size(43, 28);
+            this.btnMoveSplitDown.Size = new System.Drawing.Size(42, 28);
             this.btnMoveSplitDown.Text = "Move down";
             // 
             // btnDeleteSplit
@@ -171,7 +183,7 @@ namespace ZZAutosplitter
             this.btnDeleteSplit.Image = global::ZZAutosplitter.Properties.Resources.delete;
             this.btnDeleteSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteSplit.Name = "btnDeleteSplit";
-            this.btnDeleteSplit.Size = new System.Drawing.Size(43, 28);
+            this.btnDeleteSplit.Size = new System.Drawing.Size(42, 28);
             this.btnDeleteSplit.Text = "Delete split";
             // 
             // btnClearSplits
@@ -180,7 +192,7 @@ namespace ZZAutosplitter
             this.btnClearSplits.Image = global::ZZAutosplitter.Properties.Resources.bin_closed;
             this.btnClearSplits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClearSplits.Name = "btnClearSplits";
-            this.btnClearSplits.Size = new System.Drawing.Size(43, 28);
+            this.btnClearSplits.Size = new System.Drawing.Size(42, 28);
             this.btnClearSplits.Text = "Clear all splits";
             // 
             // groupBox2
@@ -226,18 +238,6 @@ namespace ZZAutosplitter
             this.checkBoxAutoSplits.TabIndex = 0;
             this.checkBoxAutoSplits.Text = "Automatic Splits";
             this.checkBoxAutoSplits.UseVisualStyleBackColor = true;
-            // 
-            // menuAddGettingFairiesOfClass
-            // 
-            this.menuAddGettingFairiesOfClass.Name = "menuAddGettingFairiesOfClass";
-            this.menuAddGettingFairiesOfClass.Size = new System.Drawing.Size(287, 34);
-            this.menuAddGettingFairiesOfClass.Text = "Getting fairies of class";
-            // 
-            // menuAddGettingTotalFairies
-            // 
-            this.menuAddGettingTotalFairies.Name = "menuAddGettingTotalFairies";
-            this.menuAddGettingTotalFairies.Size = new System.Drawing.Size(287, 34);
-            this.menuAddGettingTotalFairies.Text = "Getting total fairies";
             // 
             // SettingsControl
             // 
