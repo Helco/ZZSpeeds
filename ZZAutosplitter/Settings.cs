@@ -51,14 +51,15 @@ namespace ZZAutosplitter
         [DefaultValue(true)]
         public bool Enabled { get; set; } = true;
 
+        public virtual SplitRule Clone() => (SplitRule)MemberwiseClone();
         public abstract string GetDescription(Database db);
         public abstract Image GetIcon(Database db);
     }
 
     public class SplitRuleGettingCards : SplitRule
     {
-        public CardId Card { get; set; }
-        public int Amount { get; set; }
+        public CardId Card { get; set; } = new CardId(CardType.Fairy, 0);
+        public int Amount { get; set; } = 1;
 
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} x {db.GetNameFor(Card)}"
@@ -69,8 +70,8 @@ namespace ZZAutosplitter
 
     public class SplitRuleGettingFairiesOfClass : SplitRule
     {
-        public ElementType Type { get; set; }
-        public int Amount { get; set; }
+        public ElementType Type { get; set; } = ElementType.Nature;
+        public int Amount { get; set; } = 1;
 
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} fairies of type {db.GetNameFor(Type)}"
@@ -81,7 +82,7 @@ namespace ZZAutosplitter
 
     public class SplitRuleGettingTotalFairies : SplitRule
     {
-        public int Amount { get; set; }
+        public int Amount { get; set; } = 1;
 
         public override string GetDescription(Database db) => Amount > 1
             ? $"Getting at least {Amount} fairies"
@@ -93,8 +94,8 @@ namespace ZZAutosplitter
 
     public class SplitRuleReaching : SplitRule
     {
-        public SceneId Scene { get; set; }
-        public IconId? OverrideIcon { get; set; }
+        public SceneId Scene { get; set; } = new SceneId(2400);
+        public IconId? OverrideIcon { get; set; } = null;
 
         public override string GetDescription(Database db) =>
             $"Reaching \"{db.GetNameFor(Scene)}\" ({Scene.index})";
@@ -106,19 +107,21 @@ namespace ZZAutosplitter
 
     public class SplitRuleDefeating : SplitRule
     {
-        public uint UID { get; set; }
-        public string Name { get; set; }
-        public IconId Icon { get; set; }
+        public uint UID { get; set; } = 0;
+        public string Name { get; set; } = "<no-name>";
+        public IconId? Icon { get; set; } = null;
 
         public override string GetDescription(Database db) =>
             $"Defeating {Name} ({UID.ToString("X8")})";
 
-        public override Image GetIcon(Database db) => db.GetIconFor(Icon);
+        public override Image GetIcon(Database db) => Icon.HasValue
+            ? db.GetIconFor(Icon.Value)
+            : db.GetIconFor(new IconId(false, "CHR01"));
     }
 
     public class SplitRuleWatching : SplitRule
     {
-        public VideoId Video { get; set; }
+        public VideoId Video { get; set; } = VideoId.Outro;
 
         public override string GetDescription(Database db) =>
             $"Watching {db.GetNameFor(Video)}";

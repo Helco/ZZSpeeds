@@ -30,7 +30,10 @@ namespace ZZAutosplitter
         private void InitializeComponent()
         {
             this.listSplits = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.panelSplitEdit = new System.Windows.Forms.Panel();
             this.toolStripSplits = new System.Windows.Forms.ToolStrip();
             this.splitBtnAddSplit = new System.Windows.Forms.ToolStripSplitButton();
             this.menuAddGettingCards = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +52,9 @@ namespace ZZAutosplitter
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoSplits = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
+            this.toolStripContainer1.RightToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
             this.toolStripSplits.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -59,30 +65,71 @@ namespace ZZAutosplitter
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listSplits.CheckBoxes = true;
+            this.listSplits.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listSplits.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listSplits.HideSelection = false;
-            this.listSplits.Location = new System.Drawing.Point(6, 25);
+            this.listSplits.Location = new System.Drawing.Point(3, 3);
             this.listSplits.Name = "listSplits";
-            this.listSplits.Size = new System.Drawing.Size(601, 590);
+            this.listSplits.Size = new System.Drawing.Size(623, 460);
             this.listSplits.TabIndex = 1;
             this.listSplits.UseCompatibleStateImageBehavior = false;
+            this.listSplits.View = System.Windows.Forms.View.Details;
+            this.listSplits.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listSplits_ItemChecked);
+            this.listSplits.SelectedIndexChanged += new System.EventHandler(this.listSplits_SelectedIndexChanged);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "";
+            this.columnHeader1.Width = 10176;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.toolStripSplits);
-            this.groupBox1.Controls.Add(this.listSplits);
+            this.groupBox1.Controls.Add(this.toolStripContainer1);
             this.groupBox1.Location = new System.Drawing.Point(15, 145);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(671, 621);
+            this.groupBox1.Size = new System.Drawing.Size(671, 623);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Split Rules";
             // 
+            // toolStripContainer1
+            // 
+            this.toolStripContainer1.BottomToolStripPanelVisible = false;
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.listSplits);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.panelSplitEdit);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(629, 598);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.LeftToolStripPanelVisible = false;
+            this.toolStripContainer1.Location = new System.Drawing.Point(3, 22);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            // 
+            // toolStripContainer1.RightToolStripPanel
+            // 
+            this.toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripSplits);
+            this.toolStripContainer1.Size = new System.Drawing.Size(665, 598);
+            this.toolStripContainer1.TabIndex = 4;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            this.toolStripContainer1.TopToolStripPanelVisible = false;
+            // 
+            // panelSplitEdit
+            // 
+            this.panelSplitEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelSplitEdit.Location = new System.Drawing.Point(3, 469);
+            this.panelSplitEdit.Name = "panelSplitEdit";
+            this.panelSplitEdit.Size = new System.Drawing.Size(623, 129);
+            this.panelSplitEdit.TabIndex = 3;
+            // 
             // toolStripSplits
             // 
-            this.toolStripSplits.Dock = System.Windows.Forms.DockStyle.Right;
+            this.toolStripSplits.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStripSplits.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripSplits.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripSplits.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -92,15 +139,16 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown,
             this.btnDeleteSplit,
             this.btnClearSplits});
-            this.toolStripSplits.Location = new System.Drawing.Point(621, 22);
+            this.toolStripSplits.Location = new System.Drawing.Point(0, 4);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(47, 596);
+            this.toolStripSplits.Size = new System.Drawing.Size(36, 200);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
             // splitBtnAddSplit
             // 
             this.splitBtnAddSplit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.splitBtnAddSplit.DropDownButtonWidth = 0;
             this.splitBtnAddSplit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuAddGettingCards,
             this.menuAddGettingFairiesOfClass,
@@ -111,14 +159,16 @@ namespace ZZAutosplitter
             this.splitBtnAddSplit.Image = global::ZZAutosplitter.Properties.Resources.add;
             this.splitBtnAddSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.splitBtnAddSplit.Name = "splitBtnAddSplit";
-            this.splitBtnAddSplit.Size = new System.Drawing.Size(42, 28);
+            this.splitBtnAddSplit.Size = new System.Drawing.Size(33, 28);
             this.splitBtnAddSplit.Text = "Add split";
+            this.splitBtnAddSplit.ButtonClick += new System.EventHandler(this.splitBtnAddSplit_ButtonClick);
             // 
             // menuAddGettingCards
             // 
             this.menuAddGettingCards.Name = "menuAddGettingCards";
             this.menuAddGettingCards.Size = new System.Drawing.Size(287, 34);
             this.menuAddGettingCards.Text = "Getting card(s)";
+            this.menuAddGettingCards.Click += new System.EventHandler(this.menuAddGettingCards_Click);
             // 
             // menuAddGettingFairiesOfClass
             // 
@@ -156,7 +206,7 @@ namespace ZZAutosplitter
             this.btnEditSplit.Image = global::ZZAutosplitter.Properties.Resources.pencil;
             this.btnEditSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditSplit.Name = "btnEditSplit";
-            this.btnEditSplit.Size = new System.Drawing.Size(42, 28);
+            this.btnEditSplit.Size = new System.Drawing.Size(33, 28);
             this.btnEditSplit.Text = "Edit split";
             // 
             // btnMoveSplitUp
@@ -165,7 +215,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitUp.Image = global::ZZAutosplitter.Properties.Resources.arrow_up;
             this.btnMoveSplitUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
-            this.btnMoveSplitUp.Size = new System.Drawing.Size(42, 28);
+            this.btnMoveSplitUp.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitUp.Text = "Move up";
             // 
             // btnMoveSplitDown
@@ -174,7 +224,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown.Image = global::ZZAutosplitter.Properties.Resources.arrow_down;
             this.btnMoveSplitDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
-            this.btnMoveSplitDown.Size = new System.Drawing.Size(42, 28);
+            this.btnMoveSplitDown.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitDown.Text = "Move down";
             // 
             // btnDeleteSplit
@@ -183,7 +233,7 @@ namespace ZZAutosplitter
             this.btnDeleteSplit.Image = global::ZZAutosplitter.Properties.Resources.delete;
             this.btnDeleteSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteSplit.Name = "btnDeleteSplit";
-            this.btnDeleteSplit.Size = new System.Drawing.Size(42, 28);
+            this.btnDeleteSplit.Size = new System.Drawing.Size(33, 28);
             this.btnDeleteSplit.Text = "Delete split";
             // 
             // btnClearSplits
@@ -192,7 +242,7 @@ namespace ZZAutosplitter
             this.btnClearSplits.Image = global::ZZAutosplitter.Properties.Resources.bin_closed;
             this.btnClearSplits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClearSplits.Name = "btnClearSplits";
-            this.btnClearSplits.Size = new System.Drawing.Size(42, 28);
+            this.btnClearSplits.Size = new System.Drawing.Size(33, 28);
             this.btnClearSplits.Text = "Clear all splits";
             // 
             // groupBox2
@@ -247,9 +297,13 @@ namespace ZZAutosplitter
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SettingsControl";
-            this.Size = new System.Drawing.Size(700, 778);
+            this.Size = new System.Drawing.Size(700, 780);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer1.RightToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer1.RightToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
             this.toolStripSplits.ResumeLayout(false);
             this.toolStripSplits.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -279,5 +333,8 @@ namespace ZZAutosplitter
         private System.Windows.Forms.ToolStripButton btnClearSplits;
         private System.Windows.Forms.ToolStripMenuItem menuAddGettingFairiesOfClass;
         private System.Windows.Forms.ToolStripMenuItem menuAddGettingTotalFairies;
+        private System.Windows.Forms.Panel panelSplitEdit;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
