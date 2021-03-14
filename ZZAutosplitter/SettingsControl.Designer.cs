@@ -42,7 +42,6 @@ namespace ZZAutosplitter
             this.menuAddReaching = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddDefeating = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddWatching = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnEditSplit = new System.Windows.Forms.ToolStripButton();
             this.btnMoveSplitUp = new System.Windows.Forms.ToolStripButton();
             this.btnMoveSplitDown = new System.Windows.Forms.ToolStripButton();
             this.btnDeleteSplit = new System.Windows.Forms.ToolStripButton();
@@ -134,14 +133,13 @@ namespace ZZAutosplitter
             this.toolStripSplits.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripSplits.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.splitBtnAddSplit,
-            this.btnEditSplit,
             this.btnMoveSplitUp,
             this.btnMoveSplitDown,
             this.btnDeleteSplit,
             this.btnClearSplits});
             this.toolStripSplits.Location = new System.Drawing.Point(0, 4);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(36, 200);
+            this.toolStripSplits.Size = new System.Drawing.Size(36, 167);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
@@ -200,15 +198,6 @@ namespace ZZAutosplitter
             this.menuAddWatching.Size = new System.Drawing.Size(287, 34);
             this.menuAddWatching.Text = "Watching";
             // 
-            // btnEditSplit
-            // 
-            this.btnEditSplit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditSplit.Image = global::ZZAutosplitter.Properties.Resources.pencil;
-            this.btnEditSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditSplit.Name = "btnEditSplit";
-            this.btnEditSplit.Size = new System.Drawing.Size(33, 28);
-            this.btnEditSplit.Text = "Edit split";
-            // 
             // btnMoveSplitUp
             // 
             this.btnMoveSplitUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -217,6 +206,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
             this.btnMoveSplitUp.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitUp.Text = "Move up";
+            this.btnMoveSplitUp.Click += new System.EventHandler(this.btnMoveSplitUp_Click);
             // 
             // btnMoveSplitDown
             // 
@@ -226,6 +216,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
             this.btnMoveSplitDown.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitDown.Text = "Move down";
+            this.btnMoveSplitDown.Click += new System.EventHandler(this.btnMoveSplitDown_Click);
             // 
             // btnDeleteSplit
             // 
@@ -235,6 +226,7 @@ namespace ZZAutosplitter
             this.btnDeleteSplit.Name = "btnDeleteSplit";
             this.btnDeleteSplit.Size = new System.Drawing.Size(33, 28);
             this.btnDeleteSplit.Text = "Delete split";
+            this.btnDeleteSplit.Click += new System.EventHandler(this.btnDeleteSplit_Click);
             // 
             // btnClearSplits
             // 
@@ -244,6 +236,7 @@ namespace ZZAutosplitter
             this.btnClearSplits.Name = "btnClearSplits";
             this.btnClearSplits.Size = new System.Drawing.Size(33, 28);
             this.btnClearSplits.Text = "Clear all splits";
+            this.btnClearSplits.Click += new System.EventHandler(this.btnClearSplits_Click);
             // 
             // groupBox2
             // 
@@ -321,7 +314,6 @@ namespace ZZAutosplitter
         private System.Windows.Forms.CheckBox checkBoxAutoStart;
         private System.Windows.Forms.CheckBox checkBoxAutoSplits;
         private System.Windows.Forms.CheckBox checkBoxLoadTime;
-        private System.Windows.Forms.ToolStripButton btnEditSplit;
         private System.Windows.Forms.ToolStripButton btnMoveSplitUp;
         private System.Windows.Forms.ToolStripButton btnMoveSplitDown;
         private System.Windows.Forms.ToolStripButton btnDeleteSplit;

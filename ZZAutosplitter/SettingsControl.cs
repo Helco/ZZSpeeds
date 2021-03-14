@@ -96,5 +96,55 @@ namespace ZZAutosplitter
 
         private void listSplits_ItemChecked(object sender, ItemCheckedEventArgs e) =>
             settings.SplitRules[e.Item.Index].Enabled = e.Item.Checked;
+
+        private void btnMoveSplitUp_Click(object sender, EventArgs e) => MoveSplit(-1);
+        private void btnMoveSplitDown_Click(object sender, EventArgs e) => MoveSplit(+1);
+
+        private void MoveSplit(int delta)
+        {
+            if (delta == 0 || Math.Abs(delta) > 1)
+                throw new ArgumentOutOfRangeException();
+            if (listSplits.SelectedIndices.Count == 0)
+                return;
+            int from = listSplits.SelectedIndices[0];
+            int to = from + delta;
+            if (to < 0 || to >= listSplits.Items.Count)
+                return;
+
+            var tmp = settings.SplitRules[from];
+            settings.SplitRules[from] = settings.SplitRules[to];
+            settings.SplitRules[to] = tmp;
+            ModifySplitItem(listSplits.Items[from], from, settings.SplitRules[from]);
+            ModifySplitItem(listSplits.Items[to], to, settings.SplitRules[to]);
+            listSplits.SelectedIndices.Clear();
+            listSplits.SelectedIndices.Add(to);
+        }
+
+        private void btnDeleteSplit_Click(object sender, EventArgs e)
+        {
+            if (listSplits.SelectedIndices.Count == 0)
+                return;
+
+            var index = listSplits.SelectedIndices[0];
+            settings.SplitRules.RemoveAt(index);
+            listSplits.Items.RemoveAt(index);
+        }
+
+        private void btnClearSplits_Click(object sender, EventArgs e)
+        {
+            if (listSplits.Items.Count == 0)
+                return;
+            var result = MessageBox.Show(
+                "Do you really want to delete all split rules?", "Confirm clearing",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                settings.SplitRules.Clear();
+                listSplits.Items.Clear();
+                listSplits.SelectedIndices.Clear();
+                panelSplitEdit.Controls.Clear();
+            }
+        }
     }
 }

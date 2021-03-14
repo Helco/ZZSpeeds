@@ -57,7 +57,7 @@ namespace ZZAutosplitter.controls
         }
 
         private void SetCardIndexDataSource() => comboCardIndex.DataSource = database.Cards
-            .Where(c => c.Key.type == (CardType)comboCardType.SelectedItem)
+            .Where(c => c.Key.type == rule.Card.type)
             .ToArray();
 
         private void UpdateIcon() => pictureBox.Image = rule.GetIcon(database);
