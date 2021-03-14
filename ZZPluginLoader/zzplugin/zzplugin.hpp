@@ -3,26 +3,22 @@
 #include <memory>
 #include <functional>
 
+#include "HookTarget.hpp"
+
 #ifdef _MSC_VER
 #define ZZPLUGIN_EXPORT __declspec(dllexport)
 #else
 #define ZZPLUGIN_EXPORT
 #endif
 
+static_assert(sizeof(void*) == sizeof(uint32_t), "Zanzarah runs in x86, so does this project!");
+
 namespace zz
 {
-	enum class GameVersion : uint32_t
-	{
-		v1002 = 1002,
-		v1008 = 1008,
-		v1010 = 1010,
-		unkown = 0
-	};
-
 	class NonMovable
 	{
 	private:
-		NonMovable(const NonMovable& const) = delete;
+		NonMovable(const NonMovable&) = delete;
 		NonMovable(NonMovable&&) = delete;
 	};
 
@@ -33,10 +29,12 @@ namespace zz
 		virtual void Register(std::unique_ptr<IPlugin> plugin) = 0;
 	};
 
-	class IHookRegistry : NonMovable
+	struct ConfigVarId { uint32_t value; };
+	class IPluginInit : NonMovable
 	{
 	public:
-		virtual void Register(HookTarget target, std::function)
+		virtual GameVersion GameVersion() const = 0;
+		virtual void* HookRaw(HookTarget target, void* functionAddress) = 0;
 	};
 
 	class IPlugin
@@ -49,10 +47,8 @@ namespace zz
 		virtual const char* Author() const = 0;
 		virtual const char* Version() const = 0;
 
-		virtual void OnHook(zz::IHookRegistry& const registry) = 0;
-		virtual void OnConfig(zz::IConfigRegistry& const registry) const = 0;
-		virtual void OnConfigChanged(zz::IConfig& const config) const = 0;
+		virtual void OnInit(zz::IPluginInit& registry) = 0;
 	};
 }
 
-extern "C" ZZPLUGIN_EXPORT void register_plugins(zz::IPluginRegistry& const registry);
+extern "C" ZZPLUGIN_EXPORT void register_plugins(zz::IPluginRegistry& registry);
