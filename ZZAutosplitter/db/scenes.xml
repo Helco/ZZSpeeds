@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenes>
+<scene><id>2800</id><name>London</name></scene>
+<scene><id>2801</id><name>London top floor</name></scene>
+<scene><id>2421</id><name>Cave before Endeva</name></scene>
+<scene><id>2431</id><name>Endeva behind stone</name></scene>
+<scene><id>1060</id><name>metal in sky</name></scene>
+
+
+<scene><id>2400</id><name>Endeva</name></scene>
+<scene><id>3202</id><name>Endeva tavern</name></scene>
+<scene><id>3200</id><name>Rufus house</name></scene>
+<scene><id>3201</id><name>Endeva shop</name></scene>
+<scene><id>2401</id><name>Fairy garden I</name></scene>
+<scene><id>2400</id><name>Fairy garden II</name></scene>
+<scene><id>2410</id><name>Fairy garden III</name></scene>
+<scene><id>2400</id><name>Cottage</name></scene>
+<scene><id>3203</id><name>Lucius house</name></scene>
+<scene><id>3012</id><name>Lucious cellar</name></scene>
+<scene><id>2430</id><name>Cottage, Dwarf with Darbue</name></scene>
+<scene><id>2440</id><name>Cottage, Stone and bush</name></scene>
+<scene><id>1410</id><name>Cottage waterfall</name></scene>
+<scene><id>2210</id><name>Cottage psy cave</name></scene>
+
+<scene><id>2412</id><name>crossroads to Tiralin and Hut</name></scene>
+<scene><id>0221</id><name>Tiralin entrance (arch)</name></scene>
+<scene><id>0210</id><name>Forest to the Hut</name></scene>
+<scene><id>0211</id><name>Forest lake </name></scene>
+<scene><id>0212</id><name>Forest Hut</name></scene>
+<scene><id>0203</id><name>Fire card battle</name></scene>
+
+<scene><id>0232</id><name>Tiralin Eastern</name></scene>
+<scene><id>3010</id><name>Catacomb</name></scene>
+<scene><id>3011</id><name>Catacomb behind gate</name></scene>
+<scene><id>3301</id><name>Tiralin tavern</name></scene>
+<scene><id>3302</id><name>Tiralin dwarf</name></scene>
+<scene><id>3303</id><name>Tiralin shop</name></scene>
+<scene><id>0231</id><name>Tiraline</name></scene>
+<scene><id>3304</id><name>Tiralin city hall</name></scene>
+<scene><id>3300</id><name>Tiraline special shop</name></scene>
+<scene><id>0220</id><name>Forest bridge and small ruins</name></scene>
+<scene><id>0230</id><name>Forest ruins</name></scene>
+
+<scene><id>1401</id><name>Mountain world</name></scene>
+<scene><id>1402</id><name>Mountains suspension bridge</name></scene>
+<scene><id>1412</id><name>Mountains walkways</name></scene>
+<scene><id>1413</id><name>Mountains with Joe</name></scene>
+<scene><id>1422</id><name>Mountains with bob bridge</name></scene>
+<scene><id>1403</id><name>Dark caves -> to Tiralin</name></scene>
+
+<scene><id>2610</id><name>Dwarf Tower outside</name></scene>
+<scene><id>3450</id><name>Dwarf Tower lobby</name></scene>
+<scene><id>3455</id><name>Dwarf Tower stairs</name></scene>
+<scene><id>3453</id><name>Dwarf Tower first room</name></scene>
+<scene><id>3451</id><name>Dwarf Tower second room</name></scene>
+<scene><id>3452</id><name>Dwarf Tower third room</name></scene>
+<scene><id>3454</id><name>Dwarf Tower top</name></scene>
+
+<scene><id>0241</id><name>Behind tiralin (swirl skip zone)</name></scene>
+<scene><id>0242</id><name>Swamp entry</name></scene>
+<scene><id>1242</id><name>Swamp entry to Dunmore</name></scene>
+
+<scene><id>1243</id><name>Dunmore</name></scene>
+<scene><id>3250</id><name>Dunmore mayoralty</name></scene>
+<scene><id>3253</id><name>Dunmore goblin couple</name></scene>
+<scene><id>3254</id><name>Dunmore sweeping goblin</name></scene>
+<scene><id>3251</id><name>Dunmore shop</name></scene>
+<scene><id>3252</id><name>Dunmore trainer</name></scene>
+
+<scene><id>1244</id><name>Swamp with Nature card</name></scene>
+<scene><id>1234</id><name>Swamp bonus area</name></scene>
+
+<scene><id>1233</id><name>Swamp to the Big tree</name></scene>
+<scene><id>1223</id><name>Big tree</name></scene>
+
+<scene><id>3350</id><name>Big tree lobby</name></scene>
+<scene><id>3351</id><name>Big tree first fight</name></scene>
+<scene><id>3353</id><name>Big tree second fight</name></scene>
+<scene><id>3352</id><name>Big tree third fight</name></scene>
+<scene><id>3354</id><name>Big tree reward</name></scene>
+
+<scene><id>1213</id><name>entrance to Shadow Realm</name></scene>
+<scene><id>0840</id><name>Shadow Realm</name></scene>
+
+<scene><id>0830</id><name>Shadow Realm bone key room</name></scene>
+<scene><id>0623</id><name>Shadow Realm left</name></scene>
+<scene><id>0622</id><name>Shadow Realm throne</name></scene>
+<scene><id>0621</id><name>Shadow Realm merchant</name></scene>
+
+<scene><id>0820</id><name>Shadow Realm to the cathedral</name></scene>
+<scene><id>0611</id><name>Shadow Realm bridge to cathedral</name></scene>
+
+<scene><id>0400</id><name>Dark cathedral</name></scene>
+
+<scene><id>1030</id><name>Clouds realm</name></scene>
+<scene><id>1040</id><name>Clouds realm platforms skip</name></scene>
+<scene><id>1050</id><name>Clouds realm arena</name></scene>
+
+<scene><id>1031</id><name>Clouds realm to the right high bridge</name></scene>
+<scene><id>1032</id><name>Clouds realm (right) pavilion</name></scene>
+<scene><id>1041</id><name>Clouds realm (left) to the cathedral</name></scene>
+<scene><id>3600</id><name>Clouds realm cathedral</name></scene>
+
+<scene><id>2620</id><name>Monagham bonus location</name></scene>
+
+
+<scene><id>2201</id><name>Monagham caves to Monagham</name></scene>
+<scene><id>2211</id><name>Monagham</name></scene>
+
+<scene><id>3401</id><name>Monagham house with energy fairy exchange</name></scene>
+<scene><id>3402</id><name>Monagham city hall</name></scene>
+<scene><id>3404</id><name>Monagham Lasse &amp; Jani</name></scene>
+<scene><id>3406</id><name>Monagham old foundry</name></scene>
+<scene><id>3403</id><name>Monagham elevator (dark caves)</name></scene>
+<scene><id>3400</id><name>Monagham shop</name></scene>
+
+<scene><id>1432</id><name>Mountains to the peak</name></scene>
+<scene><id>1404</id><name>Mountains caves</name></scene>
+<scene><id>1624</id><name>Mountain tops</name></scene>
+<scene><id>1623</id><name>Mountain tops before caves</name></scene>
+<scene><id>2222</id><name>Mountain ice caves</name></scene>
+<scene><id>2223</id><name>Mountain cave with Lasse</name></scene>
+
+<scene><id>2224</id><name>Fire Cave 2 swirls</name></scene>
+<scene><id>2221</id><name>Fire Cave empty town</name></scene>
+<scene><id>2220</id><name>Fire Cave 4-ways</name></scene>
+<scene><id>2225</id><name>Fire Cave loop one</name></scene>
+<scene><id>2226</id><name>Fire Cave second loop</name></scene>
+</scenes>

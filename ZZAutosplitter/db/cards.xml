@@ -1,0 +1,1399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results>
+    <query>
+        SELECT (CardId / 256 % 256) AS CardType, (CardId / 256 / 256) AS CardIndex, _fb0x02.col_0_String AS Name FROM (
+        SELECT col_3_Integer AS CardId, col_1_ForeignKey AS NameUID FROM _fb0x01 UNION
+        SELECT col_2_Integer AS CardId, col_0_ForeignKey AS NameUID FROM _fb0x03 UNION
+        SELECT col_1_Integer AS CardId, col_0_ForeignKey AS NameUID FROM _fb0x04)
+        LEFT JOIN _fb0x02 ON substr(_fb0x02.UID, 0, 8) IS substr(NameUID, 0, 8)
+    </query>
+    <columns>
+        <column>
+            <displayName>CardType</displayName>
+            <name>(CardId / 256 % 256)</name>
+            <table></table>
+            <database></database>
+            <type></type>
+        </column>
+        <column>
+            <displayName>CardIndex</displayName>
+            <name>(CardId / 256 / 256)</name>
+            <table></table>
+            <database></database>
+            <type></type>
+        </column>
+        <column>
+            <displayName>Name</displayName>
+            <name>col_0_String</name>
+            <table>_fb0x02</table>
+            <database></database>
+            <type>STRING</type>
+        </column>
+    </columns>
+    <rows>
+        <row>
+            <value column="0">0</value>
+            <value column="1">0</value>
+            <value column="2">Small Healing Potion</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">0</value>
+            <value column="2">Slight Quake</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">0</value>
+            <value column="2">Sillia</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">1</value>
+            <value column="2">Medium Healing Potion</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">1</value>
+            <value column="2">Falling Tree</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">1</value>
+            <value column="2">Viteria</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">2</value>
+            <value column="2">Big Healing Potion</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">2</value>
+            <value column="2">Razor Blade</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">2</value>
+            <value column="2">Boneria</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">3</value>
+            <value column="2">Healing Herbs</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">3</value>
+            <value column="2">Light Spurs</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">3</value>
+            <value column="2">Grem</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">4</value>
+            <value column="2">Fairy Coins</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">4</value>
+            <value column="2">Large Root</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">4</value>
+            <value column="2">Gremor</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">5</value>
+            <value column="2">Test Amulet</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">5</value>
+            <value column="2">Storm</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">5</value>
+            <value column="2">Gremrock</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">6</value>
+            <value column="2">Crystal</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">6</value>
+            <value column="2">Powerless Spirit</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">6</value>
+            <value column="2">Tadana</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">7</value>
+            <value column="2">Medicine</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">7</value>
+            <value column="2">Storm Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">7</value>
+            <value column="2">Aquana</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">8</value>
+            <value column="2">Fairy Horn</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">8</value>
+            <value column="2">Tornado</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">8</value>
+            <value column="2">Oceana</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">9</value>
+            <value column="2">Amulet of Experience</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">9</value>
+            <value column="2">Great Displacement</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">9</value>
+            <value column="2">Worgot</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">10</value>
+            <value column="2">Cloverleaf</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">10</value>
+            <value column="2">Small Waves</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">10</value>
+            <value column="2">Corgot</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">11</value>
+            <value column="2">Test Amulet</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">11</value>
+            <value column="2">Hail of Needles</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">11</value>
+            <value column="2">Symgot</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">12</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">12</value>
+            <value column="2">Hail of Knives</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">12</value>
+            <value column="2">Airia</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">13</value>
+            <value column="2">Golden Carrot</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">13</value>
+            <value column="2">Slight Insanity</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">13</value>
+            <value column="2">Luria</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">14</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">14</value>
+            <value column="2">Call of the Water</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">14</value>
+            <value column="2">Laticia</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">15</value>
+            <value column="2">Ocean Conch</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">15</value>
+            <value column="2">Reflection</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">15</value>
+            <value column="2">Rasrow</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">16</value>
+            <value column="2">Pixie Bag</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">16</value>
+            <value column="2">Bundled Light</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">16</value>
+            <value column="2">Maulrow</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">17</value>
+            <value column="2">Silver Sphere</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">17</value>
+            <value column="2">Light Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">17</value>
+            <value column="2">Psyrow</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">18</value>
+            <value column="2">Golden Sphere</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">18</value>
+            <value column="2">Surge of Light</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">18</value>
+            <value column="2">Abery</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">19</value>
+            <value column="2">Crystal Sphere</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">19</value>
+            <value column="2">Enchanted Light</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">19</value>
+            <value column="2">Abnobery</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">20</value>
+            <value column="2">Garlic Atomizer</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">20</value>
+            <value column="2">No Discharge</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">20</value>
+            <value column="2">Vesbat</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">21</value>
+            <value column="2">Catacomb Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">21</value>
+            <value column="2">Chain Reaction</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">21</value>
+            <value column="2">Stobat</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">22</value>
+            <value column="2">Heavy Iron Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">22</value>
+            <value column="2">Time Shift</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">22</value>
+            <value column="2">Garbat</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">23</value>
+            <value column="2">Key of the Guardian of Pixies</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">23</value>
+            <value column="2">Exiled Power</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">23</value>
+            <value column="2">Cera</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">24</value>
+            <value column="2">Rufus' House Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">24</value>
+            <value column="2">Burning Spear</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">24</value>
+            <value column="2">Amnis</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">25</value>
+            <value column="2">Key to the Dwarf Factory</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">25</value>
+            <value column="2">Small Spirit</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">25</value>
+            <value column="2">Ceramnis</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">26</value>
+            <value column="2">Quinlin's Staff of Rule</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">26</value>
+            <value column="2">Insanity</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">26</value>
+            <value column="2">Blumella</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">27</value>
+            <value column="2">Key to the Town Hall</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">27</value>
+            <value column="2">Heavy Thoughts</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">27</value>
+            <value column="2">Mencre</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">28</value>
+            <value column="2">Rune of Return</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">28</value>
+            <value column="2">Psi Wave</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">28</value>
+            <value column="2">Mensek</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">29</value>
+            <value column="2">Rune of the Fairy Garden</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">29</value>
+            <value column="2">Great Telekinesis</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">29</value>
+            <value column="2">Violectra</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">30</value>
+            <value column="2">Rune of Tiralin</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">30</value>
+            <value column="2">Small Stone</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">30</value>
+            <value column="2">Biolectra</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">31</value>
+            <value column="2">Rune of Dunmore</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">31</value>
+            <value column="2">Flying Rock</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">31</value>
+            <value column="2">Pix</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">32</value>
+            <value column="2">Rune of the Dwarf Tower</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">32</value>
+            <value column="2">Falling Rocks</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">32</value>
+            <value column="2">Ferix</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">33</value>
+            <value column="2">Rune of the Cave World</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">33</value>
+            <value column="2">Hail of Stones</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">33</value>
+            <value column="2">Daemonex</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">34</value>
+            <value column="2">Rune of the Ice World</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">34</value>
+            <value column="2">Meteor</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">34</value>
+            <value column="2">Feez</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">35</value>
+            <value column="2">Rune of the Realm of Clouds</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">35</value>
+            <value column="2">Ball of Ice</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">35</value>
+            <value column="2">Greez</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">36</value>
+            <value column="2">Rune of the Shadow Realm</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">36</value>
+            <value column="2">Ice Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">36</value>
+            <value column="2">Greezloc</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">37</value>
+            <value column="2">Cottage Rune</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">37</value>
+            <value column="2">Frost Ray</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">37</value>
+            <value column="2">Skelbo</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">38</value>
+            <value column="2">Forest Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">38</value>
+            <value column="2">Frozen Spirit</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">38</value>
+            <value column="2">Skeljaw</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">39</value>
+            <value column="2">Swamp Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">39</value>
+            <value column="2">Great Hail of Ice</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">39</value>
+            <value column="2">Skelrath</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">40</value>
+            <value column="2">Mountain Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">40</value>
+            <value column="2">Flame</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">40</value>
+            <value column="2">Sirael</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">41</value>
+            <value column="2">Cave Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">41</value>
+            <value column="2">Fire Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">41</value>
+            <value column="2">Gorael</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">42</value>
+            <value column="2">Sky Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">42</value>
+            <value column="2">Ball of Fire</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">42</value>
+            <value column="2">Fathrael</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">43</value>
+            <value column="2">Dark Rune II</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">43</value>
+            <value column="2">Burning Hands</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">43</value>
+            <value column="2">Darbue</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">44</value>
+            <value column="2">Fairy Card of Air</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">44</value>
+            <value column="2">Burning Soul</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">44</value>
+            <value column="2">Bue</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">45</value>
+            <value column="2">Fairy Card of Earth</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">45</value>
+            <value column="2">Darkness</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">45</value>
+            <value column="2">Lighbue</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">46</value>
+            <value column="2">Fairy Card of Fire</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">46</value>
+            <value column="2">Solar Eclipse</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">46</value>
+            <value column="2">Beltaur</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">47</value>
+            <value column="2">Fairy Card of Nature</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">47</value>
+            <value column="2">Arrow of Darkness</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">47</value>
+            <value column="2">Mentaur</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">48</value>
+            <value column="2">Fairy Card of Psi Magic</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">48</value>
+            <value column="2">Ball of Darkness</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">48</value>
+            <value column="2">Clum</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">49</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">49</value>
+            <value column="2">Soul Thief</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">49</value>
+            <value column="2">Clumaur</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">50</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">50</value>
+            <value column="2">Chaos Lightning</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">50</value>
+            <value column="2">Pfoe</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">51</value>
+            <value column="2">Evolutionary Magic of Air</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">51</value>
+            <value column="2">Chaos Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">51</value>
+            <value column="2">Taze</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">52</value>
+            <value column="2">Evolutionary Magic of Fire</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">52</value>
+            <value column="2">Spirit of Chaos</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">52</value>
+            <value column="2">Glacess</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">53</value>
+            <value column="2">Evolutionary Magic of Nature</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">53</value>
+            <value column="2">Burn Out</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">53</value>
+            <value column="2">Akritar</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">54</value>
+            <value column="2">Elemental Key of Fire</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">54</value>
+            <value column="2">Ball of Chaos</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">54</value>
+            <value column="2">Sirella</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">55</value>
+            <value column="2">Elemental Key of Air</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">55</value>
+            <value column="2">Metal Pin</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">55</value>
+            <value column="2">Dracwin</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">56</value>
+            <value column="2">Elemental Key of Nature</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">56</value>
+            <value column="2">Metal Arrow</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">56</value>
+            <value column="2">Flagwin</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">57</value>
+            <value column="2">Elemental Key of Earth</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">57</value>
+            <value column="2">Pins and Needles</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">57</value>
+            <value column="2">Tinefol</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">58</value>
+            <value column="2">Book of Fairies</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">58</value>
+            <value column="2">Magnetism</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">58</value>
+            <value column="2">Tinerog</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">59</value>
+            <value column="2">Fairy Bag</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">59</value>
+            <value column="2">Heavy Metal</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">59</value>
+            <value column="2">Tinezard</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">60</value>
+            <value column="2">Mana Potion</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">60</value>
+            <value column="2">Birch Skin</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">60</value>
+            <value column="2">Tineves</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">61</value>
+            <value column="2">Moulding Magic</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">61</value>
+            <value column="2">Oak Skin</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">61</value>
+            <value column="2">Fygaery</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">62</value>
+            <value column="2">Map of the Fairy Garden</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">62</value>
+            <value column="2">Sharp Eye</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">62</value>
+            <value column="2">JumJum</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">63</value>
+            <value column="2">Map of the Enchanted Forest</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">63</value>
+            <value column="2">Thorn Armour</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">63</value>
+            <value column="2">JumRock</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">64</value>
+            <value column="2">Map of the Mountain World</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">64</value>
+            <value column="2">Untouchable</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">64</value>
+            <value column="2">Goop</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">65</value>
+            <value column="2">Map of the Dark Swamp</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">65</value>
+            <value column="2">Storm</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">65</value>
+            <value column="2">Minari</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">66</value>
+            <value column="2">Map of the Shadow Realm</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">66</value>
+            <value column="2">Tornado</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">66</value>
+            <value column="2">Megari</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">67</value>
+            <value column="2">Map of the Realm of Clouds</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">67</value>
+            <value column="2">Upward Wind</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">67</value>
+            <value column="2">Gigarex</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">68</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">68</value>
+            <value column="2">Geysir</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">68</value>
+            <value column="2">Segbuzz</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">69</value>
+            <value column="2">Reserved Magic Card</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">69</value>
+            <value column="2">Hurricane</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">69</value>
+            <value column="2">Manox</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">70</value>
+            <value column="2">Tools of the Dwarves</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">70</value>
+            <value column="2">Slight Healing</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">70</value>
+            <value column="2">Turnox</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">71</value>
+            <value column="2">Red Bone Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">71</value>
+            <value column="2">Healing Power</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">71</value>
+            <value column="2">Dredanox</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">72</value>
+            <value column="2">Green Bone Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">72</value>
+            <value column="2">Shapeless Power</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">72</value>
+            <value column="2">Lighane</value>
+        </row>
+        <row>
+            <value column="0">0</value>
+            <value column="1">73</value>
+            <value column="2">Blue Bone Key</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">73</value>
+            <value column="2">Smooth as Glass</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">73</value>
+            <value column="2">Driane</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">74</value>
+            <value column="2">Sorrow Shared</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">74</value>
+            <value column="2">Suane</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">75</value>
+            <value column="2">Power of Light</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">75</value>
+            <value column="2">Lana</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">76</value>
+            <value column="2">Kiss of Light</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">76</value>
+            <value column="2">Liana</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">77</value>
+            <value column="2">Painful Change</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">78</value>
+            <value column="2">Lucky Dip</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">79</value>
+            <value column="2">Shelter of the Light</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">80</value>
+            <value column="2">Targeted Damage</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">81</value>
+            <value column="2">Homesickness</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">82</value>
+            <value column="2">Dubious Luck</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">83</value>
+            <value column="2">View Enhancer</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">84</value>
+            <value column="2">Magic Awakening</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">85</value>
+            <value column="2">Telekinesis</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">86</value>
+            <value column="2">Unwavering Spirit</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">87</value>
+            <value column="2">Quake of Power</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">88</value>
+            <value column="2">Migration of Souls</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">89</value>
+            <value column="2">Spiritual Power</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">90</value>
+            <value column="2">Flying Stones</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">91</value>
+            <value column="2">Stone Spear</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">92</value>
+            <value column="2">Stone Skin</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">93</value>
+            <value column="2">Magic Guidance</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">94</value>
+            <value column="2">Unintentional Movement</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">95</value>
+            <value column="2">Magic River</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">96</value>
+            <value column="2">Magic Support</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">97</value>
+            <value column="2">Severity</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">98</value>
+            <value column="2">Jump Magic</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">99</value>
+            <value column="2">Absorb Mana</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">100</value>
+            <value column="2">Magic Breath</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">101</value>
+            <value column="2">Magic Touch</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">102</value>
+            <value column="2">Rusty Shield</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">103</value>
+            <value column="2">Quick Thinking</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">104</value>
+            <value column="2">Magic Shield</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">105</value>
+            <value column="2">Bruiser</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">106</value>
+            <value column="2">Magic Support</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">107</value>
+            <value column="2">Frozen</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">108</value>
+            <value column="2">Flying Feet</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">109</value>
+            <value column="2">Flyweight</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">110</value>
+            <value column="2">Dance of Chaos</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">111</value>
+            <value column="2">Creeping Chaos</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">112</value>
+            <value column="2">Confused Spirit</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">113</value>
+            <value column="2">Devil's Wings</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">114</value>
+            <value column="2">Heat Shimmer</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">115</value>
+            <value column="2">Liquid Metal</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">116</value>
+            <value column="2">Scorching Steel</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">117</value>
+            <value column="2">Old Armour</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">118</value>
+            <value column="2">Speed of Light</value>
+        </row>
+        <row>
+            <value column="0">1</value>
+            <value column="1">119</value>
+            <value column="2">Rusty Spear</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">140</value>
+            <value column="2">Guardian Weapon A</value>
+        </row>
+        <row>
+            <value column="0">2</value>
+            <value column="1">141</value>
+            <value column="2">Guardian Weapon B</value>
+        </row>
+</rows></results>
