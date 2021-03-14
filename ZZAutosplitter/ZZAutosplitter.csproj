@@ -56,6 +56,18 @@
     <Compile Include="controls\GettingCardsEditControl.Designer.cs">
       <DependentUpon>GettingCardsEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="controls\GettingFairiesOfClassEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\GettingFairiesOfClassEditControl.Designer.cs">
+      <DependentUpon>GettingFairiesOfClassEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\GettingTotalFairiesEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\GettingTotalFairiesEditControl.Designer.cs">
+      <DependentUpon>GettingTotalFairiesEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\SplitRuleEditControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -83,6 +95,12 @@
   <ItemGroup>
     <EmbeddedResource Include="controls\GettingCardsEditControl.resx">
       <DependentUpon>GettingCardsEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\GettingFairiesOfClassEditControl.resx">
+      <DependentUpon>GettingFairiesOfClassEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\GettingTotalFairiesEditControl.resx">
+      <DependentUpon>GettingTotalFairiesEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -70,7 +70,7 @@ namespace ZZAutosplitter
             this.listSplits.HideSelection = false;
             this.listSplits.Location = new System.Drawing.Point(3, 3);
             this.listSplits.Name = "listSplits";
-            this.listSplits.Size = new System.Drawing.Size(623, 460);
+            this.listSplits.Size = new System.Drawing.Size(611, 460);
             this.listSplits.TabIndex = 1;
             this.listSplits.UseCompatibleStateImageBehavior = false;
             this.listSplits.View = System.Windows.Forms.View.Details;
@@ -103,7 +103,7 @@ namespace ZZAutosplitter
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.listSplits);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelSplitEdit);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(629, 598);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(617, 598);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(3, 22);
@@ -123,7 +123,7 @@ namespace ZZAutosplitter
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSplitEdit.Location = new System.Drawing.Point(3, 469);
             this.panelSplitEdit.Name = "panelSplitEdit";
-            this.panelSplitEdit.Size = new System.Drawing.Size(623, 129);
+            this.panelSplitEdit.Size = new System.Drawing.Size(611, 129);
             this.panelSplitEdit.TabIndex = 3;
             // 
             // toolStripSplits
@@ -139,7 +139,7 @@ namespace ZZAutosplitter
             this.btnClearSplits});
             this.toolStripSplits.Location = new System.Drawing.Point(0, 4);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(36, 167);
+            this.toolStripSplits.Size = new System.Drawing.Size(48, 195);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
@@ -157,7 +157,7 @@ namespace ZZAutosplitter
             this.splitBtnAddSplit.Image = global::ZZAutosplitter.Properties.Resources.add;
             this.splitBtnAddSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.splitBtnAddSplit.Name = "splitBtnAddSplit";
-            this.splitBtnAddSplit.Size = new System.Drawing.Size(33, 28);
+            this.splitBtnAddSplit.Size = new System.Drawing.Size(45, 28);
             this.splitBtnAddSplit.Text = "Add split";
             this.splitBtnAddSplit.ButtonClick += new System.EventHandler(this.splitBtnAddSplit_ButtonClick);
             // 
@@ -173,30 +173,35 @@ namespace ZZAutosplitter
             this.menuAddGettingFairiesOfClass.Name = "menuAddGettingFairiesOfClass";
             this.menuAddGettingFairiesOfClass.Size = new System.Drawing.Size(287, 34);
             this.menuAddGettingFairiesOfClass.Text = "Getting fairies of class";
+            this.menuAddGettingFairiesOfClass.Click += new System.EventHandler(this.menuAddGettingFairiesOfClass_Click);
             // 
             // menuAddGettingTotalFairies
             // 
             this.menuAddGettingTotalFairies.Name = "menuAddGettingTotalFairies";
             this.menuAddGettingTotalFairies.Size = new System.Drawing.Size(287, 34);
             this.menuAddGettingTotalFairies.Text = "Getting total fairies";
+            this.menuAddGettingTotalFairies.Click += new System.EventHandler(this.menuAddGettingTotalFairies_Click);
             // 
             // menuAddReaching
             // 
             this.menuAddReaching.Name = "menuAddReaching";
             this.menuAddReaching.Size = new System.Drawing.Size(287, 34);
             this.menuAddReaching.Text = "Reaching";
+            this.menuAddReaching.Click += new System.EventHandler(this.menuAddReaching_Click);
             // 
             // menuAddDefeating
             // 
             this.menuAddDefeating.Name = "menuAddDefeating";
             this.menuAddDefeating.Size = new System.Drawing.Size(287, 34);
             this.menuAddDefeating.Text = "Defeating";
+            this.menuAddDefeating.Click += new System.EventHandler(this.menuAddDefeating_Click);
             // 
             // menuAddWatching
             // 
             this.menuAddWatching.Name = "menuAddWatching";
             this.menuAddWatching.Size = new System.Drawing.Size(287, 34);
             this.menuAddWatching.Text = "Watching";
+            this.menuAddWatching.Click += new System.EventHandler(this.menuAddWatching_Click);
             // 
             // btnMoveSplitUp
             // 
@@ -204,7 +209,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitUp.Image = global::ZZAutosplitter.Properties.Resources.arrow_up;
             this.btnMoveSplitUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
-            this.btnMoveSplitUp.Size = new System.Drawing.Size(33, 28);
+            this.btnMoveSplitUp.Size = new System.Drawing.Size(45, 28);
             this.btnMoveSplitUp.Text = "Move up";
             this.btnMoveSplitUp.Click += new System.EventHandler(this.btnMoveSplitUp_Click);
             // 
@@ -214,7 +219,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown.Image = global::ZZAutosplitter.Properties.Resources.arrow_down;
             this.btnMoveSplitDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
-            this.btnMoveSplitDown.Size = new System.Drawing.Size(33, 28);
+            this.btnMoveSplitDown.Size = new System.Drawing.Size(45, 28);
             this.btnMoveSplitDown.Text = "Move down";
             this.btnMoveSplitDown.Click += new System.EventHandler(this.btnMoveSplitDown_Click);
             // 
@@ -224,7 +229,7 @@ namespace ZZAutosplitter
             this.btnDeleteSplit.Image = global::ZZAutosplitter.Properties.Resources.delete;
             this.btnDeleteSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteSplit.Name = "btnDeleteSplit";
-            this.btnDeleteSplit.Size = new System.Drawing.Size(33, 28);
+            this.btnDeleteSplit.Size = new System.Drawing.Size(45, 28);
             this.btnDeleteSplit.Text = "Delete split";
             this.btnDeleteSplit.Click += new System.EventHandler(this.btnDeleteSplit_Click);
             // 
@@ -234,7 +239,7 @@ namespace ZZAutosplitter
             this.btnClearSplits.Image = global::ZZAutosplitter.Properties.Resources.bin_closed;
             this.btnClearSplits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClearSplits.Name = "btnClearSplits";
-            this.btnClearSplits.Size = new System.Drawing.Size(33, 28);
+            this.btnClearSplits.Size = new System.Drawing.Size(45, 28);
             this.btnClearSplits.Text = "Clear all splits";
             this.btnClearSplits.Click += new System.EventHandler(this.btnClearSplits_Click);
             // 
