@@ -39,6 +39,12 @@ namespace ZZAutosplitter
         public List<SplitRule> SplitRules { get; set; } = new List<SplitRule>();
     }
 
+    [XmlInclude(typeof(SplitRuleGettingCards))]
+    [XmlInclude(typeof(SplitRuleGettingFairiesOfClass))]
+    [XmlInclude(typeof(SplitRuleGettingTotalFairies))]
+    [XmlInclude(typeof(SplitRuleReaching))]
+    [XmlInclude(typeof(SplitRuleDefeating))]
+    [XmlInclude(typeof(SplitRuleWatching))]
     public abstract class SplitRule
     {
         public abstract string GetDescription(Database db);
@@ -76,6 +82,7 @@ namespace ZZAutosplitter
     public class SplitRuleReaching : SplitRule
     {
         public SceneId Scene { get; set; }
+        public IconId? OverrideIcon { get; set; }
 
         public override string GetDescription(Database db) =>
             $"Reaching \"{db.GetNameFor(Scene)}\" ({Scene.index})";
@@ -85,7 +92,7 @@ namespace ZZAutosplitter
     {
         public uint UID { get; set; }
         public string Name { get; set; }
-        public string Icon { get; set; }
+        public IconId Icon { get; set; }
 
         public override string GetDescription(Database db) =>
             $"Defeating {Name} ({UID.ToString("X8")})";

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseCards.cs" />
+    <Compile Include="DatabaseIcons.cs" />
     <Compile Include="DatabaseScenes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -102,6 +103,147 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="db\scenes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\ITM000T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\SPL000T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\WIZ000T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D009S09M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G001S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G002S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G003S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G004S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G005S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G006S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G007S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G200S20M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G201S21M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G202S22M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G203S23M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G204S20M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G205S21M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G206S22M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G207S23M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G208S21M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G300S30M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G301S31M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\G302S32M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\I002SI02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\I003SI03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\U000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\U001S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\U002S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\U003S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\V000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\V001S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\W000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\W001S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\W002S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\W003S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\X000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\CHR01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D000S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D001S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D002S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D003S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D004S00M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D005S01M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D006S02M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D007S03M.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\FACES\D008S00M.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

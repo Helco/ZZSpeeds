@@ -119,9 +119,349 @@ namespace ZZAutosplitter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CHR01 {
+            get {
+                object obj = ResourceManager.GetObject("CHR01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D000S00M {
+            get {
+                object obj = ResourceManager.GetObject("D000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D001S01M {
+            get {
+                object obj = ResourceManager.GetObject("D001S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D002S02M {
+            get {
+                object obj = ResourceManager.GetObject("D002S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D003S03M {
+            get {
+                object obj = ResourceManager.GetObject("D003S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D004S00M {
+            get {
+                object obj = ResourceManager.GetObject("D004S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D005S01M {
+            get {
+                object obj = ResourceManager.GetObject("D005S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D006S02M {
+            get {
+                object obj = ResourceManager.GetObject("D006S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D007S03M {
+            get {
+                object obj = ResourceManager.GetObject("D007S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D008S00M {
+            get {
+                object obj = ResourceManager.GetObject("D008S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap D009S09M {
+            get {
+                object obj = ResourceManager.GetObject("D009S09M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G000S00M {
+            get {
+                object obj = ResourceManager.GetObject("G000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G001S01M {
+            get {
+                object obj = ResourceManager.GetObject("G001S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G002S02M {
+            get {
+                object obj = ResourceManager.GetObject("G002S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G003S03M {
+            get {
+                object obj = ResourceManager.GetObject("G003S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G004S03M {
+            get {
+                object obj = ResourceManager.GetObject("G004S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G005S02M {
+            get {
+                object obj = ResourceManager.GetObject("G005S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G006S00M {
+            get {
+                object obj = ResourceManager.GetObject("G006S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G007S01M {
+            get {
+                object obj = ResourceManager.GetObject("G007S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G200S20M {
+            get {
+                object obj = ResourceManager.GetObject("G200S20M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G201S21M {
+            get {
+                object obj = ResourceManager.GetObject("G201S21M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G202S22M {
+            get {
+                object obj = ResourceManager.GetObject("G202S22M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G203S23M {
+            get {
+                object obj = ResourceManager.GetObject("G203S23M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G204S20M {
+            get {
+                object obj = ResourceManager.GetObject("G204S20M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G205S21M {
+            get {
+                object obj = ResourceManager.GetObject("G205S21M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G206S22M {
+            get {
+                object obj = ResourceManager.GetObject("G206S22M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G207S23M {
+            get {
+                object obj = ResourceManager.GetObject("G207S23M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G208S21M {
+            get {
+                object obj = ResourceManager.GetObject("G208S21M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G300S30M {
+            get {
+                object obj = ResourceManager.GetObject("G300S30M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G301S31M {
+            get {
+                object obj = ResourceManager.GetObject("G301S31M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap G302S32M {
+            get {
+                object obj = ResourceManager.GetObject("G302S32M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap I002SI02 {
+            get {
+                object obj = ResourceManager.GetObject("I002SI02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap I003SI03 {
+            get {
+                object obj = ResourceManager.GetObject("I003SI03", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ITM000T {
+            get {
+                object obj = ResourceManager.GetObject("ITM000T", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -139,21 +479,168 @@ namespace ZZAutosplitter.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;scenes&gt;
-        ///&lt;scene&gt;&lt;id&gt;2800&lt;/id&gt;&lt;name&gt;London&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;2801&lt;/id&gt;&lt;name&gt;London top floor&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;2421&lt;/id&gt;&lt;name&gt;Cave before Endeva&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;2431&lt;/id&gt;&lt;name&gt;Endeva behind stone&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;1060&lt;/id&gt;&lt;name&gt;metal in sky&lt;/name&gt;&lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;2800&lt;/id&gt;
+        ///    &lt;name&gt;London&lt;/name&gt;
+        ///  &lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;2801&lt;/id&gt;
+        ///    &lt;name&gt;London top floor&lt;/name&gt;
+        ///  &lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;2421&lt;/id&gt;
+        ///    &lt;name&gt;Cave before Endeva&lt;/name&gt;
+        ///  &lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;2431&lt;/id&gt;
+        ///    &lt;name&gt;Endeva behind stone&lt;/name&gt;
+        ///  &lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;1060&lt;/id&gt;
+        ///    &lt;name&gt;metal in sky&lt;/name&gt;
+        ///  &lt;/scene&gt;
         ///
         ///
-        ///&lt;scene&gt;&lt;id&gt;2400&lt;/id&gt;&lt;name&gt;Endeva&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;3202&lt;/id&gt;&lt;name&gt;Endeva tavern&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;3200&lt;/id&gt;&lt;name&gt;Rufus house&lt;/name&gt;&lt;/scene&gt;
-        ///&lt;scene&gt;&lt;id&gt;32 [rest of string was truncated]&quot;;.
+        ///  &lt;scene&gt;
+        ///    &lt;id&gt;2400&lt;/id&gt;
+        ///    &lt;name&gt;Endeva&lt;/name&gt;
+        ///  &lt;/scene&gt;
+        ///  &lt;scene&gt;
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string scenes {
             get {
                 return ResourceManager.GetString("scenes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SPL000T {
+            get {
+                object obj = ResourceManager.GetObject("SPL000T", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap U000S00M {
+            get {
+                object obj = ResourceManager.GetObject("U000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap U001S01M {
+            get {
+                object obj = ResourceManager.GetObject("U001S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap U002S02M {
+            get {
+                object obj = ResourceManager.GetObject("U002S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap U003S03M {
+            get {
+                object obj = ResourceManager.GetObject("U003S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap V000S00M {
+            get {
+                object obj = ResourceManager.GetObject("V000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap V001S01M {
+            get {
+                object obj = ResourceManager.GetObject("V001S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap W000S00M {
+            get {
+                object obj = ResourceManager.GetObject("W000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap W001S01M {
+            get {
+                object obj = ResourceManager.GetObject("W001S01M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap W002S02M {
+            get {
+                object obj = ResourceManager.GetObject("W002S02M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap W003S03M {
+            get {
+                object obj = ResourceManager.GetObject("W003S03M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WIZ000T {
+            get {
+                object obj = ResourceManager.GetObject("WIZ000T", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap X000S00M {
+            get {
+                object obj = ResourceManager.GetObject("X000S00M", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

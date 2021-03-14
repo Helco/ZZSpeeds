@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,10 +81,10 @@ namespace ZZAutosplitter
         }
     }
 
-    public readonly struct SceneId
+    public struct SceneId
     {
         // maybe scene type at some point?
-        public readonly int index;
+        public int index;
 
         public SceneId(int index)
         {
@@ -91,12 +92,27 @@ namespace ZZAutosplitter
         }
     }
 
+    public struct IconId
+    {
+        public bool isCardId;
+        public string filename;
+
+        public IconId(bool isCardId, string filename)
+        {
+            this.isCardId = isCardId;
+            this.filename = filename;
+        }
+    }
+
     public partial class Database
     {
+        private readonly IReadOnlyDictionary<CardId, Image> cardIcons;
+
         public IReadOnlyDictionary<CardId, string> Cards { get; }
         public IReadOnlyDictionary<SceneId, string> Scenes { get; }
         public IReadOnlyCollection<ElementType> ElementTypes { get; }
         public IReadOnlyCollection<VideoId> Videos { get; }
+        public IReadOnlyDictionary<IconId, Image> FaceIcons { get; }
 
         public Database()
         {
@@ -104,12 +120,24 @@ namespace ZZAutosplitter
             Scenes = LoadScenes();
             ElementTypes = Enum.GetValues(typeof(ElementType)).Cast<ElementType>().ToArray();
             Videos = Enum.GetValues(typeof(VideoId)).Cast<VideoId>().ToArray();
+
+            cardIcons = LoadCardIcons();
+            FaceIcons = LoadFaceIcons();
         }
 
         public string GetNameFor(CardId cardId) => Cards.TryGetValue(cardId, out var name) ? name : "<unknown>";
         public string GetNameFor(SceneId sceneId) => Scenes.TryGetValue(sceneId, out var name) ? name : "<unknown>";
         public string GetNameFor(ElementType type) => type.ToString();
         public string GetNameFor(VideoId videoId) => videoId.ToString();
+
+        public Image GetIconFor(IconId iconId) => iconId.isCardId
+            ? GetIconFor(new CardId(uint.Parse(iconId.filename)))
+            : FaceIcons.TryGetValue(iconId, out var image) ? image
+            : SystemIcons.Question.ToBitmap();
+
+        public Image GetIconFor(CardId cardId) => cardIcons.TryGetValue(cardId, out var image)
+            ? image
+            : SystemIcons.Question.ToBitmap();
 
         public string GetFileNameFor(VideoId videoId) => videoId switch
         {
