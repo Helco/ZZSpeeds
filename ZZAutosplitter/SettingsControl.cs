@@ -72,8 +72,9 @@ namespace ZZAutosplitter
                 SplitRuleGettingFairiesOfClass gfoc => new GettingFairiesOfClassEditControl(gfoc, database),
                 SplitRuleGettingTotalFairies gtf => new GettingTotalFairiesEditControl(gtf, database),
                 SplitRuleReaching r => new ReachingEditControl(r, database),
-
-                _ => null
+                SplitRuleDefeating d => new DefeatingEditControl(d, database),
+                SplitRuleWatching w => new WatchingEditControl(w, database),
+                _ => throw new NotImplementedException($"Unimplemented edit control for {rule}")
             };
             if (editControl == null)
                 return;
@@ -87,8 +88,8 @@ namespace ZZAutosplitter
         private void menuAddGettingFairiesOfClass_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingFairiesOfClass());
         private void menuAddGettingTotalFairies_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingTotalFairies());
         private void menuAddReaching_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleReaching());
-        private void menuAddDefeating_Click(object sender, EventArgs e) { }// => AddNewRule(new SplitRuleDefeating());
-        private void menuAddWatching_Click(object sender, EventArgs e) { }// => AddNewRule(new SplitRuleWatching());
+        private void menuAddDefeating_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleDefeating());
+        private void menuAddWatching_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleWatching());
 
         private void AddNewRule(SplitRule rule)
         {

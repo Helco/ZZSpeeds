@@ -50,6 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controls\DefeatingEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\DefeatingEditControl.Designer.cs">
+      <DependentUpon>DefeatingEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\GettingCardsEditControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -83,6 +89,12 @@
     <Compile Include="controls\SplitRuleEditControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\WatchingEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\WatchingEditControl.Designer.cs">
+      <DependentUpon>WatchingEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseCards.cs" />
     <Compile Include="DatabaseIcons.cs" />
@@ -105,6 +117,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="controls\DefeatingEditControl.resx">
+      <DependentUpon>DefeatingEditControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\GettingCardsEditControl.resx">
       <DependentUpon>GettingCardsEditControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ReachingEditControl.resx">
       <DependentUpon>ReachingEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\WatchingEditControl.resx">
+      <DependentUpon>WatchingEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

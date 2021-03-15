@@ -127,7 +127,7 @@ namespace ZZAutosplitter
             $"Watching {db.GetNameFor(Video)}";
 
         public override Image GetIcon(Database db) =>
-            db.GetIconFor(new CardId(CardType.Item, 59)); // Fairy book
+            db.GetIconFor(new CardId(CardType.Item, 58)); // Fairy book
     }
 
 }
