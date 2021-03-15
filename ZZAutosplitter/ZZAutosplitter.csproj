@@ -68,6 +68,18 @@
     <Compile Include="controls\GettingTotalFairiesEditControl.Designer.cs">
       <DependentUpon>GettingTotalFairiesEditControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="controls\IconSelectionBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="controls\IconSelectionBox.Designer.cs">
+      <DependentUpon>IconSelectionBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ReachingEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ReachingEditControl.Designer.cs">
+      <DependentUpon>ReachingEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\SplitRuleEditControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -101,6 +113,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\GettingTotalFairiesEditControl.resx">
       <DependentUpon>GettingTotalFairiesEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\IconSelectionBox.resx">
+      <DependentUpon>IconSelectionBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ReachingEditControl.resx">
+      <DependentUpon>ReachingEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

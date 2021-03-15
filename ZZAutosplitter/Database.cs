@@ -63,6 +63,14 @@ namespace ZZAutosplitter
             index = (int)(number >> 16);
         }
 
+        public CardId(string number) : this(ExtractHexNumber(number)) { }
+        private static uint ExtractHexNumber(string str)
+        {
+            if (str.StartsWith("0x"))
+                str = str.Substring(2);
+            return Convert.ToUInt32(str, 16);
+        }
+
         public static bool operator ==(CardId a, CardId b) => a.Equals(b);
         public static bool operator !=(CardId a, CardId b) => !a.Equals(b);
         public override bool Equals(object obj)
@@ -158,7 +166,7 @@ namespace ZZAutosplitter
         public string GetNameFor(VideoId videoId) => videoId.ToString();
 
         public Image GetIconFor(IconId iconId) => iconId.isCardId
-            ? GetIconFor(new CardId(uint.Parse(iconId.filename)))
+            ? GetIconFor(new CardId(iconId.filename))
             : FaceIcons.TryGetValue(iconId, out var image) ? image
             : SystemIcons.Question.ToBitmap();
 

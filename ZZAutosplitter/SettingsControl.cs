@@ -71,6 +71,7 @@ namespace ZZAutosplitter
                 SplitRuleGettingCards gc => new GettingCardsEditControl(gc, database),
                 SplitRuleGettingFairiesOfClass gfoc => new GettingFairiesOfClassEditControl(gfoc, database),
                 SplitRuleGettingTotalFairies gtf => new GettingTotalFairiesEditControl(gtf, database),
+                SplitRuleReaching r => new ReachingEditControl(r, database),
 
                 _ => null
             };
@@ -85,7 +86,7 @@ namespace ZZAutosplitter
         private void menuAddGettingCards_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingCards());
         private void menuAddGettingFairiesOfClass_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingFairiesOfClass());
         private void menuAddGettingTotalFairies_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingTotalFairies());
-        private void menuAddReaching_Click(object sender, EventArgs e) { }// => AddNewRule(new SplitRuleReaching());
+        private void menuAddReaching_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleReaching());
         private void menuAddDefeating_Click(object sender, EventArgs e) { }// => AddNewRule(new SplitRuleDefeating());
         private void menuAddWatching_Click(object sender, EventArgs e) { }// => AddNewRule(new SplitRuleWatching());
 
