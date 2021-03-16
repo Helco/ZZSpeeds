@@ -13,15 +13,17 @@ namespace ZZAutosplitter
 {
     partial class SettingsControl : UserControl
     {
+        private readonly ZZAutosplitter autosplitter;
         private readonly Database database;
         private readonly Settings settings;
 
-        public SettingsControl(Database database, Settings settings)
+        public SettingsControl(ZZAutosplitter autosplitter)
         {
-            this.database = database;
-            this.settings = settings;
+            this.autosplitter = autosplitter;
+            database = autosplitter.Database;
+            settings = autosplitter.Settings;
             InitializeComponent();
-            this.Dock = DockStyle.Fill;
+            Dock = DockStyle.Fill;
 
             checkBoxAutoSplits.DataBindings.Add(nameof(CheckBox.Checked), settings, nameof(settings.EnableAutoSplits), false, DataSourceUpdateMode.OnPropertyChanged);
             checkBoxAutoStart.DataBindings.Add(nameof(CheckBox.Checked), settings, nameof(settings.EnableAutoStart), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -39,6 +41,7 @@ namespace ZZAutosplitter
                 .Select((itm, i) => ModifySplitItem(itm, i, settings.SplitRules[i]))
                 .ToArray());
             listSplits.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listSplits_SelectedIndexChanged(null, null);
         }
 
         private ListViewItem ModifySplitItem(ListViewItem item, int index, SplitRule rule)
@@ -62,12 +65,11 @@ namespace ZZAutosplitter
         {
             panelSplitEdit.Controls.Clear();
             var index = listSplits.SelectedIndices.Count == 0 ? -1 : listSplits.SelectedIndices[0];
-            if (index < 0)
-                return;
-            var rule = settings.SplitRules[index];
+            var rule = index < 0 ? null : settings.SplitRules[index];
 
             SplitRuleEditControl editControl = rule switch
             {
+                null => new EmptySplitRuleControl(autosplitter),
                 SplitRuleGettingCards gc => new GettingCardsEditControl(gc, database),
                 SplitRuleGettingFairiesOfClass gfoc => new GettingFairiesOfClassEditControl(gfoc, database),
                 SplitRuleGettingTotalFairies gtf => new GettingTotalFairiesEditControl(gtf, database),
@@ -80,7 +82,8 @@ namespace ZZAutosplitter
                 return;
 
             editControl.Dock = DockStyle.Fill;
-            editControl.OnRuleChanged += () => ModifySplitItem(listSplits.Items[index], index, rule);
+            if (index >= 0)
+                editControl.OnRuleChanged += () => ModifySplitItem(listSplits.Items[index], index, rule);
             panelSplitEdit.Controls.Add(editControl);
         }
 

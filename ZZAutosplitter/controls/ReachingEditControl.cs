@@ -24,7 +24,7 @@ namespace ZZAutosplitter.controls
             comboScene.DataSource = database.SceneNames.ToArray();
             comboScene.DisplayMember = nameof(KeyValuePair<SceneId, string>.Value);
 
-            comboScene.SelectedItem = database.SceneNames[rule.Scene];
+            comboScene.SelectedItem = new KeyValuePair<SceneId, string>(rule.Scene, database.SceneNames[rule.Scene]);
             isInitialised = true;
             UpdateIcon();
         }

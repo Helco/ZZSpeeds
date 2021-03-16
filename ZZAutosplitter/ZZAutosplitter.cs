@@ -18,22 +18,31 @@ namespace ZZAutosplitter
         public const string ComponentName_ = "ZZAutosplitter";
         public override string ComponentName => ComponentName_;
 
-        private readonly Database database = new Database();
-        private Settings settings = new Settings();
+        public Database Database { get; } = new Database();
+        public Settings Settings { get; private set; } = new Settings();
+        public LiveSplitState LiveSplitState { get; }
 
         public ZZAutosplitter(LiveSplitState state)
         {
-
+            this.LiveSplitState = state;
         }
 
         public override void Dispose()
         {
         }
 
-        public override XmlNode GetSettings(XmlDocument document) => settings.ToXmlNode(document);
-        public override void SetSettings(XmlNode xmlNode) => settings = Settings.FromXmlNode(xmlNode);
-        public override Control GetSettingsControl(LayoutMode _) => new SettingsControl(database, settings);
+        public override XmlNode GetSettings(XmlDocument document) => Settings.ToXmlNode(document);
+        public override void SetSettings(XmlNode xmlNode) => Settings = Settings.FromXmlNode(xmlNode);
+        public override Control GetSettingsControl(LayoutMode _) => new SettingsControl(this);
 
+        public void AddSplitRulesAsSegments()
+        {
+            var run = LiveSplitState.Run;
+            if (run == null)
+                return;
+            foreach (var rule in Settings.SplitRules)
+                run.AddSegment(rule.GetDescription(Database), icon: rule.GetIcon(Database));
+        }
 
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) { }
     }

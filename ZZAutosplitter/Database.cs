@@ -192,7 +192,7 @@ namespace ZZAutosplitter
             ElementType.Dark    => GetIconFor(new CardId(CardType.Fairy, 71)),  // Dredanox
             ElementType.Chaos   => GetIconFor(new CardId(CardType.Fairy, 15)),  // Rasrow
             ElementType.Metal   => GetIconFor(new CardId(CardType.Fairy, 65)),  // Minari
-            _ => null
+            _ => SystemIcons.Question.ToBitmap()
         };
 
         public string GetFileNameFor(VideoId videoId) => videoId switch

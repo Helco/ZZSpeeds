@@ -22,6 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,6 +57,12 @@
     </Compile>
     <Compile Include="controls\DefeatingEditControl.Designer.cs">
       <DependentUpon>DefeatingEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\EmptySplitRuleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\EmptySplitRuleControl.Designer.cs">
+      <DependentUpon>EmptySplitRuleControl.cs</DependentUpon>
     </Compile>
     <Compile Include="controls\GettingCardsEditControl.cs">
       <SubType>UserControl</SubType>
@@ -119,6 +127,9 @@
   <ItemGroup>
     <EmbeddedResource Include="controls\DefeatingEditControl.resx">
       <DependentUpon>DefeatingEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\EmptySplitRuleControl.resx">
+      <DependentUpon>EmptySplitRuleControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\GettingCardsEditControl.resx">
       <DependentUpon>GettingCardsEditControl.cs</DependentUpon>
