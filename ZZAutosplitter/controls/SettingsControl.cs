@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZZAutosplitter.controls;
 
-namespace ZZAutosplitter
+namespace ZZAutosplitter.controls
 {
     partial class SettingsControl : UserControl
     {
@@ -28,6 +28,9 @@ namespace ZZAutosplitter
             checkBoxAutoSplits.DataBindings.Add(nameof(CheckBox.Checked), settings, nameof(settings.EnableAutoSplits), false, DataSourceUpdateMode.OnPropertyChanged);
             checkBoxAutoStart.DataBindings.Add(nameof(CheckBox.Checked), settings, nameof(settings.EnableAutoStart), false, DataSourceUpdateMode.OnPropertyChanged);
             checkBoxLoadTime.DataBindings.Add(nameof(CheckBox.Checked), settings, nameof(settings.EnableLoadTimeRemoval), false, DataSourceUpdateMode.OnPropertyChanged);
+            numericDelayProcess.DataBindings.Add(nameof(NumericUpDown.Value), settings, nameof(settings.DelayProcessScanner), false, DataSourceUpdateMode.OnPropertyChanged);
+            numericDelayGamePtr.DataBindings.Add(nameof(NumericUpDown.Value), settings, nameof(settings.DelayGamePointerScanner), false, DataSourceUpdateMode.OnPropertyChanged);
+            numericDelayTriggers.DataBindings.Add(nameof(NumericUpDown.Value), settings, nameof(settings.DelayUpdateTriggers), false, DataSourceUpdateMode.OnPropertyChanged);
 
             var iconSize = database.GetIconFor(ElementType.Nature).Size; // faces are larger
             listSplits.SmallImageList = new ImageList();

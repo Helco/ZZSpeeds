@@ -37,6 +37,15 @@ namespace ZZAutosplitter
         [DefaultValue(true)]
         public bool EnableLoadTimeRemoval { get; set; } = true;
 
+        [DefaultValue(500)]
+        public int DelayProcessScanner { get; set; } = 500;
+
+        [DefaultValue(16)]
+        public int DelayGamePointerScanner { get; set; } = 16;
+
+        [DefaultValue(30)]
+        public int DelayUpdateTriggers { get; set; } = 30;
+
         public List<SplitRule> SplitRules { get; set; } = new List<SplitRule>();
     }
 

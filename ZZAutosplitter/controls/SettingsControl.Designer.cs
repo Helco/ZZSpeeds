@@ -1,5 +1,5 @@
 ﻿
-namespace ZZAutosplitter
+namespace ZZAutosplitter.controls
 {
     partial class SettingsControl
     {
@@ -29,6 +29,7 @@ namespace ZZAutosplitter
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listSplits = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -47,15 +48,25 @@ namespace ZZAutosplitter
             this.btnDeleteSplit = new System.Windows.Forms.ToolStripButton();
             this.btnClearSplits = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericDelayTriggers = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericDelayGamePtr = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericDelayProcess = new System.Windows.Forms.NumericUpDown();
             this.checkBoxLoadTime = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoSplits = new System.Windows.Forms.CheckBox();
+            this.toolTipDelays = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.RightToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.toolStripSplits.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayTriggers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayGamePtr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayProcess)).BeginInit();
             this.SuspendLayout();
             // 
             // listSplits
@@ -70,7 +81,7 @@ namespace ZZAutosplitter
             this.listSplits.HideSelection = false;
             this.listSplits.Location = new System.Drawing.Point(3, 3);
             this.listSplits.Name = "listSplits";
-            this.listSplits.Size = new System.Drawing.Size(611, 460);
+            this.listSplits.Size = new System.Drawing.Size(623, 460);
             this.listSplits.TabIndex = 1;
             this.listSplits.UseCompatibleStateImageBehavior = false;
             this.listSplits.View = System.Windows.Forms.View.Details;
@@ -103,7 +114,7 @@ namespace ZZAutosplitter
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.listSplits);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelSplitEdit);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(617, 598);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(629, 598);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(3, 22);
@@ -123,7 +134,7 @@ namespace ZZAutosplitter
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSplitEdit.Location = new System.Drawing.Point(3, 469);
             this.panelSplitEdit.Name = "panelSplitEdit";
-            this.panelSplitEdit.Size = new System.Drawing.Size(611, 129);
+            this.panelSplitEdit.Size = new System.Drawing.Size(623, 129);
             this.panelSplitEdit.TabIndex = 3;
             // 
             // toolStripSplits
@@ -139,7 +150,7 @@ namespace ZZAutosplitter
             this.btnClearSplits});
             this.toolStripSplits.Location = new System.Drawing.Point(0, 4);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(48, 195);
+            this.toolStripSplits.Size = new System.Drawing.Size(36, 167);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
@@ -157,7 +168,7 @@ namespace ZZAutosplitter
             this.splitBtnAddSplit.Image = global::ZZAutosplitter.Properties.Resources.add;
             this.splitBtnAddSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.splitBtnAddSplit.Name = "splitBtnAddSplit";
-            this.splitBtnAddSplit.Size = new System.Drawing.Size(45, 28);
+            this.splitBtnAddSplit.Size = new System.Drawing.Size(33, 28);
             this.splitBtnAddSplit.Text = "Add split";
             this.splitBtnAddSplit.ButtonClick += new System.EventHandler(this.splitBtnAddSplit_ButtonClick);
             // 
@@ -209,7 +220,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitUp.Image = global::ZZAutosplitter.Properties.Resources.arrow_up;
             this.btnMoveSplitUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
-            this.btnMoveSplitUp.Size = new System.Drawing.Size(45, 28);
+            this.btnMoveSplitUp.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitUp.Text = "Move up";
             this.btnMoveSplitUp.Click += new System.EventHandler(this.btnMoveSplitUp_Click);
             // 
@@ -219,7 +230,7 @@ namespace ZZAutosplitter
             this.btnMoveSplitDown.Image = global::ZZAutosplitter.Properties.Resources.arrow_down;
             this.btnMoveSplitDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
-            this.btnMoveSplitDown.Size = new System.Drawing.Size(45, 28);
+            this.btnMoveSplitDown.Size = new System.Drawing.Size(33, 28);
             this.btnMoveSplitDown.Text = "Move down";
             this.btnMoveSplitDown.Click += new System.EventHandler(this.btnMoveSplitDown_Click);
             // 
@@ -229,7 +240,7 @@ namespace ZZAutosplitter
             this.btnDeleteSplit.Image = global::ZZAutosplitter.Properties.Resources.delete;
             this.btnDeleteSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteSplit.Name = "btnDeleteSplit";
-            this.btnDeleteSplit.Size = new System.Drawing.Size(45, 28);
+            this.btnDeleteSplit.Size = new System.Drawing.Size(33, 28);
             this.btnDeleteSplit.Text = "Delete split";
             this.btnDeleteSplit.Click += new System.EventHandler(this.btnDeleteSplit_Click);
             // 
@@ -239,7 +250,7 @@ namespace ZZAutosplitter
             this.btnClearSplits.Image = global::ZZAutosplitter.Properties.Resources.bin_closed;
             this.btnClearSplits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClearSplits.Name = "btnClearSplits";
-            this.btnClearSplits.Size = new System.Drawing.Size(45, 28);
+            this.btnClearSplits.Size = new System.Drawing.Size(33, 28);
             this.btnClearSplits.Text = "Clear all splits";
             this.btnClearSplits.Click += new System.EventHandler(this.btnClearSplits_Click);
             // 
@@ -247,6 +258,12 @@ namespace ZZAutosplitter
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.numericDelayTriggers);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.numericDelayGamePtr);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.numericDelayProcess);
             this.groupBox2.Controls.Add(this.checkBoxLoadTime);
             this.groupBox2.Controls.Add(this.checkBoxAutoStart);
             this.groupBox2.Controls.Add(this.checkBoxAutoSplits);
@@ -256,6 +273,105 @@ namespace ZZAutosplitter
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Basic Settings";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(459, 86);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(206, 20);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Delay in-game scanner (ms)";
+            // 
+            // numericDelayTriggers
+            // 
+            this.numericDelayTriggers.Location = new System.Drawing.Point(371, 84);
+            this.numericDelayTriggers.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericDelayTriggers.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericDelayTriggers.Name = "numericDelayTriggers";
+            this.numericDelayTriggers.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayTriggers.TabIndex = 7;
+            this.toolTipDelays.SetToolTip(this.numericDelayTriggers, "Time between two in-game checks.\r\nLower values might result in slightly more accu" +
+        "rate timings but will result in higher CPU usage.");
+            this.numericDelayTriggers.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(459, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(184, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Delay initial scanner (ms)";
+            // 
+            // numericDelayGamePtr
+            // 
+            this.numericDelayGamePtr.Location = new System.Drawing.Point(371, 54);
+            this.numericDelayGamePtr.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericDelayGamePtr.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericDelayGamePtr.Name = "numericDelayGamePtr";
+            this.numericDelayGamePtr.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayGamePtr.TabIndex = 5;
+            this.toolTipDelays.SetToolTip(this.numericDelayGamePtr, "Time between two initial game scans.\r\nLower only if the autosplitter does not rea" +
+        "ct fast enough after resetting the game!");
+            this.numericDelayGamePtr.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(459, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(205, 20);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Delay process scanner (ms)";
+            // 
+            // numericDelayProcess
+            // 
+            this.numericDelayProcess.Location = new System.Drawing.Point(371, 24);
+            this.numericDelayProcess.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericDelayProcess.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericDelayProcess.Name = "numericDelayProcess";
+            this.numericDelayProcess.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayProcess.TabIndex = 3;
+            this.toolTipDelays.SetToolTip(this.numericDelayProcess, "Time between two process scans.\r\nLower only if the Autosplitter does not react fa" +
+        "st enough after resetting the game!");
+            this.numericDelayProcess.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // checkBoxLoadTime
             // 
@@ -306,6 +422,9 @@ namespace ZZAutosplitter
             this.toolStripSplits.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayTriggers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayGamePtr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDelayProcess)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -333,5 +452,12 @@ namespace ZZAutosplitter
         private System.Windows.Forms.Panel panelSplitEdit;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericDelayTriggers;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericDelayGamePtr;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericDelayProcess;
+        private System.Windows.Forms.ToolTip toolTipDelays;
     }
 }
