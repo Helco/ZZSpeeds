@@ -8,18 +8,23 @@ namespace ZZAutosplitter
 {
     partial class Database
     {
-        private static Dictionary<CardId, string> LoadCards()
+        private static Dictionary<CardId, string> LoadCards(out IReadOnlyDictionary<CardId, ElementType> outFairyElements)
         {
             var xmlSerializer = new XmlSerializer(typeof(results));
             using var stringReader = new StringReader(Properties.Resources.cards);
             var results = (results)xmlSerializer.Deserialize(stringReader);
 
             var cards = new Dictionary<CardId, string>();
+            var fairyElements = new Dictionary<CardId, ElementType>();
             foreach (var row in results.rows)
             {
                 var cardId = new CardId((CardType)int.Parse(row[0].Value), int.Parse(row[1].Value));
                 cards.Add(cardId, row[2].Value);
+
+                if (cardId.type == CardType.Fairy)
+                    fairyElements.Add(cardId, (ElementType)int.Parse(row[3].Value));
             }
+            outFairyElements = fairyElements;
             return cards;
         }
     }

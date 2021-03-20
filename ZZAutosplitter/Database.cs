@@ -144,6 +144,7 @@ namespace ZZAutosplitter
         private readonly IReadOnlyDictionary<SceneId, IconId> sceneIcons;
 
         public IReadOnlyDictionary<CardId, string> Cards { get; }
+        public IReadOnlyDictionary<CardId, ElementType> FairyElements { get; }
         public IReadOnlyDictionary<SceneId, string> SceneNames { get; }
         public IReadOnlyCollection<ElementType> ElementTypes { get; }
         public IReadOnlyCollection<VideoId> Videos { get; }
@@ -151,11 +152,13 @@ namespace ZZAutosplitter
 
         public Database()
         {
-            Cards = LoadCards();
+            IReadOnlyDictionary<CardId, ElementType> fairyElements;
+            Cards = LoadCards(out fairyElements);
             SceneNames = LoadScenes(out sceneIcons);
             ElementTypes = Enum.GetValues(typeof(ElementType)).Cast<ElementType>().ToArray();
             Videos = Enum.GetValues(typeof(VideoId)).Cast<VideoId>().ToArray();
 
+            FairyElements = fairyElements;
             cardIcons = LoadCardIcons();
             FaceIcons = LoadFaceIcons();
         }
