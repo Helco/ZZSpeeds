@@ -10,6 +10,8 @@ using LiveSplit.Model;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
 using System.Threading;
+using ZZAutosplitter.versions;
+using LiveSplit.ComponentUtil;
 
 namespace ZZAutosplitter
 {
@@ -24,6 +26,7 @@ namespace ZZAutosplitter
 
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
         private readonly Task updateTask;
+        private GameState gameState = null;
 
         public ZZAutosplitter(LiveSplitState state)
         {
@@ -35,6 +38,7 @@ namespace ZZAutosplitter
         {
             cts.Cancel();
             updateTask.Wait(TimeSpan.FromSeconds(3));
+            gameState?.Dispose();
         }
 
         public override XmlNode GetSettings(XmlDocument document) => Settings.ToXmlNode(document);
@@ -50,45 +54,57 @@ namespace ZZAutosplitter
                 run.AddSegment(rule.GetDescription(Database), icon: rule.GetIcon(Database));
         }
 
-        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) { }
+        public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
+        {
+            if (updateTask.Exception != null)
+                throw updateTask.Exception;
+        }
 
         private async Task UpdateLoop()
         {
             Process process = null;
+            GameVersion gameVersion = null;
             IntPtr gamePointer = IntPtr.Zero;
 
             while (!cts.IsCancellationRequested)
             {
-                if ((process?.HasExited ?? true) && !FindProcess(out process))
+                if (process?.HasExited ?? true)
                 {
-                    await Task.Delay(Settings.DelayProcessScanner);
-                    continue;
+                    gameState?.Dispose();
+                    gameState = null;
+                    if (!FindProcess(out process, out gameVersion))
+                    {
+                        await Task.Delay(Settings.DelayProcessScanner);
+                        continue;
+                    }
                 }
-                if (gamePointer == IntPtr.Zero && !FindGamePointer(process, out gamePointer))
+
+                gameState ??= new GameState(LiveSplitState, process, gameVersion, Settings);
+                if (gameState.FindGamePointer())
                 {
+                    gameState.UpdateTriggers();
+                    await Task.Delay(Settings.DelayUpdateTriggers);
+                }
+                else
                     await Task.Delay(Settings.DelayGamePointerScanner);
-                    continue;
-                }
-                UpdateTriggers(process, gamePointer);
-                await Task.Delay(Settings.DelayUpdateTriggers);
             }
         }
 
-        private bool FindProcess(out Process process)
+        private bool FindProcess(out Process process, out GameVersion gameVersion)
         {
+            foreach (var p in Process.GetProcesses())
+            {
+                gameVersion = GameVersion.GetVersion(p);
+                if (gameVersion != null)
+                {
+                    process = p;
+                    return true;
+                }
+            }
+
             process = null;
+            gameVersion = null;
             return false;
-        }
-
-        private bool FindGamePointer(Process process, out IntPtr gamePointer)
-        {
-            gamePointer = IntPtr.Zero;
-            return false;
-        }
-
-        private void UpdateTriggers(Process process, IntPtr gamePointer)
-        {
-
         }
     }
 }

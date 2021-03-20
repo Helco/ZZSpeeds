@@ -43,10 +43,12 @@ namespace ZZAutosplitter.versions
 		public virtual int OffUIManagerToMainMenuScreenPtr => 0x80;
 		public virtual int OffSavegameScreenToInExitingAnimation => 0xF8;
 		public virtual int OffInventoryToCardsList => 0x00;
-		public virtual int OffListToNextFreeIndex => 0x8;
+		public virtual int OffListToCapacity => 0x0;
+		public virtual int OffListToCount => 0x8;
 		public virtual int OffListToData => 0x10;
 		public virtual int OffListToIndexMap => 0x14;
 		public virtual int OffInventorySlotToCardId => 0x04;
+		public virtual int OffInventorySlotToAmount => 0x0C;
 		public virtual int OffDialogScreenToCauseType => 0xB5C;
 		public virtual int OffNPCToDatabaseRow => 0x13C;
 		public virtual int OffDatabaseRowToUID => 0x14;
