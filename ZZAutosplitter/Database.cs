@@ -149,6 +149,7 @@ namespace ZZAutosplitter
         public IReadOnlyCollection<ElementType> ElementTypes { get; }
         public IReadOnlyCollection<VideoId> Videos { get; }
         public IReadOnlyDictionary<IconId, Image> FaceIcons { get; }
+        public IReadOnlyCollection<SplitRuleDefeating> NPCPresets { get; }
 
         public Database()
         {
@@ -161,6 +162,7 @@ namespace ZZAutosplitter
             FairyElements = fairyElements;
             cardIcons = LoadCardIcons();
             FaceIcons = LoadFaceIcons();
+            NPCPresets = LoadNPCPresets();
         }
 
         public string GetNameFor(CardId cardId) => Cards.TryGetValue(cardId, out var name) ? name : "<unknown>";

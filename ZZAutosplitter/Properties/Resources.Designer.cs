@@ -104,11 +104,11 @@ namespace ZZAutosplitter.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;results&gt;
         ///    &lt;query&gt;
-        ///        SELECT (CardId / 256 % 256) AS CardType, (CardId / 256 / 256) AS CardIndex, _fb0x02.col_0_String AS Name FROM (
-        ///        SELECT col_3_Integer AS CardId, col_1_ForeignKey AS NameUID FROM _fb0x01 UNION
-        ///        SELECT col_2_Integer AS CardId, col_0_ForeignKey AS NameUID FROM _fb0x03 UNION
-        ///        SELECT col_1_Integer AS CardId, col_0_ForeignKey AS NameUID FROM _fb0x04)
-        ///        LEFT JOIN _fb0x02 ON substr(_fb0x02.UID, 0, 8) IS substr(Nam [rest of string was truncated]&quot;;.
+        ///        SELECT (CardId / 256 % 256) AS CardType, (CardId / 256 / 256) AS CardIndex, _fb0x02.col_0_String AS Name, Class FROM (
+        ///        SELECT col_3_Integer AS CardId, col_1_ForeignKey AS NameUID, col_2_Integer AS Class FROM _fb0x01 UNION
+        ///        SELECT col_2_Integer AS CardId, col_0_ForeignKey AS NameUID, NULL AS Class FROM _fb0x03 UNION
+        ///        SELECT col_1_Integer AS CardId, col_0_ForeignKey AS NameUID, NULL AS Class FROM _fb0x04)
+        ///        [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string cards {
             get {
@@ -467,6 +467,26 @@ namespace ZZAutosplitter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;npcs&gt;
+        ///  &lt;!--&lt;npc uid=&quot;CB2B6E04&quot; name=&quot;Simri&quot; icon=&quot;&quot;/&gt; Cut content? --&gt;
+        ///
+        ///  &lt;npc uid=&quot;ED367294&quot; name=&quot;Elf Trainer&quot; icon=&quot;G300S30M&quot;/&gt;
+        ///  &lt;npc uid=&quot;1D5352B4&quot; name=&quot;Elf (Dark Forest)&quot; icon=&quot;G301S31M&quot;/&gt;
+        ///  &lt;npc uid=&quot;B8FAD994&quot; name=&quot;Elf (Towards Cottage)&quot; icon=&quot;G300S30M&quot;/&gt;
+        ///  &lt;npc uid=&quot;D7DF3704&quot; name=&quot;Elf (Cottage Secret)&quot; icon=&quot;G207S23M&quot;/&gt;
+        ///  &lt;npc uid=&quot;86DB0D84&quot; name=&quot;Scarecrow&quot; icon=&quot;V001S01M&quot;/&gt;
+        ///  
+        ///  &lt;npc uid=&quot;0D317E14&quot; name=&quot;Rufus&quot; icon=&quot;G202S22M&quot;/&gt;
+        ///  &lt;npc uid=&quot;79 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string npcs {
+            get {
+                return ResourceManager.GetString("npcs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap pencil {
@@ -482,31 +502,25 @@ namespace ZZAutosplitter.Properties {
         ///  &lt;scene&gt;
         ///    &lt;id&gt;2800&lt;/id&gt;
         ///    &lt;name&gt;London&lt;/name&gt;
+        ///    &lt;icon&gt;
+        ///      &lt;isCardId&gt;true&lt;/isCardId&gt;
+        ///      &lt;filename&gt;0x1c00ff&lt;/filename&gt;
+        ///    &lt;/icon&gt;
         ///  &lt;/scene&gt;
         ///  &lt;scene&gt;
         ///    &lt;id&gt;2801&lt;/id&gt;
         ///    &lt;name&gt;London top floor&lt;/name&gt;
+        ///    &lt;icon&gt;
+        ///      &lt;isCardId&gt;true&lt;/isCardId&gt;
+        ///      &lt;filename&gt;0x1c00ff&lt;/filename&gt;
+        ///    &lt;/icon&gt;
         ///  &lt;/scene&gt;
         ///  &lt;scene&gt;
         ///    &lt;id&gt;2421&lt;/id&gt;
         ///    &lt;name&gt;Cave before Endeva&lt;/name&gt;
-        ///  &lt;/scene&gt;
-        ///  &lt;scene&gt;
-        ///    &lt;id&gt;2431&lt;/id&gt;
-        ///    &lt;name&gt;Endeva behind stone&lt;/name&gt;
-        ///  &lt;/scene&gt;
-        ///  &lt;scene&gt;
-        ///    &lt;id&gt;1060&lt;/id&gt;
-        ///    &lt;name&gt;metal in sky&lt;/name&gt;
-        ///  &lt;/scene&gt;
-        ///
-        ///
-        ///  &lt;scene&gt;
-        ///    &lt;id&gt;2400&lt;/id&gt;
-        ///    &lt;name&gt;Endeva&lt;/name&gt;
-        ///  &lt;/scene&gt;
-        ///  &lt;scene&gt;
-        ///     [rest of string was truncated]&quot;;.
+        ///    &lt;icon&gt;
+        ///      &lt;isCardId&gt;true&lt;/isCardId&gt;
+        ///      &lt;filename&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string scenes {
             get {

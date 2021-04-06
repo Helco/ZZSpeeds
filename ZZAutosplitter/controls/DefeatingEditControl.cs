@@ -22,6 +22,8 @@ namespace ZZAutosplitter.controls
             this.rule = rule;
             this.database = database;
             InitializeComponent();
+            comboPreset.DataSource = database.NPCPresets;
+            comboPreset.DisplayMember = nameof(SplitRuleDefeating.Name);
             textUID.ValidatingType = typeof(DefeatingEditControl);
             textUID.Text = rule.UID.ToString("X8");
             textName.Text = rule.Name;
@@ -76,6 +78,20 @@ namespace ZZAutosplitter.controls
                 rule.UID = (uint)e.ReturnValue;
                 InvokeRuleChanged();
             }
+        }
+
+        private void btnApplyPreset_Click(object sender, EventArgs e)
+        {
+            if (comboPreset.SelectedItem == null)
+                return;
+            var preset = (SplitRuleDefeating)comboPreset.SelectedItem;
+            rule.UID = preset.UID;
+            rule.Name = preset.Name;
+            rule.Icon = preset.Icon;
+            textUID.Text = rule.UID.ToString("X8");
+            textName.Text = rule.Name;
+            UpdateIcon();
+            InvokeRuleChanged();
         }
     }
 }
