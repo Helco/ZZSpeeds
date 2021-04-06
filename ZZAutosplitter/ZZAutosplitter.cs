@@ -79,7 +79,7 @@ namespace ZZAutosplitter
                     }
                 }
 
-                gameState ??= new GameState(LiveSplitState, process, gameVersion, Settings);
+                gameState ??= new GameState(Database, LiveSplitState, process, gameVersion, Settings);
                 if (gameState.FindGamePointer())
                 {
                     gameState.UpdateTriggers();
@@ -95,7 +95,7 @@ namespace ZZAutosplitter
             foreach (var p in Process.GetProcesses())
             {
                 gameVersion = GameVersion.GetVersion(p);
-                if (gameVersion != null)
+                if (gameVersion != null && !p.HasExited)
                 {
                     process = p;
                     return true;
