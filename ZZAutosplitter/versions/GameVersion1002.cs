@@ -13,5 +13,7 @@
         public override int OffLoadSceneEnterEnd => 0x44613E;
         public override int OffLoadSceneExitStart => 0x4462B9;
         public override int OffLoadSceneExitEnd => 0x4462BE;
+        public override int OffLeaveDuelStart => 0x4ADA95;
+        public override int OffLeaveDuelEnd => 0x4ADA9B;
     }
 }

@@ -109,6 +109,8 @@
     <Compile Include="DatabaseNPCPresets.cs" />
     <Compile Include="DatabaseScenes.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="IInjector.cs" />
+    <Compile Include="injectors\DefeatInjector.cs" />
     <Compile Include="triggers\EnableSplitTriggers.cs" />
     <Compile Include="triggers\Inventory.cs" />
     <Compile Include="ITrigger.cs" />

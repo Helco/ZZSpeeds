@@ -28,6 +28,8 @@ namespace ZZAutosplitter.versions
         public abstract int OffLoadSceneEnterEnd { get; }
         public abstract int OffLoadSceneExitStart { get; }
         public abstract int OffLoadSceneExitEnd { get; }
+		public abstract int OffLeaveDuelStart { get; } // actually at a specific time where the NPC is in eax
+		public abstract int OffLeaveDuelEnd { get; }
 
         public virtual int LenLoadSceneEnter => OffLoadSceneEnterEnd - OffLoadSceneEnterStart;
         public virtual int LenLoadSceneExit => OffLoadSceneExitStart - OffLoadSceneExitStart;
@@ -57,5 +59,29 @@ namespace ZZAutosplitter.versions
 		public virtual int OffDatasetToDatasetStruct => 0x24;
 		public virtual int OffDatasetStructToSceneId => 0x0;
 		public virtual int OffVideoMgrToFilename => 0x14;
+		public virtual int OffGameflowToTriggerArg1 => 0x238;
+
+		private static readonly IReadOnlyCollection<byte> leaveDuelCodeBase = new byte[]
+		{
+			0x8b, 0x98, 0, 0, 0, 0, // mov ebx, DWORD PTR [eax+OffNPCToDatabaseRow]
+			0x8b, 0x9b, 0, 0, 0, 0, // mov ebx, DWORD PTR [ebx+OffDatabaseRowToUID]
+			0x89, 0x1d, 0, 0, 0, 0, // mov DWORD PTR npcUIDTarget, ebx
+			0x8b, 0x99, 0, 0, 0, 0, // mov ebx, DWORD PTR [ecx+OffGameflowToTriggerArg1]
+			0x89, 0x1d, 0, 0, 0, 0, // mov DWORD PTR fightResultTarget, ebx
+			0xe9, 0, 0, 0, 0		// jmp GATE
+		};
+		public int LeaveDuelCodeSize => leaveDuelCodeBase.Count;
+		public byte[] LeaveDuelCode(IntPtr gate, IntPtr dest, IntPtr npcUIDTarget, IntPtr fightResultTarget)
+        {
+			var code = leaveDuelCodeBase.ToArray();
+			int jumpSize = gate.ToInt32() - dest.ToInt32() - LeaveDuelCodeSize;
+			BitConverter.GetBytes(OffNPCToDatabaseRow)			.CopyTo(code, 0 * 6 + 2);
+			BitConverter.GetBytes(OffDatabaseRowToUID)			.CopyTo(code, 1 * 6 + 2);
+			BitConverter.GetBytes(npcUIDTarget.ToInt32())		.CopyTo(code, 2 * 6 + 2);
+			BitConverter.GetBytes(OffGameflowToTriggerArg1)		.CopyTo(code, 3 * 6 + 2);
+			BitConverter.GetBytes(fightResultTarget.ToInt32())	.CopyTo(code, 4 * 6 + 2);
+			BitConverter.GetBytes(jumpSize)						.CopyTo(code, 5 * 6 + 1);
+			return code;
+        }
     }
 }

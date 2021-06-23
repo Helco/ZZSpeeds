@@ -37,6 +37,7 @@ namespace ZZAutosplitter
 
         private bool isDisposed;
         private List<ITrigger> triggers = new();
+        private Dictionary<Type, IInjector> injectors = new();
         private MemoryWatcherList memWatchers = null;
 
         public GameState(Database database, LiveSplitState liveSplitState, Process process, GameVersion version, Settings settings)
@@ -107,6 +108,17 @@ namespace ZZAutosplitter
             memWatchers.UpdateAll(Process);
             foreach (var trigger in triggers)
                 trigger.Update();
+        }
+
+        public T GetInjector<T>() where T : IInjector, new()
+        {
+            if (injectors.TryGetValue(typeof(T), out var prevInjector))
+                return (T)prevInjector;
+
+            var injector = new T();
+            injector.InjectInto(this);
+            injectors[typeof(T)] = injector;
+            return injector;
         }
 
         protected virtual void DoDispose()
