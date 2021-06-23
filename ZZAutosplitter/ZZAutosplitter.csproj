@@ -111,6 +111,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="IInjector.cs" />
     <Compile Include="injectors\DefeatInjector.cs" />
+    <Compile Include="injectors\IsLoadingInjector.cs" />
     <Compile Include="triggers\EnableSplitTriggers.cs" />
     <Compile Include="triggers\Inventory.cs" />
     <Compile Include="ITrigger.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="controls\SettingsControl.Designer.cs">
       <DependentUpon>SettingsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="triggers\LoadRemover.cs" />
     <Compile Include="triggers\SplitOnDefeating.cs" />
     <Compile Include="triggers\SplitOnGettingTotalFairies.cs" />
     <Compile Include="triggers\SplitGettingOfClass.cs" />

@@ -96,6 +96,9 @@ namespace ZZAutosplitter
             if (Settings.EnableAutoStart)
                 triggers.Add(new Start(this));
 
+            if (Settings.EnableLoadTimeRemoval)
+                triggers.Add(new LoadRemover(this));
+
             memWatchers = new MemoryWatcherList();
             memWatchers.AddRange(triggers.SelectMany(t => t.MemoryWatchers));
         }

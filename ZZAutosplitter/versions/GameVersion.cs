@@ -71,6 +71,7 @@ namespace ZZAutosplitter.versions
 			0xe9, 0, 0, 0, 0		// jmp GATE
 		};
 		public int LeaveDuelCodeSize => leaveDuelCodeBase.Count;
+
 		public byte[] LeaveDuelCode(IntPtr gate, IntPtr dest, IntPtr npcUIDTarget, IntPtr fightResultTarget)
         {
 			var code = leaveDuelCodeBase.ToArray();
@@ -81,6 +82,22 @@ namespace ZZAutosplitter.versions
 			BitConverter.GetBytes(OffGameflowToTriggerArg1)		.CopyTo(code, 3 * 6 + 2);
 			BitConverter.GetBytes(fightResultTarget.ToInt32())	.CopyTo(code, 4 * 6 + 2);
 			BitConverter.GetBytes(jumpSize)						.CopyTo(code, 5 * 6 + 1);
+			return code;
+        }
+
+		private static readonly IReadOnlyCollection<byte> toggleIsLoadingCodeBase = new byte[]
+		{
+			0x66, 0x83, 0x35, 0, 0, 0, 0, 0x01, // xor DWORD PTR [isPlayingTarget], 1
+			0xE9, 0, 0, 0, 0					// jmp GATE
+		};
+		public int ToggleIsLoadingCodeSize => toggleIsLoadingCodeBase.Count;
+
+		public byte[] ToggleIsLoadingCode(IntPtr gate, IntPtr dest, IntPtr isPlayingTarget)
+        {
+			var code = toggleIsLoadingCodeBase.ToArray();
+			int jumpSize = gate.ToInt32() - dest.ToInt32() - ToggleIsLoadingCodeSize;
+			BitConverter.GetBytes(isPlayingTarget.ToInt32()).CopyTo(code, 3);
+			BitConverter.GetBytes(jumpSize)					.CopyTo(code, 9);
 			return code;
         }
     }

@@ -22,7 +22,7 @@ namespace ZZAutosplitter.injectors
             var version = state.Version;
 
             var totalMemorySize =
-                state.Version.LeaveDuelCodeSize +
+                version.LeaveDuelCodeSize +
                 sizeof(int) * 2;
             var memBegin = process.AllocateMemory(totalMemorySize);
             lastNpcUID = memBegin + 0;
