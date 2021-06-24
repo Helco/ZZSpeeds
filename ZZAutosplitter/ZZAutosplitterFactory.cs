@@ -16,7 +16,7 @@ namespace ZZAutosplitter
 
         public ComponentCategory Category => ComponentCategory.Control;
 
-        public string UpdateName => ComponentName;
+        public string UpdateName => $"{ComponentName} {Version}";
 
         public string UpdateURL => "https://raw.githubusercontent.com/Helco/ZZSpeeds/release/";
 
