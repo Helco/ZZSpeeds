@@ -1,0 +1,12 @@
+  
+<?xml version="1.0" encoding="utf-8" ?>
+<updates>
+    <update version="1.0.0">
+        <files>
+            <file path="ZZAutosplitter.dll" status="changed"/>
+        </files>
+        <changelog>
+            <change> Initial version after rewrite </change>
+        </changelog>
+    </update>
+</updates>
