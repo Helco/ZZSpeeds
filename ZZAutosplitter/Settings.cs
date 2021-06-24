@@ -12,8 +12,18 @@ namespace ZZAutosplitter
     public class Settings
     {
         private static XmlSerializer CreateSerializer() => new XmlSerializer(typeof(Settings));
-        public static Settings FromXmlNode(XmlNode xmlNode) =>
-            (Settings)CreateSerializer().Deserialize(new XmlNodeReader(xmlNode));
+        public static Settings FromXmlNode(XmlNode xmlNode)
+        {
+            if (xmlNode?.Name != nameof(Settings))
+            {
+                xmlNode = xmlNode.ChildNodes
+                    .OfType<XmlNode>()
+                    .FirstOrDefault(n => n.Name == nameof(Settings));
+            }
+            if (xmlNode == null)
+                return new Settings();
+            return (Settings)CreateSerializer().Deserialize(new XmlNodeReader(xmlNode));
+        }
 
         public XmlNode ToXmlNode(XmlDocument document)
         {
@@ -21,7 +31,9 @@ namespace ZZAutosplitter
             var navigator = tmpDocument.CreateNavigator();
             var writer = navigator.AppendChild();
             writer.WriteStartDocument();
+            writer.WriteStartElement(nameof(Settings));
             CreateSerializer().Serialize(writer, this);
+            writer.WriteEndElement();
             writer.WriteEndDocument();
             writer.Flush();
             writer.Close();
