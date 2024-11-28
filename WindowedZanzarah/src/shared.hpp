@@ -8,12 +8,66 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
+#include <string_view>
+#include <span>
+#include <cassert>
 
 // grr... C macros messing with C++ STL
 #undef min
 #undef max 
 
 static_assert(sizeof(void*) == 4, "Zanzarah runs in x86, so does WindowedZanzarah!");
+
+enum class PatchKind
+{
+	Constant,
+	MemSet,
+	ResWidth,
+	ResHeight,
+	HeightOverWidth,
+	RatioFactor
+};
+
+struct PatchPiece
+{
+	PatchKind kind;
+	std::string_view data;
+	size_t count;
+
+	constexpr PatchPiece(PatchKind kind = PatchKind::Constant) : kind(kind), count(0) {}
+	constexpr PatchPiece(const char *data) : kind(PatchKind::Constant), data(data), count(0) {}
+};
+
+PatchPiece PatchMemSet(const char *byte, size_t count)
+{
+	PatchPiece piece(PatchKind::MemSet);
+	piece.data = byte;
+	piece.count = count;
+	return piece;
+}
+
+class PatchEntry
+{
+	static constexpr const size_t maxPieces = 8;
+
+	PatchPiece allPieces[maxPieces];
+public:
+	DWORD offset;
+	std::span<PatchPiece> pieces;
+
+	constexpr PatchEntry(DWORD offset, std::initializer_list<PatchPiece> pieces)
+		: offset(offset)
+		, allPieces()
+		, pieces(&allPieces[0], pieces.size())
+	{
+		assert(pieces.size() <= maxPieces);
+		std::copy(pieces.begin(), pieces.end(), allPieces);
+	}
+};
+
+PatchEntry PatchEntryRatioFactor(DWORD offset) {
+	return { offset, { PatchKind::RatioFactor } };
+}
 
 static const DWORD NO_HOOK_NECESSARY = ((DWORD)-1);
 static constexpr const char* WZConfigFile = "..\\Configs\\WindowedZanzarah.cfg";
@@ -36,6 +90,7 @@ struct GameVersionInfo
 	DWORD addrResolutionModes;
 	DWORD addrCreateSingleInstanceMutex;
 	DWORD addrInputMgr_update;
+	std::span<const PatchEntry> highResolutionPatch;
 };
 
 struct GameVersion
@@ -49,6 +104,10 @@ struct WZConfig
 {
 	bool windowedMode;
 	bool ignoreFocusLoss;
+	bool applyHighResolutionPatch;
+	bool padding;
+
+	uint16_t resWidth, resHeight;
 };
 #pragma pack(pop)
 
@@ -59,46 +118,74 @@ struct ResolutionMode
 	int depth;
 };
 
+// converted from https://web.archive.org/web/20180313011325/http://forum.daedalic.de/viewtopic.php?f=273&t=5949#p25774
+// TODO: Annotate with meaning per entry
+
+static const PatchEntry SteamHighResolutionPatch[] = {
+	{ 0x001078, { "9090" } },
+	{ 0x01128c, { "e90e2c1900" } },
+	{ 0x0f5c43, { "59595968", PatchKind::ResHeight, "68", PatchKind::ResWidth, "5233c9894c2414894c2410b820000000" } },
+	{ 0x1a3e9f, { "8d732c8bcec7442408", PatchKind::ResWidth, "c744240c", PatchKind::ResHeight, "e9d8d3e6ff" } },
+	{ 0x1a5fcc, { PatchKind::HeightOverWidth } },
+	{ 0x1a6508, { PatchKind::HeightOverWidth } },
+	{ 0x019430, { "e987aa1800", PatchMemSet("90", 26) } },
+	{ 0x1a3ebc, { "c74108", PatchKind::ResWidth, "c7410c", PatchKind::ResHeight, "c7411020000000c74114000000005ec20400" } },
+
+	PatchEntryRatioFactor(0x1a60ac), // skills
+	PatchEntryRatioFactor(0x1a7278), // icon
+	PatchEntryRatioFactor(0x1a727c),
+	PatchEntryRatioFactor(0x1a7290), // gauge
+	PatchEntryRatioFactor(0x1a7294),
+	PatchEntryRatioFactor(0x1a6e6c), // bars
+	PatchEntryRatioFactor(0x1a72ac),
+};
+
 static const GameVersionInfo GameVersionInfos[] = {
 	{
-		"1.002 German CD Release",
-		2162688,	// exeSize
-		108,		// resID_videoSettingsTab
-		0x403431,	// addrWndProc
-		0x417B99,	// addrFindGameCD
-		0x4B2DB0,	// addrCheckSerialNumber
-		0x4211C4,	// addrUICursor_update
-		0x42111A,	// addrUICursor_setVisible // this hook is needed because the cursor pos is guaranteed to be correct after this function
-		0x42126E,	// addrCallSetCursorPos
-		0x4A2840,	// addrGame_tick
-		0x5C5D98,	// addrResolutionIndex
-		0x5A4C90,	// addrResolutionModes
-		0x4011A8,	// addrCreateSingleInstanceMutex
-		0x417DCC	// addrInputMgr_update
+		.descriptiveName = "1.002 German CD Release",
+		.exeSize = 2162688,	// exeSize
+		.resID_videoSettingsTab = 108,		// resID_videoSettingsTab
+		.addrWndProc = 0x403431,	// addrWndProc
+		.addrFindGameCD = 0x417B99,	// addrFindGameCD
+		.addrCheckSerialNumber = 0x4B2DB0,	// addrCheckSerialNumber
+		.addrUICursor_update = 0x4211C4,	// addrUICursor_update
+		.addrUICursor_setVisible = 0x42111A,	// addrUICursor_setVisible // this hook is needed because the cursor pos is guaranteed to be correct after this function
+		.addrCallSetCursorPos = 0x42126E,	// addrCallSetCursorPos
+		.addrGame_tick = 0x4A2840,	// addrGame_tick
+		.addrResolutionModeIndex = 0x5C5D98,	// addrResolutionIndex
+		.addrResolutionModes = 0x5A4C90,	// addrResolutionModes
+		.addrCreateSingleInstanceMutex = 0x4011A8,	// addrCreateSingleInstanceMutex
+		.addrInputMgr_update = 0x417DCC	// addrInputMgr_update
 	},
 
 	{
-		"1.010 Russian Steam Release",
-		2166784,			// exeSize
-		108,				// resID_videoSettingsTab
-		0x403428,			// addrWndProc
-		NO_HOOK_NECESSARY,	// addrFindGameCD
-		NO_HOOK_NECESSARY,	// addrCheckSerialNumber
-		0x4223A9,			// addrUICursor_update
-		0x4222FF,			// addrUICursor_setVisible
-		0x422453,			// addrCallSetCursorPos
-		0x4A3E5F,			// addrGame_tick
-		0x5C6D98,			// addrResolutionModeIndex
-		0x5A5CA0,			// addrResolutionModes,
-		0x4011A8,			// addrCreateSingleInstanceMutex
-		0x417A19			// addrInputMgr_update
+		.descriptiveName = "1.010 Russian Steam Release",
+		.exeSize = 2166784,
+		.resID_videoSettingsTab = 108,
+		.addrWndProc = 0x403428,
+		.addrFindGameCD = NO_HOOK_NECESSARY,
+		.addrCheckSerialNumber = NO_HOOK_NECESSARY,
+		.addrUICursor_update = 0x4223A9,
+		.addrUICursor_setVisible = 0x4222FF,
+		.addrCallSetCursorPos = 0x422453,
+		.addrGame_tick = 0x4A3E5F,
+		.addrResolutionModeIndex = 0x5C6D98,
+		.addrResolutionModes = 0x5A5CA0,
+		.addrCreateSingleInstanceMutex = 0x4011A8,
+		.addrInputMgr_update = 0x417A19,
+		.highResolutionPatch = { SteamHighResolutionPatch, _countof(SteamHighResolutionPatch) }
 	},
 
 	{ nullptr, 0, 0 }
 };
 
 static const WZConfig DefaultWZConfig = {
-	false,	// windowedMode
+	.windowedMode = false,
+	.ignoreFocusLoss = false,
+	.applyHighResolutionPatch = false,
+
+	.resWidth = 1024,
+	.resHeight = 768
 };
 
 struct
@@ -206,7 +293,7 @@ std::string GetErrorAsString(DWORD errorMessageID)
 	return message;
 }
 
-void ErrorExit(const char* const message)
+void __declspec(noreturn) ErrorExit(const char* const message)
 {
 	OutputDebugString(message);
 	DebugBreak();

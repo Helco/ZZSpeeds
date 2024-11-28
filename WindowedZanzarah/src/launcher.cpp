@@ -36,10 +36,10 @@ int runZanzarah(const char* filename, const char* dllPath, std::string&& cmdLine
 
 int main(int argc, char* argv[])
 {
-	auto versionOpt = GetGameVersion();
-	if (!versionOpt)
+	const auto versionOpt = GetGameVersion();
+	if (!versionOpt.has_value())
 		ErrorExit("Could not found supported version of Zanzarah");
-	auto version = versionOpt.value();
+	const auto &version = versionOpt.value();
 
 	std::string cmdLinePrefix = version.filename;
 	cmdLinePrefix.append(" -zanzarah ");
