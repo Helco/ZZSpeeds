@@ -150,6 +150,9 @@ static const PatchEntry SteamHighResolutionPatch[] = {
 	PatchEntryRatioFactor(0x1a7294),
 	PatchEntryRatioFactor(0x1a6e6c), // bars
 	PatchEntryRatioFactor(0x1a72ac),
+
+	// Non-original patches
+	{ 0x0F510A, { "E963010000" } } // speeds up startup by ignoring some self-diagnosis related to color widths?
 };
 
 static const GameVersionInfo GameVersionInfos[] = {
