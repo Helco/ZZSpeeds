@@ -69,6 +69,10 @@ static std::vector<ResolutionMode> myResolutionModes =
 	{ 1920, 1200, 32 },
 	{ 2560, 1440, 32 },
 	{ 3840, 2160, 32 },
+
+	// Weird ultra-wide resolutions
+	{ 2560, 1440, 32 },
+	{ 3440, 1440, 32 },
 };
 
 ResolutionMode GetResolutionMode()
