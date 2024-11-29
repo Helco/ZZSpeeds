@@ -32,7 +32,7 @@ static FnCreateDialogParamA originalCreateDialogParamA = CreateDialogParamA;
 static FnCreateSingleInstanceMutex originalCreateSingleInstanceMutex = nullptr;
 static FnInputMgr_update originalInputMgr_update = nullptr;
 
-static const int* resolutionModeIndex = nullptr;
+static int* resolutionModeIndex = nullptr;
 static const ResolutionMode* resolutionModes = nullptr;
 
 static GameVersion gameVersion;
@@ -51,9 +51,11 @@ static int overrideWindowX = -1;
 static bool widescreenPatchIsHardInstalled = false;
 static std::vector<ResolutionMode> myResolutionModes =
 {
+	// the original ones
 	{ 640, 480, 32 },
 	{ 800, 600, 32 },
 	{ 1024, 768, 32 },
+	// the new ones
 	{ 1280, 720, 32 },
 	{ 1280, 800, 32 },
 	{ 1280, 960, 32 },
@@ -65,7 +67,6 @@ static std::vector<ResolutionMode> myResolutionModes =
 	{ 1920, 1080, 32 },
 	{ 1920, 1200, 32 }
 };
-static std::vector<WPARAM> myResolutionModeItems;
 
 ResolutionMode GetResolutionMode()
 {
@@ -330,22 +331,33 @@ int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 		}
 		else
 		{
+			auto previousMode =
+				curWZConfig.applyHighResolutionPatch ? ResolutionMode{ curWZConfig.resWidth, curWZConfig.resHeight, 32 }
+				: *resolutionModeIndex >= 0 && *resolutionModeIndex <= 5 ? resolutionModes[*resolutionModeIndex]
+				: ResolutionMode{ 0, 0, 0 };
+
 			footNoteText += "\nHigher resolutions and widescreen support was developed by user \"modder\" on forum.daedalic.de";
 			int i = 0;
+			WPARAM selectedMode = ~0;
 			SendMessageA(comboBox, CB_RESETCONTENT, 0, 0);
 			for (const auto &mode : myResolutionModes)
 			{
 				auto name = mode.toString();
-				auto entry = SendMessageA(comboBox, CB_ADDSTRING, 0, (LPARAM)name.c_str());
-				SendMessageA(comboBox, CB_SETITEMDATA, (WPARAM)entry, i++);
-				myResolutionModeItems.push_back((WPARAM)entry);
+				SendMessageA(comboBox, CB_ADDSTRING, 0, (LPARAM)name.c_str());
+				SendMessageA(comboBox, CB_SETITEMDATA, (WPARAM)i, 0); // Zanzarah expects the item data to be the index but we override it anyway
+				if (previousMode == mode)
+					selectedMode = i;
+				i++;
 			}
+			if (selectedMode != ~0)
+				SendMessageA(comboBox, CB_SETCURSEL, (WPARAM)selectedMode, 0);
 		}
 
 		SetDlgItemTextA(hWnd, IDC_VIDEO_FOOTNOTE, footNoteText.c_str());
 		return result;
 	}
 	else if (msg == WM_DESTROY) {
+		auto result = originalVideoSettingsDialogProc(hWnd, msg, wParam, lParam);
 		isAfterSettingsDialog = true;
 		auto newWZConfig = curWZConfig;
 		auto hChkWindowed = GetDlgItem(hWnd, IDC_CHECK_WINDOWED);
@@ -360,11 +372,10 @@ int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 		else
 		{
 			auto comboBox = GetDlgItem(hWnd, IDC_VIDEOMODE);
-			auto comboBoxSelection = SendMessageA(comboBox, CB_GETCURSEL, 0, 0);
-			auto resolutionIndex = SendMessageA(comboBox, CB_GETITEMDATA, (WPARAM)comboBoxSelection, 0);
+			auto resolutionIndex = SendMessageA(comboBox, CB_GETCURSEL, 0, 0);
 			if (resolutionIndex < 0 || resolutionIndex >= (LPARAM)myResolutionModes.size())
-				resolutionIndex = 2;
-			SendMessageA(comboBox, CB_SETCURSEL, (WPARAM)myResolutionModeItems[std::min(2, (int)resolutionIndex)], 0);
+				resolutionIndex = 2; // 1024x768x32
+			*resolutionModeIndex = 3 + std::min(2, (int)resolutionIndex);
 
 			auto mode = myResolutionModes.at(resolutionIndex);
 			newWZConfig.applyHighResolutionPatch = resolutionIndex > 2;
@@ -380,6 +391,8 @@ int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 			ExitProcess(ExitCodeNoLauncher);
 		else if (curWZConfig.applyHighResolutionPatch)
 			ApplyHighResolutionPatch();
+
+		return result;
 	}
 
 	return originalVideoSettingsDialogProc(hWnd, msg, wParam, lParam);
@@ -468,7 +481,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		originalGame_tick = reinterpret_cast<FnGame_tick>(gameVersion.info.addrGame_tick);
 		originalCreateSingleInstanceMutex = reinterpret_cast<FnCreateSingleInstanceMutex>(gameVersion.info.addrCreateSingleInstanceMutex);
 		originalInputMgr_update = reinterpret_cast<FnInputMgr_update>(gameVersion.info.addrInputMgr_update);
-		resolutionModeIndex = reinterpret_cast<const int*>(gameVersion.info.addrResolutionModeIndex);
+		resolutionModeIndex = reinterpret_cast<int*>(gameVersion.info.addrResolutionModeIndex);
 		resolutionModes = reinterpret_cast<const ResolutionMode*>(gameVersion.info.addrResolutionModes);
 		if (gameVersion.info.addrFindGameCD != NO_HOOK_NECESSARY)
 			originalFindGameCD = reinterpret_cast<FnFindGameCD>(gameVersion.info.addrFindGameCD);

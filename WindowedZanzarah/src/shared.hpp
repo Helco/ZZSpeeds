@@ -123,6 +123,11 @@ struct ResolutionMode
 		sstream << width << 'x' << height << 'x' << depth;
 		return sstream.str();
 	}
+
+	bool operator == (const ResolutionMode &other)
+	{
+		return width == other.width && height == other.height && depth == other.depth;
+	}
 };
 
 // converted from https://web.archive.org/web/20180313011325/http://forum.daedalic.de/viewtopic.php?f=273&t=5949#p25774
