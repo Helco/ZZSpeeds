@@ -41,12 +41,31 @@ static bool isWindowActivated = false;
 static bool wasWindowedMode = false;
 static bool shouldSkipLauncher = false;
 static bool shouldTransformGetCursorPos = false;
+static bool isAfterSettingsDialog = false; // to fix a problem with ClipCursor and low resolutions
 static HWND hWnd = nullptr;
 static HMODULE ownHModule = nullptr;
 static DLGPROC originalVideoSettingsDialogProc = nullptr;
 static FramerateClock framerateClock;
 static FramerateTimepoint frameStart = framerateClock.now();
 static int overrideWindowX = -1;
+static bool widescreenPatchIsHardInstalled = false;
+static std::vector<ResolutionMode> myResolutionModes =
+{
+	{ 640, 480, 32 },
+	{ 800, 600, 32 },
+	{ 1024, 768, 32 },
+	{ 1280, 720, 32 },
+	{ 1280, 800, 32 },
+	{ 1280, 960, 32 },
+	{ 1366, 768, 32 },
+	{ 1400, 1050, 32 },
+	{ 1600, 900, 32 },
+	{ 1600, 1200, 32 },
+	{ 1680, 1050, 32 },
+	{ 1920, 1080, 32 },
+	{ 1920, 1200, 32 }
+};
+static std::vector<WPARAM> myResolutionModeItems;
 
 ResolutionMode GetResolutionMode()
 {
@@ -58,6 +77,99 @@ ResolutionMode GetResolutionMode()
 		mode.depth = 32;
 	}
 	return mode;
+}
+
+uint32_t GetRatioInt(uint32_t width, uint32_t height)
+{
+	return width * 100 / height;
+}
+
+float GetRatioFactor()
+{
+	auto myRatio = GetRatioInt(curWZConfig.resWidth, curWZConfig.resHeight);
+	if (myRatio == GetRatioInt(1920, 1080))
+		return 0.25f;
+	if (myRatio == GetRatioInt(1920, 1200))
+		return 0.17f;
+	return 0.0f;
+}
+
+byte GetHexDigit(char ch) {
+	return (ch >= '0' && ch <= '9') ? ch - '0' :
+		(ch >= 'A' && ch <= 'F') ? ch - 'A' + 10 :
+		(ch >= 'a' && ch <= 'f') ? ch - 'a' + 10 :
+		0;
+}
+
+byte GetHexByte(std::string_view data, size_t i)
+{
+	return GetHexDigit(data[i]) << 4 | GetHexDigit(data[i + 1]);
+}
+
+void ApplyHighResolutionPatch()
+{
+	const auto patches = gameVersion.info.highResolutionPatch;
+	const uint32_t resWidth = curWZConfig.resWidth, resHeight = curWZConfig.resHeight;
+	const float heightOverWidth = resHeight / (float)resWidth;
+	const float ratioFactor = GetRatioFactor();
+
+	for (const auto &patch : patches)
+	{
+		byte *pointer = (byte *)(0x400000) + patch.offset;
+		size_t patchSize = 0;
+		for (const auto &piece : patch.pieces)
+		{
+			patchSize +=
+				piece.kind == PatchKind::Constant ? piece.data.size() / 2
+				: piece.kind == PatchKind::MemSet ? piece.count
+				: sizeof(uint32_t);
+		}
+		DWORD oldProtect = 0;
+		if (!VirtualProtect(pointer, patchSize, PAGE_READWRITE, &oldProtect))
+			ErrorExit("Could not change memory protection for high resolution patch");
+
+		for (const auto &piece : patch.pieces)
+		{
+			switch (piece.kind)
+			{
+			case PatchKind::Constant:
+			{
+				for (size_t i = 0; i < piece.data.size(); i += 2)
+					*pointer++ = GetHexByte(piece.data, i);
+			}break;
+			case PatchKind::MemSet:
+			{
+				for (size_t i = 0; i < piece.count; i++)
+					*pointer++ = GetHexByte(piece.data, 0);
+			}break;
+			case PatchKind::ResWidth:
+			{
+				*((uint32_t *)pointer) = resWidth;
+				pointer += sizeof(uint32_t);
+			}break;
+			case PatchKind::ResHeight:
+			{
+				*((uint32_t *)pointer) = resHeight;
+				pointer += sizeof(uint32_t);
+			}break;
+			case PatchKind::HeightOverWidth:
+			{
+				*((float *)pointer) = heightOverWidth;
+				pointer += sizeof(float);
+			}break;
+			case PatchKind::RatioFactor:
+			{
+				float *ratio = (float *)pointer;
+				*ratio = *ratio - *ratio * ratioFactor;
+				pointer += sizeof(float);
+			}break;
+			default: assert(false && "Unimplemented patch piece kind");
+			}
+		}
+
+		if (!VirtualProtect(pointer, patchSize, oldProtect, &oldProtect))
+			ErrorExit("Could not reset memory protection for high resolution patch");
+	}
 }
 
 RECT GetWindowContentRect(HWND hWnd)
@@ -106,13 +218,15 @@ int __stdcall MyWndProc (HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			0);
 	}
 
-	if (isWindowActivated) {
+	if (isWindowActivated && isAfterSettingsDialog) {
 		// ClipCursor is reverted each time a window is created
 		// which in modern windows systems is about anytime anything happens
 		// so we just call ClipCursor a lot, which is not pretty but works
 		RECT rect = GetWindowContentRect(hWnd);
 		ClipCursor(&rect);
 	}
+	else
+		ClipCursor(nullptr);
 
 	return originalWndProc(hWnd, msg, wParam, lParam);
 }
@@ -189,15 +303,74 @@ int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 {
 	if (msg == WM_INITDIALOG)
 	{
+		auto result = originalVideoSettingsDialogProc(hWnd, msg, wParam, lParam);
 		CheckDlgButton(hWnd, IDC_CHECK_WINDOWED, curWZConfig.windowedMode);
 		CheckDlgButton(hWnd, IDC_CHECK_IGNOREFOCUSLOSS, curWZConfig.ignoreFocusLoss);
+
+		widescreenPatchIsHardInstalled = WidescreenPatchDetection.IsInstalled();
+
+		auto footNote = GetDlgItem(hWnd, IDC_VIDEO_FOOTNOTE);
+		std::string footNoteText(512, '\0');
+		auto actualLength = GetDlgItemTextA(hWnd, IDC_VIDEO_FOOTNOTE, footNoteText.data(), footNoteText.length());
+		footNoteText.resize(actualLength);
+
+		auto comboBox = GetDlgItem(hWnd, IDC_VIDEOMODE);
+		if (widescreenPatchIsHardInstalled)
+		{
+			footNoteText += "\nWidescreen patch was already installed on the executable. Cannot change resolution";
+			auto hardMode = GetResolutionMode().toString();
+			SendMessageA(comboBox, CB_RESETCONTENT, 0, 0);
+			auto hardEntry = SendMessageA(comboBox, CB_ADDSTRING, 0, (LPARAM)hardMode.c_str());
+			SendMessageA(comboBox, CB_SETITEMDATA, (WPARAM)hardEntry, 0);
+		}
+		else if (gameVersion.info.highResolutionPatch.empty())
+		{
+			footNoteText += "\nGame version does not support widescreen patch: ";
+			footNoteText += gameVersion.info.descriptiveName;
+		}
+		else
+		{
+			footNoteText += "\nHigher resolutions and widescreen support was developed by user \"modder\" on forum.daedalic.de";
+			int i = 0;
+			SendMessageA(comboBox, CB_RESETCONTENT, 0, 0);
+			for (const auto &mode : myResolutionModes)
+			{
+				auto name = mode.toString();
+				auto entry = SendMessageA(comboBox, CB_ADDSTRING, 0, (LPARAM)name.c_str());
+				SendMessageA(comboBox, CB_SETITEMDATA, (WPARAM)entry, i++);
+				myResolutionModeItems.push_back((WPARAM)entry);
+			}
+		}
+
+		SetDlgItemTextA(hWnd, IDC_VIDEO_FOOTNOTE, footNoteText.c_str());
+		return result;
 	}
 	else if (msg == WM_DESTROY) {
+		isAfterSettingsDialog = true;
 		auto newWZConfig = curWZConfig;
 		auto hChkWindowed = GetDlgItem(hWnd, IDC_CHECK_WINDOWED);
 		newWZConfig.windowedMode = SendMessage(hChkWindowed, BM_GETCHECK, 0, 0) == 1;
 		auto hChkIgnoreFocusLoss = GetDlgItem(hWnd, IDC_CHECK_IGNOREFOCUSLOSS);
 		newWZConfig.ignoreFocusLoss = SendMessage(hChkIgnoreFocusLoss, BM_GETCHECK, 0, 0) == 1;
+
+		if (widescreenPatchIsHardInstalled || gameVersion.info.highResolutionPatch.empty())
+		{
+			newWZConfig.applyHighResolutionPatch = false;
+		}
+		else
+		{
+			auto comboBox = GetDlgItem(hWnd, IDC_VIDEOMODE);
+			auto comboBoxSelection = SendMessageA(comboBox, CB_GETCURSEL, 0, 0);
+			auto resolutionIndex = SendMessageA(comboBox, CB_GETITEMDATA, (WPARAM)comboBoxSelection, 0);
+			if (resolutionIndex < 0 || resolutionIndex >= (LPARAM)myResolutionModes.size())
+				resolutionIndex = 2;
+			SendMessageA(comboBox, CB_SETCURSEL, (WPARAM)myResolutionModeItems[std::min(2, (int)resolutionIndex)], 0);
+
+			auto mode = myResolutionModes.at(resolutionIndex);
+			newWZConfig.applyHighResolutionPatch = resolutionIndex > 2;
+			newWZConfig.resWidth = mode.width;
+			newWZConfig.resHeight = mode.height;
+		}
 		
 		bool shouldRestart = newWZConfig.windowedMode != curWZConfig.windowedMode;
 		SaveWZConfig(newWZConfig);
@@ -205,6 +378,8 @@ int __stdcall MyVideoSettingsDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 
 		if (shouldRestart)
 			ExitProcess(ExitCodeNoLauncher);
+		else if (curWZConfig.applyHighResolutionPatch)
+			ApplyHighResolutionPatch();
 	}
 
 	return originalVideoSettingsDialogProc(hWnd, msg, wParam, lParam);

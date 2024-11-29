@@ -116,6 +116,13 @@ struct ResolutionMode
 	int width;
 	int height;
 	int depth;
+
+	std::string toString() const
+	{
+		std::stringstream sstream;
+		sstream << width << 'x' << height << 'x' << depth;
+		return sstream.str();
+	}
 };
 
 // converted from https://web.archive.org/web/20180313011325/http://forum.daedalic.de/viewtopic.php?f=273&t=5949#p25774
