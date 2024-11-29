@@ -60,12 +60,15 @@ static std::vector<ResolutionMode> myResolutionModes =
 	{ 1280, 800, 32 },
 	{ 1280, 960, 32 },
 	{ 1366, 768, 32 },
+	{ 1400, 900, 32 },
 	{ 1400, 1050, 32 },
 	{ 1600, 900, 32 },
 	{ 1600, 1200, 32 },
 	{ 1680, 1050, 32 },
 	{ 1920, 1080, 32 },
-	{ 1920, 1200, 32 }
+	{ 1920, 1200, 32 },
+	{ 2560, 1440, 32 },
+	{ 3840, 2160, 32 },
 };
 
 ResolutionMode GetResolutionMode()
@@ -293,7 +296,7 @@ double __fastcall MyGame_tick(DWORD thizAddr, void* dummy)
 	);
 
 	int newDelay = lroundf(std::clamp(maxDelay - diff, 0.0f, maxDelay));
-	if (newDelay > 0)
+	if (newDelay > 0 && newDelay < 100)
 		Sleep(newDelay);
 	frameStart = framerateClock.now();
 
