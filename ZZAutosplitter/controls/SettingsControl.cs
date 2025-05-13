@@ -79,6 +79,7 @@ namespace ZZAutosplitter.controls
                 SplitRuleReaching r => new ReachingEditControl(r, database),
                 SplitRuleDefeating d => new DefeatingEditControl(d, database),
                 SplitRuleWatching w => new WatchingEditControl(w, database),
+                SplitRulePixies p => new GettingPixiesEditControl(p, database),
                 _ => throw new NotImplementedException($"Unimplemented edit control for {rule}")
             };
             if (editControl == null)
@@ -93,6 +94,7 @@ namespace ZZAutosplitter.controls
         private void menuAddGettingCards_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingCards());
         private void menuAddGettingFairiesOfClass_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingFairiesOfClass());
         private void menuAddGettingTotalFairies_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleGettingTotalFairies());
+        private void menuAddGettingPixies_Click(object sender, EventArgs e) => AddNewRule(new SplitRulePixies());
         private void menuAddReaching_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleReaching());
         private void menuAddDefeating_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleDefeating());
         private void menuAddWatching_Click(object sender, EventArgs e) => AddNewRule(new SplitRuleWatching());

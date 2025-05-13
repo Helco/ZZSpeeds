@@ -15,6 +15,7 @@ namespace ZZAutosplitter.controls
 
         private void btnAddSplitRules_Click(object sender, EventArgs e)
         {
+            // Unfortunately this method broke and I have not found a way to fix it. So it is disabled.
             autosplitter.AddSplitRulesAsSegments();
             MessageBox.Show($"Added {autosplitter.Settings.SplitRules.Count} splits to your run", "Zanzarah Autosplitter");
         }

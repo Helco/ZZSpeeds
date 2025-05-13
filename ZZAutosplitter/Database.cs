@@ -150,6 +150,7 @@ namespace ZZAutosplitter
         public IReadOnlyCollection<VideoId> Videos { get; }
         public IReadOnlyDictionary<IconId, Image> FaceIcons { get; }
         public IReadOnlyCollection<SplitRuleDefeating> NPCPresets { get; }
+        public IconId PixieIconId => new IconId(false, "pixie");
 
         public Database()
         {

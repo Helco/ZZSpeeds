@@ -67,6 +67,7 @@ namespace ZZAutosplitter
     [XmlInclude(typeof(SplitRuleReaching))]
     [XmlInclude(typeof(SplitRuleDefeating))]
     [XmlInclude(typeof(SplitRuleWatching))]
+    [XmlInclude(typeof(SplitRulePixies))]
     public abstract class SplitRule
     {
         [DefaultValue(true)]
@@ -151,4 +152,17 @@ namespace ZZAutosplitter
             db.GetIconFor(new CardId(CardType.Item, 58)); // Fairy book
     }
 
+    public class SplitRulePixies : SplitRule
+    {
+        public int Amount { get; set; } = 1;
+        public bool Exactly { get; set; } = false;
+        public IconId? OverrideIcon { get; set; } = null;
+
+        public override string GetDescription(Database db) =>
+            $"Getting {(Exactly ? "exactly" : "at least")} {Amount} pixies";
+
+        public override Image GetIcon(Database db) => OverrideIcon is null
+            ? db.GetIconFor(db.PixieIconId)
+            : db.GetIconFor(OverrideIcon.Value);
+    }
 }

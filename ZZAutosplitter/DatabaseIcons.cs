@@ -75,7 +75,8 @@ namespace ZZAutosplitter
             { nameof(W001S01M), W001S01M },
             { nameof(W002S02M), W002S02M },
             { nameof(W003S03M), W003S03M },
-            { nameof(X000S00M), X000S00M }
+            { nameof(X000S00M), X000S00M },
+            { nameof(pixie), pixie },
         }.ToDictionary(kv => new IconId(false, kv.Key), kv => kv.Value);
     }
 }

@@ -38,6 +38,7 @@ namespace ZZAutosplitter.versions
 		public virtual int OffPlayerToUIMgr => 0x188;
 		public virtual int OffPlayerToInventory => 0x7C;
 		public virtual int OffPlayerToCurrentNPC => 0x294;
+		public virtual int OffPlayerToPixieCount => 0x480; // that is the alltime pixie count, not the current pixie count
 
 		public virtual int OffUIManagerToSavegameScreenPtr => 0x84;
 		public virtual int OffUIManagerToCurrentScreenPtr => 0x38;

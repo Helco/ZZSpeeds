@@ -68,7 +68,7 @@ namespace ZZAutosplitter
 
             while (!cts.IsCancellationRequested)
             {
-                if (process?.HasExited ?? true)
+                if (process is null or { HasExited: true })
                 {
                     gameState?.Dispose();
                     gameState = null;

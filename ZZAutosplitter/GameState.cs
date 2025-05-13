@@ -89,6 +89,7 @@ namespace ZZAutosplitter
                         SplitRuleReaching r                 => new SplitOnReaching(this, r),
                         SplitRuleDefeating d                => new SplitOnDefeating(this, d),
                         SplitRuleWatching w                 => new SplitOnWatching(this, w),
+                        SplitRulePixies p                   => new SplitOnPixies(this, p),
                         _ => throw new NotSupportedException($"Unsupported split rule type {rule?.GetType()}")
                     }));
             }

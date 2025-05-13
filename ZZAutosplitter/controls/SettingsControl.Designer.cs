@@ -40,6 +40,7 @@ namespace ZZAutosplitter.controls
             this.menuAddGettingCards = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddGettingFairiesOfClass = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddGettingTotalFairies = new System.Windows.Forms.ToolStripMenuItem();
+            this.gettingPixiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddReaching = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddDefeating = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddWatching = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,9 +80,10 @@ namespace ZZAutosplitter.controls
             this.columnHeader1});
             this.listSplits.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listSplits.HideSelection = false;
-            this.listSplits.Location = new System.Drawing.Point(3, 3);
+            this.listSplits.Location = new System.Drawing.Point(2, 2);
+            this.listSplits.Margin = new System.Windows.Forms.Padding(2);
             this.listSplits.Name = "listSplits";
-            this.listSplits.Size = new System.Drawing.Size(623, 460);
+            this.listSplits.Size = new System.Drawing.Size(401, 299);
             this.listSplits.TabIndex = 1;
             this.listSplits.UseCompatibleStateImageBehavior = false;
             this.listSplits.View = System.Windows.Forms.View.Details;
@@ -99,9 +101,11 @@ namespace ZZAutosplitter.controls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.toolStripContainer1);
-            this.groupBox1.Location = new System.Drawing.Point(15, 145);
+            this.groupBox1.Location = new System.Drawing.Point(10, 94);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(671, 623);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Size = new System.Drawing.Size(447, 405);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Split Rules";
@@ -114,16 +118,18 @@ namespace ZZAutosplitter.controls
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.listSplits);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panelSplitEdit);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(629, 598);
+            this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(403, 388);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
-            this.toolStripContainer1.Location = new System.Drawing.Point(3, 22);
+            this.toolStripContainer1.Location = new System.Drawing.Point(2, 15);
+            this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.toolStripContainer1.Name = "toolStripContainer1";
             // 
             // toolStripContainer1.RightToolStripPanel
             // 
             this.toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripSplits);
-            this.toolStripContainer1.Size = new System.Drawing.Size(665, 598);
+            this.toolStripContainer1.Size = new System.Drawing.Size(443, 388);
             this.toolStripContainer1.TabIndex = 4;
             this.toolStripContainer1.Text = "toolStripContainer1";
             this.toolStripContainer1.TopToolStripPanelVisible = false;
@@ -132,9 +138,10 @@ namespace ZZAutosplitter.controls
             // 
             this.panelSplitEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelSplitEdit.Location = new System.Drawing.Point(3, 469);
+            this.panelSplitEdit.Location = new System.Drawing.Point(2, 304);
+            this.panelSplitEdit.Margin = new System.Windows.Forms.Padding(2);
             this.panelSplitEdit.Name = "panelSplitEdit";
-            this.panelSplitEdit.Size = new System.Drawing.Size(623, 129);
+            this.panelSplitEdit.Size = new System.Drawing.Size(399, 84);
             this.panelSplitEdit.TabIndex = 3;
             // 
             // toolStripSplits
@@ -150,7 +157,7 @@ namespace ZZAutosplitter.controls
             this.btnClearSplits});
             this.toolStripSplits.Location = new System.Drawing.Point(0, 4);
             this.toolStripSplits.Name = "toolStripSplits";
-            this.toolStripSplits.Size = new System.Drawing.Size(36, 167);
+            this.toolStripSplits.Size = new System.Drawing.Size(40, 181);
             this.toolStripSplits.TabIndex = 2;
             this.toolStripSplits.Text = "toolStrip1";
             // 
@@ -162,55 +169,63 @@ namespace ZZAutosplitter.controls
             this.menuAddGettingCards,
             this.menuAddGettingFairiesOfClass,
             this.menuAddGettingTotalFairies,
+            this.gettingPixiesToolStripMenuItem,
             this.menuAddReaching,
             this.menuAddDefeating,
             this.menuAddWatching});
             this.splitBtnAddSplit.Image = global::ZZAutosplitter.Properties.Resources.add;
             this.splitBtnAddSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.splitBtnAddSplit.Name = "splitBtnAddSplit";
-            this.splitBtnAddSplit.Size = new System.Drawing.Size(33, 28);
+            this.splitBtnAddSplit.Size = new System.Drawing.Size(38, 28);
             this.splitBtnAddSplit.Text = "Add split";
             this.splitBtnAddSplit.ButtonClick += new System.EventHandler(this.splitBtnAddSplit_ButtonClick);
             // 
             // menuAddGettingCards
             // 
             this.menuAddGettingCards.Name = "menuAddGettingCards";
-            this.menuAddGettingCards.Size = new System.Drawing.Size(287, 34);
+            this.menuAddGettingCards.Size = new System.Drawing.Size(238, 26);
             this.menuAddGettingCards.Text = "Getting card(s)";
             this.menuAddGettingCards.Click += new System.EventHandler(this.menuAddGettingCards_Click);
             // 
             // menuAddGettingFairiesOfClass
             // 
             this.menuAddGettingFairiesOfClass.Name = "menuAddGettingFairiesOfClass";
-            this.menuAddGettingFairiesOfClass.Size = new System.Drawing.Size(287, 34);
+            this.menuAddGettingFairiesOfClass.Size = new System.Drawing.Size(238, 26);
             this.menuAddGettingFairiesOfClass.Text = "Getting fairies of class";
             this.menuAddGettingFairiesOfClass.Click += new System.EventHandler(this.menuAddGettingFairiesOfClass_Click);
             // 
             // menuAddGettingTotalFairies
             // 
             this.menuAddGettingTotalFairies.Name = "menuAddGettingTotalFairies";
-            this.menuAddGettingTotalFairies.Size = new System.Drawing.Size(287, 34);
+            this.menuAddGettingTotalFairies.Size = new System.Drawing.Size(238, 26);
             this.menuAddGettingTotalFairies.Text = "Getting total fairies";
             this.menuAddGettingTotalFairies.Click += new System.EventHandler(this.menuAddGettingTotalFairies_Click);
+            // 
+            // gettingPixiesToolStripMenuItem
+            // 
+            this.gettingPixiesToolStripMenuItem.Name = "gettingPixiesToolStripMenuItem";
+            this.gettingPixiesToolStripMenuItem.Size = new System.Drawing.Size(238, 26);
+            this.gettingPixiesToolStripMenuItem.Text = "Getting pixies";
+            this.gettingPixiesToolStripMenuItem.Click += new System.EventHandler(this.menuAddGettingPixies_Click);
             // 
             // menuAddReaching
             // 
             this.menuAddReaching.Name = "menuAddReaching";
-            this.menuAddReaching.Size = new System.Drawing.Size(287, 34);
+            this.menuAddReaching.Size = new System.Drawing.Size(238, 26);
             this.menuAddReaching.Text = "Reaching";
             this.menuAddReaching.Click += new System.EventHandler(this.menuAddReaching_Click);
             // 
             // menuAddDefeating
             // 
             this.menuAddDefeating.Name = "menuAddDefeating";
-            this.menuAddDefeating.Size = new System.Drawing.Size(287, 34);
+            this.menuAddDefeating.Size = new System.Drawing.Size(238, 26);
             this.menuAddDefeating.Text = "Defeating";
             this.menuAddDefeating.Click += new System.EventHandler(this.menuAddDefeating_Click);
             // 
             // menuAddWatching
             // 
             this.menuAddWatching.Name = "menuAddWatching";
-            this.menuAddWatching.Size = new System.Drawing.Size(287, 34);
+            this.menuAddWatching.Size = new System.Drawing.Size(238, 26);
             this.menuAddWatching.Text = "Watching";
             this.menuAddWatching.Click += new System.EventHandler(this.menuAddWatching_Click);
             // 
@@ -220,7 +235,7 @@ namespace ZZAutosplitter.controls
             this.btnMoveSplitUp.Image = global::ZZAutosplitter.Properties.Resources.arrow_up;
             this.btnMoveSplitUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitUp.Name = "btnMoveSplitUp";
-            this.btnMoveSplitUp.Size = new System.Drawing.Size(33, 28);
+            this.btnMoveSplitUp.Size = new System.Drawing.Size(38, 28);
             this.btnMoveSplitUp.Text = "Move up";
             this.btnMoveSplitUp.Click += new System.EventHandler(this.btnMoveSplitUp_Click);
             // 
@@ -230,7 +245,7 @@ namespace ZZAutosplitter.controls
             this.btnMoveSplitDown.Image = global::ZZAutosplitter.Properties.Resources.arrow_down;
             this.btnMoveSplitDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveSplitDown.Name = "btnMoveSplitDown";
-            this.btnMoveSplitDown.Size = new System.Drawing.Size(33, 28);
+            this.btnMoveSplitDown.Size = new System.Drawing.Size(38, 28);
             this.btnMoveSplitDown.Text = "Move down";
             this.btnMoveSplitDown.Click += new System.EventHandler(this.btnMoveSplitDown_Click);
             // 
@@ -240,7 +255,7 @@ namespace ZZAutosplitter.controls
             this.btnDeleteSplit.Image = global::ZZAutosplitter.Properties.Resources.delete;
             this.btnDeleteSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteSplit.Name = "btnDeleteSplit";
-            this.btnDeleteSplit.Size = new System.Drawing.Size(33, 28);
+            this.btnDeleteSplit.Size = new System.Drawing.Size(38, 28);
             this.btnDeleteSplit.Text = "Delete split";
             this.btnDeleteSplit.Click += new System.EventHandler(this.btnDeleteSplit_Click);
             // 
@@ -250,7 +265,7 @@ namespace ZZAutosplitter.controls
             this.btnClearSplits.Image = global::ZZAutosplitter.Properties.Resources.bin_closed;
             this.btnClearSplits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClearSplits.Name = "btnClearSplits";
-            this.btnClearSplits.Size = new System.Drawing.Size(33, 28);
+            this.btnClearSplits.Size = new System.Drawing.Size(38, 28);
             this.btnClearSplits.Text = "Clear all splits";
             this.btnClearSplits.Click += new System.EventHandler(this.btnClearSplits_Click);
             // 
@@ -267,9 +282,11 @@ namespace ZZAutosplitter.controls
             this.groupBox2.Controls.Add(this.checkBoxLoadTime);
             this.groupBox2.Controls.Add(this.checkBoxAutoStart);
             this.groupBox2.Controls.Add(this.checkBoxAutoSplits);
-            this.groupBox2.Location = new System.Drawing.Point(15, 3);
+            this.groupBox2.Location = new System.Drawing.Point(10, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(670, 136);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Size = new System.Drawing.Size(447, 88);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Basic Settings";
@@ -277,15 +294,17 @@ namespace ZZAutosplitter.controls
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(459, 86);
+            this.label3.Location = new System.Drawing.Point(306, 56);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(206, 20);
+            this.label3.Size = new System.Drawing.Size(162, 15);
             this.label3.TabIndex = 8;
             this.label3.Text = "Delay in-game scanner (ms)";
             // 
             // numericDelayTriggers
             // 
-            this.numericDelayTriggers.Location = new System.Drawing.Point(371, 84);
+            this.numericDelayTriggers.Location = new System.Drawing.Point(247, 55);
+            this.numericDelayTriggers.Margin = new System.Windows.Forms.Padding(2);
             this.numericDelayTriggers.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -297,7 +316,7 @@ namespace ZZAutosplitter.controls
             0,
             0});
             this.numericDelayTriggers.Name = "numericDelayTriggers";
-            this.numericDelayTriggers.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayTriggers.Size = new System.Drawing.Size(55, 20);
             this.numericDelayTriggers.TabIndex = 7;
             this.toolTipDelays.SetToolTip(this.numericDelayTriggers, "Time between two in-game checks.\r\nLower values might result in slightly more accu" +
         "rate timings but will result in higher CPU usage.");
@@ -310,15 +329,17 @@ namespace ZZAutosplitter.controls
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(459, 56);
+            this.label2.Location = new System.Drawing.Point(306, 36);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(184, 20);
+            this.label2.Size = new System.Drawing.Size(145, 15);
             this.label2.TabIndex = 6;
             this.label2.Text = "Delay initial scanner (ms)";
             // 
             // numericDelayGamePtr
             // 
-            this.numericDelayGamePtr.Location = new System.Drawing.Point(371, 54);
+            this.numericDelayGamePtr.Location = new System.Drawing.Point(247, 35);
+            this.numericDelayGamePtr.Margin = new System.Windows.Forms.Padding(2);
             this.numericDelayGamePtr.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -330,7 +351,7 @@ namespace ZZAutosplitter.controls
             0,
             0});
             this.numericDelayGamePtr.Name = "numericDelayGamePtr";
-            this.numericDelayGamePtr.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayGamePtr.Size = new System.Drawing.Size(55, 20);
             this.numericDelayGamePtr.TabIndex = 5;
             this.toolTipDelays.SetToolTip(this.numericDelayGamePtr, "Time between two initial game scans.\r\nLower only if the autosplitter does not rea" +
         "ct fast enough after resetting the game!");
@@ -343,15 +364,17 @@ namespace ZZAutosplitter.controls
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(459, 26);
+            this.label1.Location = new System.Drawing.Point(306, 17);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(205, 20);
+            this.label1.Size = new System.Drawing.Size(159, 15);
             this.label1.TabIndex = 4;
             this.label1.Text = "Delay process scanner (ms)";
             // 
             // numericDelayProcess
             // 
-            this.numericDelayProcess.Location = new System.Drawing.Point(371, 24);
+            this.numericDelayProcess.Location = new System.Drawing.Point(247, 16);
+            this.numericDelayProcess.Margin = new System.Windows.Forms.Padding(2);
             this.numericDelayProcess.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -363,7 +386,7 @@ namespace ZZAutosplitter.controls
             0,
             0});
             this.numericDelayProcess.Name = "numericDelayProcess";
-            this.numericDelayProcess.Size = new System.Drawing.Size(82, 26);
+            this.numericDelayProcess.Size = new System.Drawing.Size(55, 20);
             this.numericDelayProcess.TabIndex = 3;
             this.toolTipDelays.SetToolTip(this.numericDelayProcess, "Time between two process scans.\r\nLower only if the Autosplitter does not react fa" +
         "st enough after resetting the game!");
@@ -376,9 +399,10 @@ namespace ZZAutosplitter.controls
             // checkBoxLoadTime
             // 
             this.checkBoxLoadTime.AutoSize = true;
-            this.checkBoxLoadTime.Location = new System.Drawing.Point(6, 85);
+            this.checkBoxLoadTime.Location = new System.Drawing.Point(4, 55);
+            this.checkBoxLoadTime.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxLoadTime.Name = "checkBoxLoadTime";
-            this.checkBoxLoadTime.Size = new System.Drawing.Size(176, 24);
+            this.checkBoxLoadTime.Size = new System.Drawing.Size(141, 19);
             this.checkBoxLoadTime.TabIndex = 2;
             this.checkBoxLoadTime.Text = "Load-Time Removal";
             this.checkBoxLoadTime.UseVisualStyleBackColor = true;
@@ -386,9 +410,10 @@ namespace ZZAutosplitter.controls
             // checkBoxAutoStart
             // 
             this.checkBoxAutoStart.AutoSize = true;
-            this.checkBoxAutoStart.Location = new System.Drawing.Point(6, 55);
+            this.checkBoxAutoStart.Location = new System.Drawing.Point(4, 36);
+            this.checkBoxAutoStart.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAutoStart.Name = "checkBoxAutoStart";
-            this.checkBoxAutoStart.Size = new System.Drawing.Size(146, 24);
+            this.checkBoxAutoStart.Size = new System.Drawing.Size(111, 19);
             this.checkBoxAutoStart.TabIndex = 1;
             this.checkBoxAutoStart.Text = "Automatic Start";
             this.checkBoxAutoStart.UseVisualStyleBackColor = true;
@@ -396,22 +421,24 @@ namespace ZZAutosplitter.controls
             // checkBoxAutoSplits
             // 
             this.checkBoxAutoSplits.AutoSize = true;
-            this.checkBoxAutoSplits.Location = new System.Drawing.Point(6, 25);
+            this.checkBoxAutoSplits.Location = new System.Drawing.Point(4, 16);
+            this.checkBoxAutoSplits.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAutoSplits.Name = "checkBoxAutoSplits";
-            this.checkBoxAutoSplits.Size = new System.Drawing.Size(150, 24);
+            this.checkBoxAutoSplits.Size = new System.Drawing.Size(116, 19);
             this.checkBoxAutoSplits.TabIndex = 0;
             this.checkBoxAutoSplits.Text = "Automatic Splits";
             this.checkBoxAutoSplits.UseVisualStyleBackColor = true;
             // 
             // SettingsControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SettingsControl";
-            this.Size = new System.Drawing.Size(700, 780);
+            this.Size = new System.Drawing.Size(467, 507);
             this.groupBox1.ResumeLayout(false);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.RightToolStripPanel.ResumeLayout(false);
@@ -459,5 +486,6 @@ namespace ZZAutosplitter.controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericDelayProcess;
         private System.Windows.Forms.ToolTip toolTipDelays;
+        private System.Windows.Forms.ToolStripMenuItem gettingPixiesToolStripMenuItem;
     }
 }
