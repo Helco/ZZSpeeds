@@ -11,6 +11,7 @@
 #include <string_view>
 #include <span>
 #include <cassert>
+#include <numeric>
 
 // grr... C macros messing with C++ STL
 #undef min
@@ -119,8 +120,17 @@ struct ResolutionMode
 
 	std::string toString() const
 	{
+		int d = std::gcd(width, height);
+		int rw = width / d;
+		int rh = height / d;
+		if (rw == 8 && rh == 5)
+		{
+			rw *= 2;
+			rh *= 2;
+		}
+
 		std::stringstream sstream;
-		sstream << width << 'x' << height << 'x' << depth;
+		sstream << width << 'x' << height << 'x' << depth << " (" << rw << ':' << rh << ')';
 		return sstream.str();
 	}
 
